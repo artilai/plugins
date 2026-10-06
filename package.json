@@ -1,0 +1,19 @@
+{
+  "name": "plugins",
+  "private": true,
+  "workspaces": [
+    "pi"
+  ],
+  "type": "module",
+  "scripts": {
+    "check": "oxlint && oxfmt --check && tsc && bun test",
+    "format": "oxlint --fix && oxfmt"
+  },
+  "devDependencies": {
+    "@types/bun": "1.3.14",
+    "oxfmt": "0.71.0",
+    "oxlint": "1.86.0",
+    "typescript": "7.0.2"
+  },
+  "packageManager": "bun@1.3.14"
+}

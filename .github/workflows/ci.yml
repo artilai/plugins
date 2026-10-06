@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  pi:
+    name: Pi
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Lint, format, typecheck and test
+        run: bun run check
+
+  hermes:
+    name: Hermes
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - name: Lint
+        uses: astral-sh/ruff-action@v4.1.0
+        with:
+          version: 0.16.10
+      - name: Check formatting
+        uses: astral-sh/ruff-action@v4.1.0
+        with:
+          version: 0.16.10
+          args: format --check
+      - name: Check the manifest has the package version
+        run: |
+          grep -qx "version: $(jq -r .version hermes/package.json)" hermes/artil/plugin.yaml
+      - name: Validate the plugin
+        run: docker run --rm -v "$PWD/hermes:/plugin" -w /plugin --entrypoint hermes nousresearch/hermes-agent:latest plugins validate artil
+      - name: Run the tests inside the Hermes image
+        run: |
+          docker run --rm -v "$PWD/hermes:/plugin" -w /plugin --entrypoint sh nousresearch/hermes-agent:latest -c \
+            'uv pip install -q --python /opt/hermes/.venv/bin/python pytest && PYTHONPATH=/opt/hermes /opt/hermes/.venv/bin/python -m pytest -p no:cacheprovider tests'

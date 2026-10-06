@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check versions
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    outputs:
+      packages: ${{ steps.versions.outputs.packages }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - name: Find the packages npm does not have yet
+        id: versions
+        run: |
+          unpublished=()
+          for manifest in */package.json; do
+            name="$(jq -r .name "$manifest")"
+            version="$(jq -r .version "$manifest")"
+            published="$(npm view "$name" version 2>/dev/null || true)"
+            echo "$name has $version, npm has ${published:-nothing}"
+            if [ "$version" != "$published" ]; then unpublished+=("$(dirname "$manifest")"); fi
+          done
+          echo "packages=$(jq -cn '$ARGS.positional' --args "${unpublished[@]}")" >> "$GITHUB_OUTPUT"
+
+  release:
+    name: Publish ${{ matrix.package }}
+    needs: check
+    if: needs.check.outputs.packages != '[]'
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        package: ${{ fromJSON(needs.check.outputs.packages) }}
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - name: Update npm for trusted publishing
+        run: npm install --global npm@11
+      - name: Publish to npm
+        working-directory: ${{ matrix.package }}
+        run: npm publish
