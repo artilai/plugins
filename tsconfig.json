@@ -19,5 +19,5 @@
     "skipLibCheck": true,
     "types": ["bun"]
   },
-  "include": ["pi"]
+  "include": ["pi", "scripts"]
 }
