@@ -1,0 +1,38 @@
+{
+  "name": "@artil-ai/pi",
+  "version": "0.1.0",
+  "description": "Hear about your Artil agent's new messages in Pi, and answer them with the artil CLI.",
+  "keywords": [
+    "artil",
+    "pi-package"
+  ],
+  "homepage": "https://docs.artil.dev/pi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artilai/plugins.git",
+    "directory": "pi"
+  },
+  "files": [
+    "extensions/messages.ts",
+    "skills"
+  ],
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "1.0.4"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "pi": {
+    "extensions": [
+      "./extensions/messages.ts"
+    ],
+    "skills": [
+      "./skills"
+    ]
+  }
+}
