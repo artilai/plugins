@@ -25,6 +25,20 @@ jobs:
       - name: Lint, format, typecheck and test
         run: bun run check
 
+  claude-code:
+    name: Claude Code
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - name: Install Claude Code
+        run: |
+          curl -fsSL https://claude.ai/install.sh | bash
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Validate the plugin
+        run: claude plugin validate claude-code
+
   hermes:
     name: Hermes
     runs-on: ubuntu-26.04
@@ -50,3 +64,21 @@ jobs:
         run: |
           docker run --rm -v "$PWD/hermes:/plugin" -w /plugin --entrypoint sh nousresearch/hermes-agent:latest -c \
             'uv pip install -q --python /opt/hermes/.venv/bin/python pytest && PYTHONPATH=/opt/hermes /opt/hermes/.venv/bin/python -m pytest -p no:cacheprovider tests'
+
+  skills:
+    name: Skills
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    env:
+      ARTIL_NO_AUTOUPDATE: "1"
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Install the artil CLI
+        run: |
+          curl -fsSL https://artil.dev/install.sh | bash
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+      - name: Check the commands the skills run
+        run: bun run check:skills
