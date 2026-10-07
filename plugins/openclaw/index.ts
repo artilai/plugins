@@ -1,7 +1,6 @@
+import { listen } from "@artil-ai/channel";
 import { resolveDefaultAgentId } from "openclaw/plugin-sdk/config-runtime";
 import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
-
-import { listenForMessages } from "./listen";
 
 const hint = [
   "Notices about new email and texts to this Artil agent account, and wake-ups from its team, arrive in this session.",
@@ -24,8 +23,9 @@ export default definePluginEntry({
         const sessionKey = `agent:${resolveDefaultAgentId(config)}:artil`;
 
         stop?.();
-        stop = listenForMessages({
-          artil: "artil",
+        stop = listen({
+          channel: "openclaw-channel",
+          restart: "restart the gateway",
           deliver: ({ content, meta }) =>
             void api.runtime.subagent
               .run({

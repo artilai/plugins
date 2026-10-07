@@ -24,6 +24,8 @@ jobs:
         run: bun install --frozen-lockfile
       - name: Lint, format, typecheck and test
         run: bun run check
+      - name: Build the packages
+        run: bun run build
 
   claude-code:
     name: Claude Code
@@ -37,7 +39,7 @@ jobs:
           curl -fsSL https://claude.ai/install.sh | bash
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Validate the plugin
-        run: claude plugin validate claude-code
+        run: claude plugin validate plugins/claude-code
 
   hermes:
     name: Hermes
@@ -57,12 +59,12 @@ jobs:
           args: format --check
       - name: Check the manifest has the package version
         run: |
-          grep -qx "version: $(jq -r .version hermes/package.json)" hermes/artil/plugin.yaml
+          grep -qx "version: $(jq -r .version plugins/hermes/package.json)" plugins/hermes/artil/plugin.yaml
       - name: Validate the plugin
-        run: docker run --rm -v "$PWD/hermes:/plugin" -w /plugin --entrypoint hermes nousresearch/hermes-agent:latest plugins validate artil
+        run: docker run --rm -v "$PWD/plugins/hermes:/plugin" -w /plugin --entrypoint hermes nousresearch/hermes-agent:latest plugins validate artil
       - name: Run the tests inside the Hermes image
         run: |
-          docker run --rm -v "$PWD/hermes:/plugin" -w /plugin --entrypoint sh nousresearch/hermes-agent:latest -c \
+          docker run --rm -v "$PWD/plugins/hermes:/plugin" -w /plugin --entrypoint sh nousresearch/hermes-agent:latest -c \
             'uv pip install -q --python /opt/hermes/.venv/bin/python pytest && PYTHONPATH=/opt/hermes /opt/hermes/.venv/bin/python -m pytest -p no:cacheprovider tests'
 
   skills:

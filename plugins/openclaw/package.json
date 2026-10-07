@@ -11,7 +11,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/artilai/plugins.git",
-    "directory": "openclaw"
+    "directory": "plugins/openclaw"
   },
   "files": [
     "dist",
@@ -23,9 +23,11 @@
     "access": "public"
   },
   "scripts": {
-    "prepack": "bun build index.ts --outdir dist --target node --external openclaw && rm -rf skills && cp -R ../pi/skills skills"
+    "build": "bun build index.ts --outdir dist --target node --external openclaw && rm -rf skills && cp -R ../../skills skills",
+    "prepack": "bun run build"
   },
   "devDependencies": {
+    "@artil-ai/channel": "workspace:*",
     "openclaw": "2026.9.8"
   },
   "peerDependencies": {

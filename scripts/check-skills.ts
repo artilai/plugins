@@ -1,4 +1,5 @@
-const skills = (await Array.fromAsync(new Bun.Glob("*/skills/*/SKILL.md").scan())).toSorted();
+const tracked = Bun.spawnSync(["git", "ls-files", "*/SKILL.md"]).stdout.toString();
+const skills = tracked.trim().split("\n");
 const problems: string[] = [];
 
 function helpOf(words: string[]) {

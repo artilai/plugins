@@ -11,17 +11,22 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/artilai/plugins.git",
-    "directory": "pi"
+    "directory": "plugins/pi"
   },
   "files": [
-    "extensions/messages.ts",
+    "dist",
     "skills"
   ],
   "type": "module",
   "publishConfig": {
     "access": "public"
   },
+  "scripts": {
+    "build": "bun build index.ts --outdir dist --target node --external @earendil-works/pi-coding-agent && rm -rf skills && cp -R ../../skills skills",
+    "prepack": "bun run build"
+  },
   "devDependencies": {
+    "@artil-ai/channel": "workspace:*",
     "@earendil-works/pi-coding-agent": "1.0.4"
   },
   "peerDependencies": {
@@ -34,7 +39,7 @@
   },
   "pi": {
     "extensions": [
-      "./extensions/messages.ts"
+      "./dist/index.js"
     ],
     "skills": [
       "./skills"
