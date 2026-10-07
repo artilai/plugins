@@ -7,5 +7,5 @@ description: >
   reach the Hermes gateway through the artil CLI. The agent answers them with
   the CLI, as the artil skill describes.
 author: Artil
-homepage: https://docs.artil.dev/automatic-messages
+homepage: https://docs.artil.dev/hermes
 requires_hermes: ">=0.21.5"
