@@ -2,5 +2,6 @@ node_modules/
 __pycache__/
 .ruff_cache/
 .DS_Store
-openclaw/dist/
-openclaw/skills/
+dist/
+plugins/openclaw/skills/
+plugins/pi/skills/

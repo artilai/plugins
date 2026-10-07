@@ -19,14 +19,14 @@ PATH, which includes `~/.local/bin`, and signed in as the agent. See
 | Entry point             | What it does                                                                           |
 | ----------------------- | -------------------------------------------------------------------------------------- |
 | `index.ts`              | Starts a turn in the `agent:<id>:artil` session for each notice, delivering no replies |
-| `listen.ts`             | Runs `artil internal openclaw-channel` and reads its notices                           |
-| `skills/artil/SKILL.md` | The `artil` skill, copied from `pi` when the package is packed                         |
+| `skills/artil/SKILL.md` | The `artil` skill, copied from the repository's `skills` when packed                   |
 
 ## Development
 
-`npm pack` builds `dist/index.js` and copies the skill. Install the packed
-archive into a gateway to try it:
+`bun run build` bundles `dist/index.js` and copies the skill, and `npm pack`
+runs it. Install the packed archive into a gateway to try it:
 
 ```sh
+npm pack
 openclaw plugins install npm-pack:./artil-ai-openclaw-0.1.0.tgz --force --accept-capabilities
 ```

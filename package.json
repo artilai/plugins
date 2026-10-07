@@ -2,11 +2,12 @@
   "name": "plugins",
   "private": true,
   "workspaces": [
-    "pi",
-    "openclaw"
+    "packages/*",
+    "plugins/*"
   ],
   "type": "module",
   "scripts": {
+    "build": "bun run --filter './plugins/*' build",
     "check": "oxlint && oxfmt --check && tsc && bun test",
     "check:skills": "bun scripts/check-skills.ts",
     "format": "oxlint --fix && oxfmt"

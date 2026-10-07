@@ -35,7 +35,7 @@ image:
 
 ```sh
 uvx ruff check && uvx ruff format --check
-docker run --rm -v "$PWD/hermes:/plugin" -w /plugin --entrypoint hermes nousresearch/hermes-agent:latest plugins validate artil
-docker run --rm -v "$PWD/hermes:/plugin" -w /plugin --entrypoint sh nousresearch/hermes-agent:latest -c \
+docker run --rm -v "$PWD/plugins/hermes:/plugin" -w /plugin --entrypoint hermes nousresearch/hermes-agent:latest plugins validate artil
+docker run --rm -v "$PWD/plugins/hermes:/plugin" -w /plugin --entrypoint sh nousresearch/hermes-agent:latest -c \
   'uv pip install -q --python /opt/hermes/.venv/bin/python pytest && PYTHONPATH=/opt/hermes /opt/hermes/.venv/bin/python -m pytest -p no:cacheprovider tests'
 ```
