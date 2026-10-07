@@ -2,7 +2,8 @@
   "name": "plugins",
   "private": true,
   "workspaces": [
-    "pi"
+    "pi",
+    "openclaw"
   ],
   "type": "module",
   "scripts": {

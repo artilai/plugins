@@ -1,0 +1,48 @@
+{
+  "name": "@artil-ai/openclaw",
+  "version": "0.1.0",
+  "description": "Hear about your Artil agent's new messages in OpenClaw, and answer them with the artil CLI.",
+  "keywords": [
+    "artil",
+    "openclaw"
+  ],
+  "homepage": "https://docs.artil.dev/openclaw",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artilai/plugins.git",
+    "directory": "openclaw"
+  },
+  "files": [
+    "dist",
+    "skills",
+    "openclaw.plugin.json"
+  ],
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepack": "bun build index.ts --outdir dist --target node --external openclaw && rm -rf skills && cp -R ../pi/skills skills"
+  },
+  "devDependencies": {
+    "openclaw": "2026.9.8"
+  },
+  "peerDependencies": {
+    "openclaw": ">=2026.9.8"
+  },
+  "openclaw": {
+    "extensions": [
+      "./index.ts"
+    ],
+    "runtimeExtensions": [
+      "./dist/index.js"
+    ],
+    "compat": {
+      "pluginApi": ">=2026.9.8"
+    },
+    "install": {
+      "minHostVersion": ">=2026.9.8"
+    }
+  }
+}

@@ -9,6 +9,7 @@ sets them up.
 | [`claude-code`](claude-code/README.md) | Claude Code | `artil@artil` in the `artilai/claude-plugins` marketplace |
 | [`pi`](pi/README.md)                   | Pi          | `@artil-ai/pi`                                            |
 | [`hermes`](hermes/README.md)           | Hermes      | `@artil-ai/hermes`                                        |
+| [`openclaw`](openclaw/README.md)       | OpenClaw    | `@artil-ai/openclaw`                                      |
 
 ## Development
 

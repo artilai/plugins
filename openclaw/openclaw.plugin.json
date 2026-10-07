@@ -1,0 +1,8 @@
+{
+  "id": "artil",
+  "name": "Artil",
+  "description": "Hear about your Artil agent's new messages, and answer them with the artil CLI.",
+  "activation": { "onStartup": true },
+  "skills": ["./skills"],
+  "configSchema": { "type": "object", "additionalProperties": false, "properties": {} }
+}
