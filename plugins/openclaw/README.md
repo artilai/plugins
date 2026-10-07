@@ -28,5 +28,5 @@ runs it. Install the packed archive into a gateway to try it:
 
 ```sh
 npm pack
-openclaw plugins install npm-pack:./artil-ai-openclaw-0.1.0.tgz --force --accept-capabilities
+openclaw plugins install npm-pack:./artil-ai-openclaw-*.tgz --force --accept-capabilities
 ```

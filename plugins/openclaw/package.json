@@ -1,6 +1,6 @@
 {
   "name": "@artil-ai/openclaw",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Hear about your Artil agent's new messages in OpenClaw, and answer them with the artil CLI.",
   "keywords": [
     "artil",
