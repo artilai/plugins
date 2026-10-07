@@ -5,6 +5,8 @@ from __future__ import annotations
 import asyncio
 import dataclasses
 import json
+import shutil
+from pathlib import Path
 from typing import Any
 
 from gateway.config import Platform, PlatformConfig
@@ -16,7 +18,7 @@ PLATFORM = "artil"
 HINT = (
     "Notices about new email and texts to this Artil agent account, and wake-ups from its team, "
     "arrive here. Read each message with the artil command its notice names, and answer it with "
-    "`artil email send --reply-to` or `artil sms send --reply-to`, as the artil skill describes. "
+    "`artil email send --reply-to` or `artil sms send --reply-to`. "
     "Nobody outside reads what you write in this conversation."
 )
 
@@ -29,7 +31,10 @@ class ArtilAdapter(BasePlatformAdapter):
     def __init__(self, config: PlatformConfig) -> None:
         config.extra = {**(config.extra or {}), "allow_from": [PLATFORM]}
         super().__init__(config, Platform(PLATFORM))
-        self._command = str(config.extra.get("command") or "artil")
+        # A gateway service may not have the PATH that finds artil where its installer put it.
+        self._command = str(
+            config.extra.get("command") or shutil.which("artil") or Path.home() / ".local/bin/artil"
+        )
         self._process: asyncio.subprocess.Process | None = None
         self._listening: asyncio.Task | None = None
 

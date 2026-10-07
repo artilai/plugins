@@ -1,6 +1,6 @@
 {
   "name": "@artil-ai/hermes",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Hear about your Artil agent's new messages in the Hermes gateway, and answer them with the artil CLI.",
   "keywords": [
     "artil",
@@ -14,11 +14,12 @@
     "directory": "plugins/hermes"
   },
   "files": [
-    "artil"
+    "plugin.yaml",
+    "__init__.py"
   ],
   "exports": {
-    "./plugin.yaml": "./artil/plugin.yaml",
-    "./__init__.py": "./artil/__init__.py"
+    "./plugin.yaml": "./plugin.yaml",
+    "./__init__.py": "./__init__.py"
   },
   "publishConfig": {
     "access": "public"
