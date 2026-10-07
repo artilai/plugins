@@ -48,24 +48,10 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v7
-      - name: Lint
-        uses: astral-sh/ruff-action@v4.1.0
-        with:
-          version: 0.16.10
-      - name: Check formatting
-        uses: astral-sh/ruff-action@v4.1.0
-        with:
-          version: 0.16.10
-          args: format --check
-      - name: Check the manifest has the package version
-        run: |
-          grep -qx "version: $(jq -r .version plugins/hermes/package.json)" plugins/hermes/plugin.yaml
-      - name: Validate the plugin
-        run: docker run --rm -v "$PWD/plugins/hermes:/plugin" -w /plugin --entrypoint hermes nousresearch/hermes-agent:latest plugins validate .
-      - name: Run the tests inside the Hermes image
-        run: |
-          docker run --rm -v "$PWD/plugins/hermes:/plugin" -w /plugin --entrypoint sh nousresearch/hermes-agent:latest -c \
-            'uv pip install -q --python /opt/hermes/.venv/bin/python pytest && PYTHONPATH=/opt/hermes /opt/hermes/.venv/bin/python -m pytest -p no:cacheprovider tests'
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10.2.0
+      - name: Lint, validate and test the plugin inside the Hermes image
+        run: scripts/check-hermes.sh
 
   skills:
     name: Skills
@@ -84,3 +70,15 @@ jobs:
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Check the commands the skills run
         run: bun run check:skills
+
+  # .github/rulesets/main-checks.json requires only this check, so list every job above in needs.
+  checks:
+    name: Checks
+    needs: [typescript, claude-code, hermes, skills]
+    if: always()
+    runs-on: ubuntu-26.04
+    timeout-minutes: 1
+    steps:
+      - name: Fail when a check did not pass
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1
