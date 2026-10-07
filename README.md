@@ -15,7 +15,11 @@ Shared code lives in `packages/`, the shared skill in `skills/`.
 ```sh
 bun install
 bun run check
+bun run check:hermes # needs uv and Docker
 ```
+
+A pull request merges once the `Checks` job of CI passes, which
+`.github/rulesets/main-checks.json` requires.
 
 To release, bump `version` in the plugin's `package.json` and push to `main`.
 Claude Code ships from its copy in `artilai/claude-plugins`.

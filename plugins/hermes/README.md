@@ -35,13 +35,9 @@ itself: the agent answers with `artil` commands.
 
 ## Development
 
-From the repository root, lint and format the plugin with
-[ruff](https://docs.astral.sh/ruff), then validate and test it inside the Hermes
-image:
+From the repository root, lint the plugin with [ruff](https://docs.astral.sh/ruff),
+then validate and test it inside the Hermes image; this needs `uv` and Docker:
 
 ```sh
-uvx ruff check && uvx ruff format --check
-docker run --rm -v "$PWD/plugins/hermes:/plugin" -w /plugin --entrypoint hermes nousresearch/hermes-agent:latest plugins validate .
-docker run --rm -v "$PWD/plugins/hermes:/plugin" -w /plugin --entrypoint sh nousresearch/hermes-agent:latest -c \
-  'uv pip install -q --python /opt/hermes/.venv/bin/python pytest && PYTHONPATH=/opt/hermes /opt/hermes/.venv/bin/python -m pytest -p no:cacheprovider tests'
+bun run check:hermes
 ```
