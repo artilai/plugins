@@ -15,15 +15,15 @@ export default definePluginEntry({
   register(api) {
     if (api.registrationMode !== "full") return;
 
-    let stop: (() => void) | undefined;
+    let listening: (() => void) | undefined;
 
     api.registerService({
       id: "artil-messages",
       start({ config, logger }) {
         const sessionKey = `agent:${resolveDefaultAgentId(config)}:artil`;
 
-        stop?.();
-        stop = listen({
+        listening?.();
+        listening = listen({
           channel: "openclaw-channel",
           restart: "restart the gateway",
           deliver: ({ content, meta }) =>
@@ -43,8 +43,8 @@ export default definePluginEntry({
         });
       },
       stop() {
-        stop?.();
-        stop = undefined;
+        listening?.();
+        listening = undefined;
       },
     });
   },
