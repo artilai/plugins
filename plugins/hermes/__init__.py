@@ -6,6 +6,7 @@ import asyncio
 import dataclasses
 import json
 import shutil
+import signal
 from pathlib import Path
 from typing import Any
 
@@ -68,7 +69,7 @@ class ArtilAdapter(BasePlatformAdapter):
 
         reason = (await problem).decode().strip()
         code = await process.wait()
-        asked_to_stop = code in (0, -2, -15)
+        asked_to_stop = code in (0, -signal.SIGINT, -signal.SIGTERM)
 
         if asked_to_stop:
             await asyncio.sleep(self.STOP_GRACE_SECONDS)
@@ -139,6 +140,7 @@ def _needs_nothing() -> bool:
 
 
 def _service_fields() -> dict[str, Any]:
+    """The entry fields Hermes after 0.21.5 knows, which 0.21.5 itself rejects."""
     known = {field.name for field in dataclasses.fields(PlatformEntry)}
     wanted = {"trusted_inbound": True, "display_tier": "minimal"}
     return {name: value for name, value in wanted.items() if name in known}
