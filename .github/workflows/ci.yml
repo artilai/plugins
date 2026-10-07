@@ -11,8 +11,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  pi:
-    name: Pi
+  typescript:
+    name: Pi and OpenClaw
     runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:
