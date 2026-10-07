@@ -6,7 +6,7 @@ import importlib.util
 import sys
 from pathlib import Path
 
-PLUGIN = Path(__file__).resolve().parents[1] / "artil"
+PLUGIN = Path(__file__).resolve().parents[1]
 
 
 def _load_plugin():

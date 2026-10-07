@@ -59,9 +59,9 @@ jobs:
           args: format --check
       - name: Check the manifest has the package version
         run: |
-          grep -qx "version: $(jq -r .version plugins/hermes/package.json)" plugins/hermes/artil/plugin.yaml
+          grep -qx "version: $(jq -r .version plugins/hermes/package.json)" plugins/hermes/plugin.yaml
       - name: Validate the plugin
-        run: docker run --rm -v "$PWD/plugins/hermes:/plugin" -w /plugin --entrypoint hermes nousresearch/hermes-agent:latest plugins validate artil
+        run: docker run --rm -v "$PWD/plugins/hermes:/plugin" -w /plugin --entrypoint hermes nousresearch/hermes-agent:latest plugins validate .
       - name: Run the tests inside the Hermes image
         run: |
           docker run --rm -v "$PWD/plugins/hermes:/plugin" -w /plugin --entrypoint sh nousresearch/hermes-agent:latest -c \

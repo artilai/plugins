@@ -25,7 +25,7 @@ async def eventually(check) -> None:
     assert check()
 
 
-def adapter_running(command: str):
+def adapter_running(command: str | None):
     adapter = plugin.ArtilAdapter(PlatformConfig(enabled=True, extra={"command": command}))
     adapter.STOP_GRACE_SECONDS = 0.05
     events = []
@@ -145,6 +145,23 @@ def test_says_when_the_artil_command_is_missing(tmp_path):
 
     assert asyncio.run(adapter.connect()) is False
     assert adapter.fatal_error_message.startswith(f"Could not run {tmp_path / 'missing' / 'artil'}")
+
+
+def test_runs_the_artil_its_installer_put_in_local_bin_without_a_command(tmp_path, monkeypatch):
+    installed = tmp_path / ".local" / "bin"
+    installed.mkdir(parents=True)
+    artil = artil_running(installed, 'echo "$*" > "$0.args"; exec cat')
+    monkeypatch.setenv("HOME", str(tmp_path))
+    monkeypatch.setenv("PATH", "/usr/bin:/bin")
+
+    async def scenario():
+        adapter, _ = adapter_running(None)
+
+        assert await adapter.connect()
+        await eventually(lambda: Path(f"{artil}.args").exists())
+        await adapter.disconnect()
+
+    asyncio.run(scenario())
 
 
 def test_keeps_the_agents_words_in_the_session(tmp_path):

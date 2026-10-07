@@ -1,11 +1,11 @@
 name: artil
 label: Artil
 kind: platform
-version: 0.1.0
+version: 0.1.1
 description: >
   New email and texts to an Artil agent account, and wake-ups from its team,
   reach the Hermes gateway through the artil CLI. The agent answers them with
-  the CLI, as the artil skill describes.
+  the CLI.
 author: Artil
 homepage: https://docs.artil.dev/hermes
 requires_hermes: ">=0.21.5"
