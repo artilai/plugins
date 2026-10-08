@@ -5,7 +5,8 @@
     {
       "name": "artil",
       "source": { "source": "npm", "package": "@artil-ai/codex" },
-      "category": "Productivity"
+      "category": "Productivity",
+      "interface": { "displayName": "Artil" }
     }
   ]
 }

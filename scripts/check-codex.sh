@@ -11,6 +11,7 @@ fi
 
 CODEX_HOME="$(mktemp -d)"
 export CODEX_HOME
+trap 'rm -rf "$CODEX_HOME"' EXIT
 marketplace="$CODEX_HOME/marketplace"
 
 mkdir -p "$marketplace/.agents/plugins"

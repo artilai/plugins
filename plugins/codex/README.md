@@ -17,11 +17,12 @@ codex plugin add artil@artil
 ```
 
 Codex's sandbox keeps `artil` off the network, so Codex asks before each `artil`
-command. To let it run them without asking, allow them in a rule:
+command. To let it read and send email and texts without asking, allow
+`artil email` and `artil sms` in a rule, which runs them outside the sandbox:
 
 ```sh
 mkdir -p ~/.codex/rules
-echo 'prefix_rule(pattern = ["artil"], decision = "allow")' > ~/.codex/rules/artil.rules
+echo 'prefix_rule(pattern = ["artil", ["email", "sms"]], decision = "allow")' > ~/.codex/rules/artil.rules
 ```
 
 `artil secrets link` cannot hand the agent's secrets to Codex yet, so its
