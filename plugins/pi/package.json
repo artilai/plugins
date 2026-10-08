@@ -1,6 +1,6 @@
 {
   "name": "@artil-ai/pi",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Hear about your Artil agent's new messages in Pi, and answer them with the artil CLI.",
   "keywords": [
     "artil",
