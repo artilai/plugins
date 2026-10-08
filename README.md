@@ -45,12 +45,5 @@ Claude Code ships from its copy in `artilai/claude-plugins`.
       release then needs a PR there that bumps the pin.
 - [ ] In `artilai/artil`, bump `@artil-ai/hermes` and `@artil-ai/pi` in the CLI
       and describe `hermes plugins install` in `docs/hermes.mdx`.
-- [ ] In `artilai/artil`, add `codex` to `artil plugin install`, which adds the
-      marketplace and plugin and allows `artil email` and `artil sms` in
-      `~/.codex/rules`, describe Codex in the docs, and point the homepage in
-      `plugins/codex` at that page.
-- [ ] Let Codex hear about new messages. As of Codex 0.161, OpenAI's hosted
-      apps answer `events/stream` with "Method not found", so try that again, or
-      start turns through the Codex app-server.
-- [ ] Hand the agent's secrets to Codex's commands, which `artil secrets link`
-      cannot do yet.
+- [ ] Publish the ChatGPT and Codex plugin in OpenAI's
+      [plugin directory](https://developers.openai.com/plugins/build/plugins).
