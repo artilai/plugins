@@ -2,7 +2,7 @@
 # Install the Codex plugin as npm packs it into a throwaway Codex home, and check that Codex offers its skill.
 set -eu
 
-cd "$(dirname "$0")/../plugins/codex"
+cd "$(dirname "$0")"
 
 if [ "$(jq -r .version .codex-plugin/plugin.json)" != "$(jq -r .version package.json)" ]; then
   echo ".codex-plugin/plugin.json does not have the version in package.json." >&2

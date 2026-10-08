@@ -65,7 +65,7 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@v10.2.0
       - name: Lint, validate and test the plugin inside the Hermes image
-        run: scripts/check-hermes.sh
+        run: plugins/hermes/check.sh
 
   skills:
     name: Skills
