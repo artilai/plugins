@@ -1,0 +1,13 @@
+{
+  "name": "artil",
+  "displayName": "Artil",
+  "version": "0.1.0",
+  "description": "Use your Artil agent's email, SMS and secrets in Grok Bot with the artil CLI, and answer new messages in a routine.",
+  "author": { "name": "Artil" },
+  "homepage": "https://artil.dev",
+  "repository": "https://github.com/artilai/plugins",
+  "license": "MIT",
+  "keywords": ["artil", "email", "sms", "secrets"],
+  "logo": "assets/logo.svg",
+  "skills": "./skills/"
+}

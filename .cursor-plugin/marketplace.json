@@ -1,0 +1,12 @@
+{
+  "name": "artil",
+  "owner": { "name": "Artil" },
+  "metadata": { "description": "The Artil plugin for Grok Bot" },
+  "plugins": [
+    {
+      "name": "artil",
+      "source": "./plugins/grok-bot",
+      "description": "Use your Artil agent's email, SMS and secrets in Grok Bot with the artil CLI, and answer new messages in a routine."
+    }
+  ]
+}
