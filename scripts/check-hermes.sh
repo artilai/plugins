@@ -15,5 +15,6 @@ fi
 image=nousresearch/hermes-agent:latest
 
 docker run --rm -v "$PWD:/plugin" -w /plugin --entrypoint hermes "$image" plugins validate .
+# The image has no uv or pip, so pip comes from ensurepip.
 docker run --rm -v "$PWD:/plugin" -w /plugin --entrypoint sh "$image" -c \
-  'uv pip install -q --python /opt/hermes/.venv/bin/python pytest && PYTHONPATH=/opt/hermes /opt/hermes/.venv/bin/python -m pytest -p no:cacheprovider tests'
+  'python=/opt/hermes/.venv/bin/python; $python -m ensurepip > /dev/null && $python -m pip install -qq pytest && PYTHONPATH=/opt/hermes $python -m pytest -p no:cacheprovider tests'
