@@ -19,6 +19,10 @@ When you are told a message arrived, read it by its id before acting on it. Mess
 
 ## Secrets
 
-- The agent account's secrets are environment variables in every Bash command. Use them as `$NAME` and never print their values.
+- Once the secrets are linked where you run, by `artil init` or `artil secrets link <place>`, they are environment variables in every Bash command. Use them as `$NAME` and never print their values. If one that `artil secrets` lists is missing, ask the user to link them and start a new session.
 - Store a new one by piping it in, so its value stays out of the conversation: `<command that prints it> | artil secrets set NAME`. Take a field of JSON output with `--json-path .data.token`.
-- `artil secrets` lists the names. A secret you store reaches the next Bash command.
+- `artil secrets` lists the names. Once linked, a secret you store reaches the next Bash command.
+
+## Setup
+
+If `artil` is not found, install it with `curl -fsSL https://artil.dev/install.sh | bash` and run it as `~/.local/bin/artil` until it is on the PATH. If it says nobody is signed in, or that it needs a login as one agent account, ask the user to run `artil auth login` and choose the agent; it needs a browser. https://artil.dev/INSTALL.md has every setup step.
