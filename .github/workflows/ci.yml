@@ -41,6 +41,20 @@ jobs:
       - name: Validate the plugin
         run: claude plugin validate plugins/claude-code
 
+  codex:
+    name: Codex
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Install Codex
+        run: npm install --global @openai/codex
+      - name: Install the packed plugin and check Codex offers its skill
+        run: bun run check:codex
+
   hermes:
     name: Hermes
     runs-on: ubuntu-26.04
@@ -74,7 +88,7 @@ jobs:
   # .github/rulesets/main-checks.json requires only this check, so list every job above in needs.
   checks:
     name: Checks
-    needs: [typescript, claude-code, hermes, skills]
+    needs: [typescript, claude-code, codex, hermes, skills]
     if: always()
     runs-on: ubuntu-26.04
     timeout-minutes: 1
