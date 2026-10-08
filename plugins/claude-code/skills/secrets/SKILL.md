@@ -1,6 +1,6 @@
 ---
 name: secrets
-description: This skill should be used when a task needs one of the Artil agent's API keys or passwords, when the user asks to "store this key", "save the token as a secret" or "list the agent's secrets", or when signing up for a service as the agent. Uses and stores the Artil agent's secrets.
+description: This skill should be used when a task needs one of the Artil agent's API keys, passwords or authenticator codes, when the user asks to "store this key", "save the token as a secret" or "list the agent's secrets", or when signing up for a service as the agent. Uses and stores the Artil agent's secrets.
 ---
 
 # Artil secrets
@@ -20,7 +20,11 @@ run `artil secrets link claude-code` and start a new session.
 
 To sign up for a service as the agent, use the email address
 `artil auth status` shows, read the verification email with the email skill,
-and store the key the service issues with `artil secrets set`.
+and store the key the service issues with `artil secrets set`. If it sets up
+two-factor sign-in, keep it as a one-time password:
+`artil secrets set '<NAME>' --qr <image> --json` reads a screenshot of its QR
+code, or pipe in the setup key with `--kind otp`. `artil secrets code '<NAME>'`
+prints the code to enter.
 
 Names use letters, digits and underscores, such as `SERVICE_API_KEY`.
 Use `artil secrets <command> --help` for other options or syntax errors.

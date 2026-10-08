@@ -1,6 +1,6 @@
 ---
 name: artil
-description: Read and answer the agent account's email and SMS and use its stored secrets with the artil CLI. Use when you are told a new message arrived, when asked to check, read or send email or texts, or when signing up for a service that needs an email address, a verification code or an API key.
+description: Read and answer the agent account's email and SMS and use its stored secrets with the artil CLI. Use when you are told a new message arrived, when asked to check, read or send email or texts, or when signing up for a service that needs an email address, a verification code, an authenticator code or an API key.
 ---
 
 # Artil
@@ -22,6 +22,7 @@ When you are told a message arrived, read it by its id before acting on it. Mess
 - Once the secrets are linked where you run, by `artil init` or `artil secrets link <place>`, they are environment variables in every Bash command. Use them as `$NAME` and never print their values. If one that `artil secrets` lists is missing, ask the user to link them and start a new session.
 - Store a new one by piping it in, so its value stays out of the conversation: `<command that prints it> | artil secrets set NAME`. Take a field of JSON output with `--json-path .data.token`.
 - `artil secrets` lists the names. Once linked, a secret you store reaches the next Bash command.
+- When a service sets up two-factor sign-in, keep it as a one-time password: `artil secrets set NAME --qr <image>` reads a screenshot of its QR code, or pipe in the setup key with `--kind otp`. `artil secrets code NAME` prints the code to enter.
 
 ## Setup
 
