@@ -1,7 +1,7 @@
 # plugins
 
-Artil plugins for agent harnesses. Each hands the agent its new messages through
-the `artil` CLI.
+Artil plugins for agent harnesses. Each lets the agent read and answer its
+messages with the `artil` CLI.
 
 | Plugin                               | Harness     | Published as                              |
 | ------------------------------------ | ----------- | ----------------------------------------- |
@@ -9,6 +9,7 @@ the `artil` CLI.
 | [`pi`](plugins/pi)                   | Pi          | `@artil-ai/pi`                            |
 | [`hermes`](plugins/hermes)           | Hermes      | `@artil-ai/hermes`                        |
 | [`openclaw`](plugins/openclaw)       | OpenClaw    | `@artil-ai/openclaw`                      |
+| [`codex`](plugins/codex)             | Codex       | `@artil-ai/codex`                         |
 
 Shared code lives in `packages/`, the shared skill in `skills/`.
 
@@ -16,6 +17,7 @@ Shared code lives in `packages/`, the shared skill in `skills/`.
 bun install
 bun run check
 bun run check:hermes # needs uv and Docker
+bun run check:codex  # needs codex
 ```
 
 A pull request merges once the `Checks` job of CI passes, which

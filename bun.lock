@@ -14,13 +14,17 @@
     "packages/channel": {
       "name": "@artil-ai/channel",
     },
+    "plugins/codex": {
+      "name": "@artil-ai/codex",
+      "version": "0.1.0",
+    },
     "plugins/hermes": {
       "name": "@artil-ai/hermes",
-      "version": "0.1.0",
+      "version": "0.1.1",
     },
     "plugins/openclaw": {
       "name": "@artil-ai/openclaw",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "devDependencies": {
         "@artil-ai/channel": "workspace:*",
         "openclaw": "2026.9.8",
@@ -31,7 +35,7 @@
     },
     "plugins/pi": {
       "name": "@artil-ai/pi",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "devDependencies": {
         "@artil-ai/channel": "workspace:*",
         "@earendil-works/pi-coding-agent": "1.0.4",
@@ -50,6 +54,8 @@
     "@anthropic-ai/sdk": ["@anthropic-ai/sdk@0.127.0", "", { "dependencies": { "json-schema-to-ts": "^3.1.1", "standardwebhooks": "^1.0.0" }, "peerDependencies": { "zod": "^3.25.0 || ^4.0.0" }, "optionalPeers": ["zod"], "bin": { "anthropic-ai-sdk": "bin/cli" } }, "sha512-OKiVbG9LHCxjn4fBJZJFy/Bz3hqE1RYpwaeSEDNheQnvz0XNKmGT/Lhkz2Sf1a27Ldt3vVv+BkU81I0U/8EpoQ=="],
 
     "@artil-ai/channel": ["@artil-ai/channel@workspace:packages/channel"],
+
+    "@artil-ai/codex": ["@artil-ai/codex@workspace:plugins/codex"],
 
     "@artil-ai/hermes": ["@artil-ai/hermes@workspace:plugins/hermes"],
 

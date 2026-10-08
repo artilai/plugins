@@ -1,0 +1,27 @@
+{
+  "name": "@artil-ai/codex",
+  "version": "0.1.0",
+  "description": "Use your Artil agent's email, SMS and secrets in Codex with the artil CLI.",
+  "keywords": [
+    "artil",
+    "codex"
+  ],
+  "homepage": "https://artil.dev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artilai/plugins.git",
+    "directory": "plugins/codex"
+  },
+  "files": [
+    ".codex-plugin",
+    "skills"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "rm -rf skills && cp -R ../../skills skills",
+    "prepack": "bun run build"
+  }
+}

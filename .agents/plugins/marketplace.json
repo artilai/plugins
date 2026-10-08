@@ -1,0 +1,11 @@
+{
+  "name": "artil",
+  "interface": { "displayName": "Artil" },
+  "plugins": [
+    {
+      "name": "artil",
+      "source": { "source": "npm", "package": "@artil-ai/codex" },
+      "category": "Productivity"
+    }
+  ]
+}
