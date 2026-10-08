@@ -1,8 +1,3 @@
 node_modules/
-__pycache__/
-.ruff_cache/
 .DS_Store
 dist/
-plugins/codex/skills/
-plugins/openclaw/skills/
-plugins/pi/skills/
