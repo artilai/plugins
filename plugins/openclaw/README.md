@@ -1,8 +1,9 @@
 # @artil-ai/openclaw
 
 The Artil plugin for [OpenClaw](https://openclaw.ai). The gateway hears about
-each new message to the agent account, and wake-ups from its team, from where it
-left off, and starts a turn in the agent's `artil` session for each one. The
+each new message to the agent account, including ones its team sends to its
+Message URL, from where it left off, and starts a turn in the agent's `artil`
+session for each one. The
 agent answers with the `artil` CLI, as the `artil` skill teaches; nothing it
 writes in that session is sent anywhere.
 
