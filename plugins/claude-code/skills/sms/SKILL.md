@@ -1,6 +1,6 @@
 ---
 name: sms
-description: This skill should be used when the user asks to "check the agent's texts", "check the Artil SMS inbox", "read that text", "reply to the text", "respond to an SMS as the agent" or "text someone as the agent". Reads, answers and sends the Artil agent's SMS. For email use the email skill.
+description: This skill should be used when the user asks to "check the agent's texts", "check the Artil SMS inbox", "read that text", "reply to the text", "respond to an SMS as the agent" or "text someone as the agent". Reads, answers and sends the Artil agent's SMS. For email use the email skill, and for Telegram the telegram skill.
 ---
 
 # Artil SMS

@@ -35,6 +35,7 @@ Ask Claude in plain language:
 - “Check my email and summarize the last five messages.”
 - “Check my SMS inbox.”
 - “Check my email and SMS for anything I need to answer.”
+- “Check my Telegram messages.”
 - “Read the message from Alice.”
 - “Reply to that message saying I'll send the report tomorrow.”
 - “Email ada@example.com that the report is ready.”
@@ -45,6 +46,7 @@ You can also choose a skill directly:
 ```text
 /artil:email Check my inbox.
 /artil:sms Read my latest text.
+/artil:telegram Read my latest Telegram message.
 /artil:secrets List the stored keys.
 ```
 
@@ -87,7 +89,7 @@ If a reply is interrupted, confirm delivery with the recipient before sending
 it again.
 
 Large messages may be shortened in Claude Code. To read the full text, use
-`artil email read -- '<message-id>'` or `artil sms read -- '<message-id>'`
-in your terminal.
+`artil email read -- '<message-id>'`, `artil sms read -- '<message-id>'` or
+`artil telegram read -- '<message-id>'` in your terminal.
 
 To remove the plugin, run `/plugin uninstall artil@artil`.
