@@ -1,9 +1,9 @@
 # @artil-ai/codex
 
 The Artil plugin for [Codex](https://developers.openai.com/codex). Its `artil`
-skill teaches Codex to read, answer and send the agent account's email and texts
-and use its secrets with the `artil` CLI. Codex does not hear about new messages
-as they arrive; ask it to check.
+skill teaches Codex to read, answer and send the agent account's email, texts
+and Telegram messages and use its secrets with the `artil` CLI. Codex does not
+hear about new messages as they arrive; ask it to check.
 
 ## Usage
 
@@ -17,12 +17,12 @@ codex plugin add artil@artil
 ```
 
 Codex's sandbox keeps `artil` off the network, so Codex asks before each `artil`
-command. To let it read and send email and texts without asking, allow
-`artil email` and `artil sms` in a rule, which runs them outside the sandbox:
+command. To let it read and send messages without asking, allow `artil email`,
+`artil sms` and `artil telegram` in a rule, which runs them outside the sandbox:
 
 ```sh
 mkdir -p ~/.codex/rules
-echo 'prefix_rule(pattern = ["artil", ["email", "sms"]], decision = "allow")' > ~/.codex/rules/artil.rules
+echo 'prefix_rule(pattern = ["artil", ["email", "sms", "telegram"]], decision = "allow")' > ~/.codex/rules/artil.rules
 ```
 
 `artil secrets link` cannot hand the agent's secrets to Codex yet, so its

@@ -1,4 +1,4 @@
-"""Artil for Hermes: notices about an agent account's new email and texts reach the gateway."""
+"""Artil for Hermes: notices about an agent account's new messages reach the gateway."""
 
 from __future__ import annotations
 
@@ -17,11 +17,12 @@ from gateway.platforms.base import BasePlatformAdapter, MessageEvent, MessageTyp
 PLATFORM = "artil"
 
 HINT = (
-    "Notices about new email and texts to this Artil agent account, and messages its team sends "
-    "to its Message URL, arrive here. Read each email or text with the artil command its notice "
-    "names, and answer it with `artil email send --reply-to` or `artil sms send --reply-to`; a "
-    "message from the Message URL comes whole, and its notice says how to answer it. "
-    "Nobody outside reads what you write in this conversation."
+    "Notices about new email, texts and Telegram messages to this Artil agent account, and "
+    "messages its team sends to its Message URL, arrive here. Read each email, text or Telegram "
+    "message with the artil command its notice names, and answer it with "
+    "`artil email send --reply-to`, `artil sms send --reply-to` or "
+    "`artil telegram send --reply-to`; a message from the Message URL comes whole, and its notice "
+    "says how to answer it. Nobody outside reads what you write in this conversation."
 )
 
 
