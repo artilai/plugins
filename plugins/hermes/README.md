@@ -1,9 +1,10 @@
 # @artil-ai/hermes
 
 The Artil platform for the [Hermes](https://hermes-agent.nousresearch.com)
-gateway. New email and texts to the agent account, and wake-ups from its team,
-reach the gateway as notices that `artil internal hermes-channel` prints, from
-where it left off; the agent answers them with the `artil` CLI.
+gateway. New email and texts to the agent account, and messages its team sends
+to its Message URL, reach the gateway as notices that
+`artil internal hermes-channel` prints, from where it left off; the agent
+answers them with the `artil` CLI.
 
 ## Usage
 

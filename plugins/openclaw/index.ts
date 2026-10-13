@@ -3,8 +3,8 @@ import { resolveDefaultAgentId } from "openclaw/plugin-sdk/config-runtime";
 import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
 
 const hint = [
-  "Notices about new email and texts to this Artil agent account, and wake-ups from its team, arrive in this session.",
-  "Read each message with the artil command its notice names, and answer it with `artil email send --reply-to` or `artil sms send --reply-to`, as the artil skill describes.",
+  "Notices about new email and texts to this Artil agent account, and messages its team sends to its Message URL, arrive in this session.",
+  "Read each email or text with the artil command its notice names, and answer it with `artil email send --reply-to` or `artil sms send --reply-to`, as the artil skill describes; a message from the Message URL comes whole, and its notice says how to answer it.",
   "Nobody outside reads what you write in this session.",
 ].join(" ");
 
