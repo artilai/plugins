@@ -5,6 +5,7 @@ import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
 const hint = [
   "Notices about new email, texts and Telegram messages to this Artil agent account, and messages its team sends to its Message URL, arrive in this session.",
   "Read each email, text or Telegram message with the artil command its notice names, and answer it with `artil email send --reply-to`, `artil sms send --reply-to` or `artil telegram send --reply-to`, as the artil skill describes; a message from the Message URL comes whole, and its notice says how to answer it.",
+  "Answer only through artil, never with OpenClaw's own Telegram or other channels, which are other accounts.",
   "Nobody outside reads what you write in this session.",
 ].join(" ");
 
