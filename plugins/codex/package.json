@@ -1,6 +1,6 @@
 {
   "name": "@artil-ai/codex",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Use your Artil agent's email, SMS and secrets in Codex with the artil CLI.",
   "keywords": [
     "artil",

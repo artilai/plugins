@@ -23,7 +23,9 @@ HINT = (
     "message with the artil command its notice names, and answer it with "
     "`artil email send --reply-to`, `artil sms send --reply-to` or "
     "`artil telegram send --reply-to`; a message from the Message URL comes whole, and its notice "
-    "says how to answer it. Nobody outside reads what you write in this conversation."
+    "says how to answer it. Answer only through artil, never with Hermes' own Telegram or other "
+    "platforms, which are other accounts. Nobody outside reads what you write in this "
+    "conversation."
 )
 
 
