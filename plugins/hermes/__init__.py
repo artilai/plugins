@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import dataclasses
+import getpass
 import json
 import shutil
 import signal
@@ -52,6 +53,14 @@ class ArtilAdapter(BasePlatformAdapter):
                 stderr=asyncio.subprocess.PIPE,
                 start_new_session=True,
             )
+        except PermissionError:
+            user = getpass.getuser()
+            self._set_fatal_error(
+                "artil_not_runnable",
+                f"The gateway runs as {user}, who cannot run {self._command}. Install artil as {user}.",
+                retryable=False,
+            )
+            return False
         except OSError as error:
             self._set_fatal_error(
                 "artil_missing", f"Could not run {self._command}: {error}", retryable=False

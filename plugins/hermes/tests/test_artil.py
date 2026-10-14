@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import getpass
 import os
 import signal
 from pathlib import Path
@@ -144,7 +145,21 @@ def test_says_when_the_artil_command_is_missing(tmp_path):
     adapter, _ = adapter_running(str(tmp_path / "missing" / "artil"))
 
     assert asyncio.run(adapter.connect()) is False
+    assert adapter.fatal_error_code == "artil_missing"
     assert adapter.fatal_error_message.startswith(f"Could not run {tmp_path / 'missing' / 'artil'}")
+
+
+def test_says_when_the_gateways_user_cannot_run_artil(tmp_path):
+    artil = artil_running(tmp_path, "exec cat")
+    Path(artil).chmod(0o644)
+    adapter, _ = adapter_running(artil)
+
+    assert asyncio.run(adapter.connect()) is False
+    assert adapter.fatal_error_code == "artil_not_runnable"
+    user = getpass.getuser()
+    assert adapter.fatal_error_message == (
+        f"The gateway runs as {user}, who cannot run {artil}. Install artil as {user}."
+    )
 
 
 def test_runs_the_artil_its_installer_put_in_local_bin_without_a_command(tmp_path, monkeypatch):
