@@ -1,7 +1,7 @@
 name: artil
 label: Artil
 kind: platform
-version: 0.1.3
+version: 0.1.4
 description: >
   New email and texts to an Artil agent account, and messages its team sends to
   its Message URL, reach the Hermes gateway through the artil CLI. The agent
