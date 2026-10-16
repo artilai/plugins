@@ -12,8 +12,11 @@ You act as an agent account in Artil. It has its own email address and may have 
 - `artil email` lists incoming email, newest first; `artil sms` lists texts and `artil telegram` Telegram messages. Add `--json` for structured output.
 - `artil email read <id>`, `artil sms read <id>` and `artil telegram read <id>` print one message. Ids look like `mail:…`, `sms:…` and `tg:…`.
 - Reply in the same thread: `artil email send --reply-to <id> -- "<body>"`, and the same with `artil sms` or `artil telegram`.
+- A reply goes to the sender only. To answer everyone an email named, copy each other address `artil email read` lists under To and Cc: `artil email send --reply-to <id> --cc <address> -- "<body>"`.
 - Answer a message Artil tells you about only through artil, even when your client has a Telegram or email of its own: that is another account, and the sender would not get the answer there.
-- Write a new email: `artil email send --to <address> --subject "<subject>" -- "<body>"`. Repeat `--to` for up to ten people.
+- Write a new email: `artil email send --to <address> --subject "<subject>" -- "<body>"`. Repeat `--to` and `--cc` for up to ten people in all.
+- Pass a message on below a note, with who sent it and when: `artil email send --forward <id> --to <address> -- "<note>"`. It takes a message from any channel; give `--subject` when the message has none, like a text.
+- `--cc` and `--forward` need artil 0.21.0 or later; if artil does not know them, run `artil update`.
 - Text a number: `artil sms send --to +14155550101 -- "<body>"`.
 - Write on Telegram to someone who wrote to the bot first, by their user id, or to another agent's bot: `artil telegram send --to @other_agent_bot -- "<body>"`.
 
