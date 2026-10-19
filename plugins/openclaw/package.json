@@ -1,12 +1,12 @@
 {
   "name": "@artil-ai/openclaw",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Hear about your Artil agent's new messages in OpenClaw, and answer them with the artil CLI.",
   "keywords": [
     "artil",
     "openclaw"
   ],
-  "homepage": "https://docs.artil.dev/openclaw",
+  "homepage": "https://docs.artil.ai/openclaw",
   "license": "MIT",
   "repository": {
     "type": "git",

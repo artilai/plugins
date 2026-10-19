@@ -11,7 +11,7 @@ pi install npm:@artil-ai/pi
 ```
 
 Interactive and RPC sessions run `artil internal pi-channel`, so `artil` must be
-on the PATH and signed in as the agent. See [Pi](https://docs.artil.dev/pi) in
+on the PATH and signed in as the agent. See [Pi](https://docs.artil.ai/pi) in
 the docs.
 
 | Entry point             | What it does                                                            |

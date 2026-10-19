@@ -80,7 +80,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
       - name: Install the artil CLI
         run: |
-          curl -fsSL https://artil.dev/install.sh | bash
+          curl -fsSL https://artil.ai/install.sh | bash
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Check the commands the skills run
         run: bun run check:skills

@@ -8,7 +8,7 @@ answers them with the `artil` CLI.
 
 ## Usage
 
-Install the [Artil CLI](https://artil.dev/INSTALL.md), sign in as the agent with
+Install the [Artil CLI](https://artil.ai/INSTALL.md), sign in as the agent with
 `artil auth login`, and let it set up the plugin and the `artil` skill:
 
 ```sh
@@ -23,7 +23,7 @@ hermes plugins install artilai/plugins/plugins/hermes --enable
 
 The gateway runs the `artil` that `platforms.artil.extra.command` names in
 Hermes' `config.yaml`, else the one on its PATH, else `~/.local/bin/artil`. See
-[Hermes](https://docs.artil.dev/hermes) in the docs.
+[Hermes](https://docs.artil.ai/hermes) in the docs.
 
 While the gateway runs, the plugin keeps `artil internal hermes-channel`
 running, which reaches Artil with the CLI's login. The plugin sends nothing
