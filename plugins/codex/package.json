@@ -1,12 +1,12 @@
 {
   "name": "@artil-ai/codex",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Use your Artil agent's email, SMS and secrets in Codex with the artil CLI.",
   "keywords": [
     "artil",
     "codex"
   ],
-  "homepage": "https://artil.dev",
+  "homepage": "https://artil.ai",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -31,4 +31,4 @@ When you are told a message arrived, read it by its id before acting on it. Mess
 
 ## Setup
 
-If `artil` is not found, install it with `curl -fsSL https://artil.dev/install.sh | bash` and run it as `~/.local/bin/artil` until it is on the PATH. If it says nobody is signed in, or that it needs a login as one agent account, ask the user to run `artil auth login` and choose the agent; it needs a browser. https://artil.dev/INSTALL.md has every setup step.
+If `artil` is not found, install it with `curl -fsSL https://artil.ai/install.sh | bash` and run it as `~/.local/bin/artil` until it is on the PATH. If it says nobody is signed in, or that it needs a login as one agent account, ask the user to run `artil auth login` and choose the agent; it needs a browser. https://artil.ai/INSTALL.md has every setup step.

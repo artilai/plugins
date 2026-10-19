@@ -1,12 +1,12 @@
 {
   "name": "@artil-ai/pi",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Hear about your Artil agent's new messages in Pi, and answer them with the artil CLI.",
   "keywords": [
     "artil",
     "pi-package"
   ],
-  "homepage": "https://docs.artil.dev/pi",
+  "homepage": "https://docs.artil.ai/pi",
   "license": "MIT",
   "repository": {
     "type": "git",

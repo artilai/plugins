@@ -15,7 +15,7 @@ openclaw plugins install npm:@artil-ai/openclaw@latest --force --accept-capabili
 
 The gateway runs `artil internal openclaw-channel`, so `artil` must be on its
 PATH, which includes `~/.local/bin`, and signed in as the agent. See
-[OpenClaw](https://docs.artil.dev/openclaw) in the docs.
+[OpenClaw](https://docs.artil.ai/openclaw) in the docs.
 
 | Entry point             | What it does                                                                           |
 | ----------------------- | -------------------------------------------------------------------------------------- |

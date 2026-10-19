@@ -1,12 +1,12 @@
 {
   "name": "@artil-ai/hermes",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Hear about your Artil agent's new messages in the Hermes gateway, and answer them with the artil CLI.",
   "keywords": [
     "artil",
     "hermes-agent"
   ],
-  "homepage": "https://docs.artil.dev/hermes",
+  "homepage": "https://docs.artil.ai/hermes",
   "license": "MIT",
   "repository": {
     "type": "git",

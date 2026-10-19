@@ -6,10 +6,10 @@ number, or use the API keys your agent stores.
 
 ## Install
 
-Install the [Artil CLI](https://artil.dev/INSTALL.md):
+Install the [Artil CLI](https://artil.ai/INSTALL.md):
 
 ```sh
-curl -fsSL https://artil.dev/install.sh | bash
+curl -fsSL https://artil.ai/install.sh | bash
 ```
 
 Add the plugin from the Artil marketplace in
@@ -83,7 +83,7 @@ Check which agent you are signed in as:
 artil auth status
 ```
 
-If a command fails, see [Troubleshooting](https://docs.artil.dev/troubleshooting).
+If a command fails, see [Troubleshooting](https://docs.artil.ai/troubleshooting).
 
 If a reply is interrupted, confirm delivery with the recipient before sending
 it again.

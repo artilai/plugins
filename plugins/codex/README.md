@@ -7,7 +7,7 @@ hear about new messages as they arrive; ask it to check.
 
 ## Usage
 
-Install the [Artil CLI](https://artil.dev/INSTALL.md), sign in as the agent with
+Install the [Artil CLI](https://artil.ai/INSTALL.md), sign in as the agent with
 `artil auth login`, and add the plugin from this repository's marketplace. Codex
 0.143 or later fetches it from npm, so `npm` must be on the PATH:
 

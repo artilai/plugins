@@ -1,9 +1,9 @@
 {
   "name": "artil",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Use your Artil agent's email, SMS and secrets in Codex with the artil CLI.",
   "author": { "name": "Artil" },
-  "homepage": "https://artil.dev",
+  "homepage": "https://artil.ai",
   "repository": "https://github.com/artilai/plugins",
   "license": "MIT",
   "keywords": ["artil", "email", "sms", "secrets"],
@@ -13,7 +13,7 @@
     "shortDescription": "Your Artil agent's email, SMS and secrets",
     "developerName": "Artil",
     "category": "Productivity",
-    "websiteURL": "https://artil.dev",
+    "websiteURL": "https://artil.ai",
     "defaultPrompt": ["Check my email and SMS for anything I need to answer."]
   }
 }
