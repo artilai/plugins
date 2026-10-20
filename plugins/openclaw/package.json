@@ -1,6 +1,6 @@
 {
   "name": "@artil-ai/openclaw",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Email, SMS and Telegram for OpenClaw. Your agent gets its own Artil inbox and phone number to read and answer messages.",
   "keywords": [
     "ai-agents",
@@ -22,6 +22,7 @@
     "directory": "plugins/openclaw"
   },
   "files": [
+    "assets",
     "dist",
     "skills",
     "openclaw.plugin.json"
@@ -50,6 +51,9 @@
     ],
     "compat": {
       "pluginApi": ">=2026.9.8"
+    },
+    "build": {
+      "openclawVersion": "2026.9.8"
     },
     "install": {
       "minHostVersion": ">=2026.9.8"
