@@ -68,7 +68,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v7
       - name: Set up uv
-        uses: astral-sh/setup-uv@v10.2.0
+        uses: astral-sh/setup-uv@v10.3.0
       - name: Lint, validate and test the plugin inside the Hermes image
         run: plugins/hermes/check.sh
 
