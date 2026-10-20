@@ -16,15 +16,15 @@
     },
     "plugins/codex": {
       "name": "@artil-ai/codex",
-      "version": "0.1.0",
+      "version": "0.1.7",
     },
     "plugins/hermes": {
       "name": "@artil-ai/hermes",
-      "version": "0.1.1",
+      "version": "0.1.9",
     },
     "plugins/openclaw": {
       "name": "@artil-ai/openclaw",
-      "version": "0.1.1",
+      "version": "0.1.14",
       "devDependencies": {
         "@artil-ai/channel": "workspace:*",
         "openclaw": "2026.9.8",
@@ -35,7 +35,10 @@
     },
     "plugins/pi": {
       "name": "@artil-ai/pi",
-      "version": "0.1.2",
+      "version": "0.2.0",
+      "dependencies": {
+        "artil-ai": "0.23.0",
+      },
       "devDependencies": {
         "@artil-ai/channel": "workspace:*",
         "@earendil-works/pi-coding-agent": "1.0.4",
@@ -512,6 +515,8 @@
     "ansi-regex": ["ansi-regex@5.0.1", "", {}, "sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ=="],
 
     "ansi-styles": ["ansi-styles@4.3.0", "", { "dependencies": { "color-convert": "^2.0.1" } }, "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="],
+
+    "artil-ai": ["artil-ai@0.23.0", "", { "bin": { "artil": "artil" } }, "sha512-7rKyiWwoyjlsuEewNRdjVbkqNLHUrJvL97aKcLQtHpuKAECe7Qq2g8lOHQI9BGba4/Mqlr46YGSF27E94pHXsw=="],
 
     "asn1.js": ["asn1.js@5.4.1", "", { "dependencies": { "bn.js": "^4.0.0", "inherits": "^2.0.1", "minimalistic-assert": "^1.0.0", "safer-buffer": "^2.1.0" } }, "sha512-+I//4cYPccV8LdmBLiX8CYvf9Sp3vQsrqu2QNXRcrbiWvcx/UdlFiqUJJzxRQxgsZmvhXhn4cSKeSmoFjVdupA=="],
 
