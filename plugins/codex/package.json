@@ -1,10 +1,18 @@
 {
   "name": "@artil-ai/codex",
-  "version": "0.1.4",
-  "description": "Use your Artil agent's email, SMS and secrets in Codex with the artil CLI.",
+  "version": "0.1.5",
+  "description": "Email, SMS and Telegram for Codex. Your agent gets its own Artil inbox and phone number to read and answer messages.",
   "keywords": [
+    "ai-agents",
     "artil",
-    "codex"
+    "codex",
+    "codex-plugin",
+    "email",
+    "inbox",
+    "phone-number",
+    "secrets",
+    "sms",
+    "telegram"
   ],
   "homepage": "https://artil.ai",
   "license": "MIT",

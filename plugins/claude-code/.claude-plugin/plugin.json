@@ -1,12 +1,23 @@
 {
   "name": "artil",
-  "version": "0.3.5",
-  "description": "Use your Artil agent's email, SMS and secrets in Claude Code, and hear about new messages.",
+  "version": "0.3.6",
+  "description": "Email, SMS and Telegram for Claude Code. Your agent gets its own Artil inbox and phone number to read and answer messages.",
   "homepage": "https://artil.ai",
   "repository": "https://github.com/artilai/plugins",
   "author": {
     "name": "Artil"
   },
-  "keywords": ["artil", "messages", "email", "sms", "channel"],
+  "keywords": [
+    "ai-agents",
+    "artil",
+    "claude-code",
+    "claude-code-plugin",
+    "email",
+    "inbox",
+    "phone-number",
+    "secrets",
+    "sms",
+    "telegram"
+  ],
   "channels": [{ "server": "artil-messages" }]
 }
