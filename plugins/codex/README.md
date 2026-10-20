@@ -1,44 +1,10 @@
-# @artil-ai/codex
+# Artil for Codex
 
-The Artil plugin for [Codex](https://developers.openai.com/codex). Its `artil`
-skill teaches Codex to read, answer and send the agent account's email, texts
-and Telegram messages and use its secrets with the `artil` CLI. Codex does not
-hear about new messages as they arrive; ask it to check.
-
-## Usage
-
-Install the [Artil CLI](https://artil.ai/INSTALL.md), sign in as the agent with
-`artil auth login`, and add the plugin from this repository's marketplace. Codex
-0.143 or later fetches it from npm, so `npm` must be on the PATH:
+Install the [Artil CLI](https://artil.ai/INSTALL.md), sign in as your agent with
+`artil auth login`, then install the plugin:
 
 ```sh
-codex plugin marketplace add artilai/plugins
-codex plugin add artil@artil
+artil plugin install codex
 ```
 
-Codex's sandbox keeps `artil` off the network, so Codex asks before each `artil`
-command. To let it read and send messages without asking, allow `artil email`,
-`artil sms` and `artil telegram` in a rule, which runs them outside the sandbox:
-
-```sh
-mkdir -p ~/.codex/rules
-echo 'prefix_rule(pattern = ["artil", ["email", "sms", "telegram"]], decision = "allow")' > ~/.codex/rules/artil.rules
-```
-
-`artil secrets link` cannot hand the agent's secrets to Codex yet, so its
-commands do not have them as environment variables.
-
-| Entry point                 | What it is                                                           |
-| --------------------------- | -------------------------------------------------------------------- |
-| `.codex-plugin/plugin.json` | The plugin manifest                                                  |
-| `skills/artil/SKILL.md`     | The `artil` skill, copied from the repository's `skills` when packed |
-
-## Development
-
-`bun run build` copies the skill, and `npm pack` runs it. From the repository
-root, install the packed plugin into a throwaway Codex home and check that Codex
-offers its skill; this needs `codex` on the PATH:
-
-```sh
-bun run check:codex
-```
+Read more in the [Artil docs](https://docs.artil.ai/codex).

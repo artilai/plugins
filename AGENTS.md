@@ -7,5 +7,6 @@ Rules:
 - The CLI imports `@artil-ai/hermes`'s `plugin.yaml` and `__init__.py` and `@artil-ai/pi`'s `skills/artil/SKILL.md`; keep those paths in the packages.
 - Every plugin has the same description and keywords, which name only its own harness, wherever it states them, like its `package.json`, its harness manifest and its entry point: `Email, SMS and Telegram for <harness>. Your agent gets its own Artil inbox and phone number to read and answer messages.`
 - Skills ask the user to install artil from https://artil.ai/INSTALL.md and never run an installer themselves, which plugin catalogs flag as unsafe.
+- A plugin's README holds only its title, how to install it and a link to its docs page; how to work on the plugins goes in `CONTRIBUTING.md`.
 - A plugin ships when its version goes up; the Hermes `plugin.yaml` and the Codex `.codex-plugin/plugin.json` carry the same version as their `package.json`.
 - Title commits and PRs `type(scope): summary`, like `fix(pi): say why artil stopped`. Types: `feat`, `fix`, `perf`, `refactor`, `docs`, `chore`; the scope is the plugin.
