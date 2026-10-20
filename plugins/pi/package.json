@@ -34,7 +34,7 @@
     "prepack": "bun run build"
   },
   "dependencies": {
-    "artil-ai": "0.23.0"
+    "artil-ai": "0.23.1"
   },
   "devDependencies": {
     "@artil-ai/channel": "workspace:*",
