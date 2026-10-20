@@ -8,7 +8,9 @@ import type {
 } from "openclaw/plugin-sdk/plugin-entry";
 
 // OpenClaw's SDK only loads in Node, so these stand in for the two functions the plugin takes from it.
-mock.module("openclaw/plugin-sdk/config-runtime", () => ({ resolveDefaultAgentId: () => "main" }));
+mock.module("openclaw/plugin-sdk/agent-scope-runtime", () => ({
+  resolveDefaultAgentId: () => "main",
+}));
 mock.module("openclaw/plugin-sdk/plugin-entry", () => ({
   definePluginEntry: (entry: unknown) => entry,
 }));

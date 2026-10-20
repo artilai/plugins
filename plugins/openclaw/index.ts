@@ -1,5 +1,5 @@
 import { listen } from "@artil-ai/channel";
-import { resolveDefaultAgentId } from "openclaw/plugin-sdk/config-runtime";
+import { resolveDefaultAgentId } from "openclaw/plugin-sdk/agent-scope-runtime";
 import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
 
 const hint = [
