@@ -11,7 +11,11 @@ messages with the `artil` CLI.
 | [`openclaw`](plugins/openclaw)       | OpenClaw    | `@artil-ai/openclaw`                      |
 | [`codex`](plugins/codex)             | Codex       | `@artil-ai/codex`                         |
 
-Shared code lives in `packages/`, the shared skill in `skills/`.
+Shared code lives in `packages/`, the shared skill in `skills/`. What only one
+harness needs, the scripts that check it included, lives in its
+`plugins/<harness>` folder. The exception is a marketplace manifest the harness
+reads only at the repository root: `.agents/plugins/marketplace.json` lists the
+Codex plugin for `codex plugin marketplace add artilai/plugins`.
 
 ```sh
 bun install

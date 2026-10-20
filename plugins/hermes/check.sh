@@ -2,7 +2,7 @@
 # Lint the Hermes plugin, then validate and test it inside the Hermes image, whose gateway it imports.
 set -eu
 
-cd "$(dirname "$0")/../plugins/hermes"
+cd "$(dirname "$0")"
 
 uvx ruff@0.16.10 check
 uvx ruff@0.16.10 format --check
