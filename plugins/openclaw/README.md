@@ -10,8 +10,11 @@ writes in that session is sent anywhere.
 ## Usage
 
 ```sh
-openclaw plugins install npm:@artil-ai/openclaw@latest --force --accept-capabilities
+openclaw plugins install clawhub:@artil-ai/openclaw --accept-capabilities
 ```
+
+`artil plugin install openclaw` installs the same plugin from npm instead, with
+`openclaw plugins install npm:@artil-ai/openclaw@latest --force --accept-capabilities`.
 
 The gateway runs `artil internal openclaw-channel`, so `artil` must be on its
 PATH, which includes `~/.local/bin`, and signed in as the agent. See

@@ -19,6 +19,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       packages: ${{ steps.versions.outputs.packages }}
+      clawhub: ${{ steps.clawhub.outputs.unpublished }}
     steps:
       - name: Check out code
         uses: actions/checkout@v7
@@ -34,6 +35,15 @@ jobs:
             if [ "$version" != "$published" ]; then unpublished+=("$(dirname "$manifest")"); fi
           done
           echo "packages=$(jq -cn '$ARGS.positional' --args "${unpublished[@]}")" >> "$GITHUB_OUTPUT"
+      - name: Find whether ClawHub has the OpenClaw plugin's version
+        id: clawhub
+        run: |
+          version="$(jq -r .version plugins/openclaw/package.json)"
+          url="https://clawhub.ai/api/v1/packages/%40artil-ai%2Fopenclaw/versions/$version/publication"
+          # An unreachable ClawHub skips its publish instead of failing the npm releases.
+          state="$(curl -sS "$url" | jq -r '.state // "unknown"' 2> /dev/null || echo unknown)"
+          echo "@artil-ai/openclaw has $version, ClawHub has it $state"
+          echo "unpublished=$([ "$state" = absent ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
   release:
     name: Publish ${{ matrix.package }}
@@ -66,3 +76,33 @@ jobs:
       - name: Publish to npm
         working-directory: ${{ matrix.package }}
         run: npm publish
+
+  clawhub:
+    name: Publish plugins/openclaw to ClawHub
+    needs: check
+    if: needs.check.outputs.clawhub == 'true'
+    runs-on: ubuntu-26.04
+    timeout-minutes: 40
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Build the plugin
+        working-directory: plugins/openclaw
+        run: bun run build
+      # Waits for ClawHub's security checks, so a blocked release fails the job.
+      - name: Publish to ClawHub
+        env:
+          CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
+        run: |
+          npx --yes clawhub@0.23.3 login --token "$CLAWHUB_TOKEN"
+          npx --yes clawhub@0.23.3 package publish plugins/openclaw --family code-plugin --owner artil-ai \
+            --source-repo "$GITHUB_REPOSITORY" --source-commit "$GITHUB_SHA" --source-ref "$GITHUB_REF_NAME" \
+            --source-path plugins/openclaw --wait
