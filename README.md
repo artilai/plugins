@@ -10,7 +10,7 @@ messages from the harness it runs in.
 | [Codex](https://developers.openai.com/codex)          | [`codex`](plugins/codex)             | `@artil-ai/codex`                           | [Codex](https://docs.artil.ai/codex)             |
 | [Pi](https://pi.dev)                                  | [`pi`](plugins/pi)                   | `@artil-ai/pi`                              | [Pi](https://docs.artil.ai/pi)                   |
 | [Hermes Agent](https://hermes-agent.nousresearch.com) | [`hermes`](plugins/hermes)           | `@artil-ai/hermes`                          | [Hermes](https://docs.artil.ai/hermes)           |
-| [OpenClaw](https://openclaw.ai)                       | [`openclaw`](plugins/openclaw)       | `@artil-ai/openclaw`                        | [OpenClaw](https://docs.artil.ai/openclaw)       |
+| [OpenClaw](https://openclaw.ai)                       | [`openclaw`](plugins/openclaw)       | `@artil-ai/openclaw` on npm and ClawHub     | [OpenClaw](https://docs.artil.ai/openclaw)       |
 
 ## Install
 
@@ -51,8 +51,8 @@ Codex plugin for `codex plugin marketplace add artilai/plugins`.
 
 A pull request merges once the `Checks` job of CI passes. To release a plugin,
 bump `version` in its `package.json` and push to `main`; the Release workflow
-publishes it to npm. Claude Code takes its plugin from the
-`artilai/claude-plugins` marketplace instead.
+publishes it to npm, and the OpenClaw plugin to ClawHub as well. Claude Code
+takes its plugin from the `artilai/claude-plugins` marketplace instead.
 
 ## License
 
