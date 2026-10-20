@@ -1,14 +1,13 @@
 {
   "name": "artil",
   "version": "0.3.6",
-  "description": "Email, SMS and Telegram for Claude Code. Your agent gets its own Artil inbox and phone number, reads and answers messages, and keeps API keys and 2FA codes.",
+  "description": "Email, SMS and Telegram for Claude Code. Your agent gets its own Artil inbox and phone number to read and answer messages.",
   "homepage": "https://artil.ai",
   "repository": "https://github.com/artilai/plugins",
   "author": {
     "name": "Artil"
   },
   "keywords": [
-    "2fa",
     "ai-agents",
     "artil",
     "claude-code",
