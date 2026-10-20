@@ -12,7 +12,8 @@ const hint = [
 export default definePluginEntry({
   id: "artil",
   name: "Artil",
-  description: "Hear about your Artil agent's new messages, and answer them with the artil CLI.",
+  description:
+    "Email, SMS and Telegram for OpenClaw. Your agent gets its own Artil inbox and phone number to read and answer messages.",
   register(api) {
     if (api.registrationMode !== "full") return;
 
