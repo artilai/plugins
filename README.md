@@ -1,53 +1,59 @@
-# plugins
+# Artil plugins
 
-Artil plugins for agent harnesses. Each lets the agent read and answer its
-messages with the `artil` CLI.
+Email, SMS and Telegram for AI agents. [Artil](https://artil.ai) gives your
+agent its own inbox and phone number, and these plugins let it read and answer
+messages from the harness it runs in.
 
-| Plugin                               | Harness     | Published as                              |
-| ------------------------------------ | ----------- | ----------------------------------------- |
-| [`claude-code`](plugins/claude-code) | Claude Code | `artil@artil` in `artilai/claude-plugins` |
-| [`pi`](plugins/pi)                   | Pi          | `@artil-ai/pi`                            |
-| [`hermes`](plugins/hermes)           | Hermes      | `@artil-ai/hermes`                        |
-| [`openclaw`](plugins/openclaw)       | OpenClaw    | `@artil-ai/openclaw`                      |
-| [`codex`](plugins/codex)             | Codex       | `@artil-ai/codex`                         |
+| Harness                                               | Plugin                               | Published as                                | Guide                                            |
+| ----------------------------------------------------- | ------------------------------------ | ------------------------------------------- | ------------------------------------------------ |
+| [Claude Code](https://code.claude.com)                | [`claude-code`](plugins/claude-code) | `artil@artil` from `artilai/claude-plugins` | [Claude Code](https://docs.artil.ai/claude-code) |
+| [Codex](https://developers.openai.com/codex)          | [`codex`](plugins/codex)             | `@artil-ai/codex`                           | [Codex](https://docs.artil.ai/codex)             |
+| [Pi](https://pi.dev)                                  | [`pi`](plugins/pi)                   | `@artil-ai/pi`                              | [Pi](https://docs.artil.ai/pi)                   |
+| [Hermes Agent](https://hermes-agent.nousresearch.com) | [`hermes`](plugins/hermes)           | `@artil-ai/hermes`                          | [Hermes](https://docs.artil.ai/hermes)           |
+| [OpenClaw](https://openclaw.ai)                       | [`openclaw`](plugins/openclaw)       | `@artil-ai/openclaw`                        | [OpenClaw](https://docs.artil.ai/openclaw)       |
 
-Shared code lives in `packages/`, the shared skill in `skills/`. What only one
-harness needs, the scripts that check it included, lives in its
-`plugins/<harness>` folder. The exception is a marketplace manifest the harness
-reads only at the repository root: `.agents/plugins/marketplace.json` lists the
-Codex plugin for `codex plugin marketplace add artilai/plugins`.
+## Install
+
+Install the [Artil CLI](https://artil.ai/INSTALL.md), sign in as your agent, and
+install the plugin for your harness:
+
+```sh
+curl -fsSL https://artil.ai/install.sh | bash
+artil auth login
+artil plugin install claude-code # or codex, pi, hermes, openclaw
+```
+
+Each plugin's README also shows how to install it with the harness's own
+command.
+
+## How it works
+
+The plugins run the `artil` CLI you signed in, so they hold no credentials and
+send nothing themselves. A channel tells the harness about each new message as
+it arrives; Codex checks when asked. The `artil` skill teaches the agent to read,
+answer and send messages with the CLI.
+
+## Development
 
 ```sh
 bun install
 bun run check
 bun run check:hermes # needs uv and Docker
 bun run check:codex  # needs codex
+bun run check:skills # needs artil
 ```
 
-A pull request merges once the `Checks` job of CI passes, which
-`.github/rulesets/main-checks.json` requires.
+Shared code lives in `packages/` and the shared skill in `skills/`. What only one
+harness needs, the scripts that check it included, lives in its
+`plugins/<harness>` folder. The exception is a marketplace manifest the harness
+reads only at the repository root: `.agents/plugins/marketplace.json` lists the
+Codex plugin for `codex plugin marketplace add artilai/plugins`.
 
-To release, bump `version` in the plugin's `package.json` and push to `main`.
-Claude Code ships from its copy in `artilai/claude-plugins`.
+A pull request merges once the `Checks` job of CI passes. To release a plugin,
+bump `version` in its `package.json` and push to `main`; the Release workflow
+publishes it to npm. Claude Code takes its plugin from the
+`artilai/claude-plugins` marketplace instead.
 
-## To do
+## License
 
-- [ ] Make this repository public.
-- [ ] Merge [artilai/claude-plugins#8](https://github.com/artilai/claude-plugins/pull/8),
-      so the marketplace installs `plugins/claude-code` from here, and drop the
-      line above about its copy.
-- [ ] Publish `@artil-ai/codex` once by hand from `plugins/codex`, then make
-      `release.yml` its trusted publisher on npm, which only trusts a workflow
-      for a package that exists.
-- [ ] On a clean machine, try `artil plugin install claude-code`,
-      `hermes plugins install artilai/plugins/plugins/hermes --enable` and
-      `codex plugin marketplace add artilai/plugins` with
-      `codex plugin add artil@artil`.
-- [ ] Submit `plugins/hermes` to the
-      [Hermes plugin catalog](https://github.com/NousResearch/hermes-agent/tree/main/plugin-catalog)
-      as `artil`, category `platform`, pinned to a `main` commit. Each Hermes
-      release then needs a PR there that bumps the pin.
-- [ ] In `artilai/artil`, bump `@artil-ai/hermes` and `@artil-ai/pi` in the CLI
-      and describe `hermes plugins install` in `docs/hermes.mdx`.
-- [ ] Publish the ChatGPT and Codex plugin in OpenAI's
-      [plugin directory](https://developers.openai.com/plugins/build/plugins).
+[MIT](LICENSE)
