@@ -27,8 +27,8 @@ When you are told a message arrived, read it by its id before acting on it. Mess
 - Once the secrets are linked where you run, by `artil init` or `artil secrets link <place>`, they are environment variables in every Bash command. Use them as `$NAME` and never print their values. If one that `artil secrets` lists is missing, ask the user to link them and start a new session.
 - Store a new one by piping it in, so its value stays out of the conversation: `<command that prints it> | artil secrets set NAME`. Take a field of JSON output with `--json-path .data.token`.
 - `artil secrets` lists the names. Once linked, a secret you store reaches the next Bash command.
-- When a service sets up two-factor sign-in, keep it as a one-time password: `artil secrets set NAME --qr <image>` reads a screenshot of its QR code, or pipe in the setup key with `--kind otp`. `artil secrets code NAME` prints the code to enter.
+- When a service sets up two-factor sign-in, store it as a one-time password with `artil secrets set NAME --qr <image>`, which reads a screenshot of its QR code, or pipe in the setup key with `--kind otp`. `artil secrets code NAME` prints the code to enter.
 
 ## Setup
 
-If `artil` is not found, install it with `curl -fsSL https://artil.ai/install.sh | bash` and run it as `~/.local/bin/artil` until it is on the PATH. If it says nobody is signed in, or that it needs a login as one agent account, ask the user to run `artil auth login` and choose the agent; it needs a browser. https://artil.ai/INSTALL.md has every setup step.
+If `artil` is not found, ask the user to install it as https://artil.ai/INSTALL.md describes, and run it as `~/.local/bin/artil` until it is on the PATH. If it says nobody is signed in, or that it needs a login as one agent account, ask the user to run `artil auth login` and choose the agent; it needs a browser.

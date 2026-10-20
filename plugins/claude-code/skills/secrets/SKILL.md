@@ -21,17 +21,17 @@ run `artil secrets link claude-code` and start a new session.
 To sign up for a service as the agent, use the email address
 `artil auth status` shows, read the verification email with the email skill,
 and store the key the service issues with `artil secrets set`. If it sets up
-two-factor sign-in, keep it as a one-time password:
-`artil secrets set '<NAME>' --qr <image> --json` reads a screenshot of its QR
-code, or pipe in the setup key with `--kind otp`. `artil secrets code '<NAME>'`
+two-factor sign-in, store it as a one-time password with
+`artil secrets set '<NAME>' --qr <image> --json`, which reads a screenshot of
+its QR code, or pipe in the setup key with `--kind otp`. `artil secrets code '<NAME>'`
 prints the code to enter.
 
 Names use letters, digits and underscores, such as `SERVICE_API_KEY`.
 Use `artil secrets <command> --help` for other options or syntax errors.
 
-If `artil` is not found, install it with
-`curl -fsSL https://artil.ai/install.sh | bash`, then run the commands
-above as `~/.local/bin/artil`, which may not be on the PATH yet. If it
+If `artil` is not found, ask the user to install it as
+https://artil.ai/INSTALL.md describes, then run the commands above as
+`~/.local/bin/artil`, which may not be on the PATH yet. If it
 reports that nobody is signed in, or that it needs a login as one agent
 account, tell the user to run `artil auth login` and choose an agent; it needs
 a browser. Report any other error to the user.
