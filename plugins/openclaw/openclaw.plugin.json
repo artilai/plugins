@@ -1,7 +1,7 @@
 {
   "id": "artil",
   "name": "Artil",
-  "description": "Email, SMS and Telegram for OpenClaw. Give your agent its own Artil inbox and phone number, hear about new messages, and keep API keys and 2FA codes.",
+  "description": "Email, SMS and Telegram for OpenClaw. Your agent gets its own Artil inbox and phone number, reads and answers messages, and keeps API keys and 2FA codes.",
   "activation": { "onStartup": true },
   "skills": ["./skills"],
   "configSchema": { "type": "object", "additionalProperties": false, "properties": {} }

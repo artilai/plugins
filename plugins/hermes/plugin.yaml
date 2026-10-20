@@ -1,10 +1,11 @@
 name: artil
 label: Artil
 kind: platform
-version: 0.1.7
+version: 0.1.8
 description: >
-  Email, SMS and Telegram for Hermes Agent. Give your agent its own Artil inbox
-  and phone number, hear about new messages, and keep API keys and 2FA codes.
+  Email, SMS and Telegram for Hermes Agent. Your agent gets its own Artil inbox
+  and phone number, reads and answers messages, and keeps API keys and 2FA
+  codes.
 author: Artil
 homepage: https://docs.artil.ai/hermes
 requires_hermes: ">=0.21.5"
