@@ -1,0 +1,29 @@
+{
+  "description": "Email, SMS and Telegram for AI agents: Artil plugins for Claude Code, Codex, Pi, Hermes Agent and OpenClaw.",
+  "homepage": "https://artil.ai",
+  "topics": [
+    "agent-email",
+    "ai-agents",
+    "artil",
+    "claude-code",
+    "claude-code-plugin",
+    "codex",
+    "codex-plugin",
+    "email",
+    "hermes-agent",
+    "hermes-plugin",
+    "openclaw",
+    "openclaw-plugin",
+    "pi-coding-agent",
+    "pi-package",
+    "sms",
+    "telegram"
+  ],
+  "allow_auto_merge": true,
+  "allow_squash_merge": true,
+  "allow_merge_commit": false,
+  "allow_rebase_merge": false,
+  "delete_branch_on_merge": true,
+  "squash_merge_commit_title": "COMMIT_OR_PR_TITLE",
+  "squash_merge_commit_message": "COMMIT_MESSAGES"
+}
