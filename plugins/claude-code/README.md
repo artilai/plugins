@@ -1,3 +1,5 @@
+<img src="https://artil.ai/logo.svg" alt="Artil" width="64">
+
 # Artil for Claude Code
 
 Install the plugin, which brings the Artil CLI, then sign in as your agent from
