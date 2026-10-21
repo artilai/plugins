@@ -1,7 +1,7 @@
 name: artil
 label: Artil
 kind: platform
-version: 0.1.9
+version: 0.1.10
 description: >
   Email, SMS and Telegram for Hermes Agent. Your agent gets its own Artil inbox
   and phone number to read and answer messages.

@@ -8,9 +8,9 @@ bun run check:codex  # needs codex
 bun run check:skills # needs artil
 ```
 
-Shared code lives in `packages/` and the shared skill in `skills/`, which each
-plugin copies when it is built. What only one harness needs, the scripts that
-check it included, lives in its `plugins/<harness>` folder. The exception is a
+Shared code lives in `packages/`, which each plugin bundles when it is built.
+What only one harness needs, its `artil` skill and the scripts that check it
+included, lives in its `plugins/<harness>` folder. The exception is a
 marketplace manifest the harness reads only at the repository root:
 `.agents/plugins/marketplace.json` lists the Codex plugin for
 `codex plugin marketplace add artilai/plugins`.

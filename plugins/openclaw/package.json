@@ -1,6 +1,6 @@
 {
   "name": "@artil-ai/openclaw",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Email, SMS and Telegram for OpenClaw. Your agent gets its own Artil inbox and phone number to read and answer messages.",
   "keywords": [
     "ai-agents",
@@ -32,7 +32,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "bun build index.ts --outdir dist --target node --external openclaw && rm -rf skills && cp -R ../../skills skills",
+    "build": "bun build index.ts --outdir dist --target node --external openclaw",
     "prepack": "bun run build"
   },
   "dependencies": {
