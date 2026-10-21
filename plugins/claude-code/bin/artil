@@ -1,0 +1,10 @@
+#!/bin/sh
+# Runs an artil of the person's own when the PATH has one, else the one the plugin brings.
+bin="$(cd "$(dirname "$0")" && pwd)"
+
+IFS=:
+for dir in $PATH; do
+  if [ "$dir" != "$bin" ] && [ -x "$dir/artil" ]; then exec "$dir/artil" "$@"; fi
+done
+
+exec node "$bin/../node_modules/artil-ai/artil" "$@"

@@ -9,6 +9,7 @@
   "scripts": {
     "build": "bun run --filter './plugins/*' build",
     "check": "oxlint && oxfmt --check && tsc && bun test",
+    "check:claude-code": "plugins/claude-code/check.sh",
     "check:codex": "plugins/codex/check.sh",
     "check:hermes": "plugins/hermes/check.sh",
     "check:skills": "bun scripts/check-skills.ts",

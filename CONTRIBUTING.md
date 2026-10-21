@@ -3,9 +3,10 @@
 ```sh
 bun install
 bun run check
-bun run check:hermes # needs uv and Docker
-bun run check:codex  # needs codex
-bun run check:skills # needs artil
+bun run check:hermes      # needs uv and Docker
+bun run check:claude-code # needs claude
+bun run check:codex       # needs codex
+bun run check:skills      # needs artil
 ```
 
 Shared code lives in `packages/`, which each plugin bundles when it is built.
@@ -19,6 +20,11 @@ marketplace manifests a harness reads only at the repository root:
 
 ## Try a plugin
 
+- Claude Code: after `bun install`, run `claude --plugin-dir ./plugins/claude-code`.
+  `bun run check:claude-code` installs the plugin's dependencies from its
+  `package-lock.json`, as Claude Code does, validates it and runs its `bin/artil`.
+  After changing `artil-ai` in its `package.json`, update the lockfile in its
+  folder with `npm install --package-lock-only --workspaces=false`.
 - Pi: run `bun run build`, then `pi -e ./plugins/pi`.
 - OpenClaw: in `plugins/openclaw`, `npm pack` builds the archive; install it
   with `openclaw plugins install npm-pack:./artil-ai-openclaw-*.tgz --force --accept-capabilities`.
