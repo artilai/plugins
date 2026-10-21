@@ -1,18 +1,19 @@
 {
   "name": "@artil-ai/pi",
   "version": "0.4.1",
-  "description": "Give Pi its own identity with email address and phone number to communicate with people, services, and other AI agents.",
+  "description": "Give Pi agents their own email inbox, phone number, and workspace accounts to work directly with customers, teammates, and other agents.",
   "keywords": [
-    "ai-agents",
     "artil",
     "email",
+    "identity",
     "inbox",
-    "phone-number",
+    "phone",
     "pi-coding-agent",
     "pi-package",
-    "secrets",
+    "slack",
     "sms",
-    "telegram"
+    "telegram",
+    "text"
   ],
   "homepage": "https://docs.artil.ai/pi",
   "license": "MIT",

@@ -1,18 +1,19 @@
 {
   "name": "@artil-ai/codex",
   "version": "0.1.10",
-  "description": "Give Codex its own identity with email address and phone number to communicate with people, services, and other AI agents.",
+  "description": "Give Codex agents their own email inbox, phone number, and workspace accounts to work directly with customers, teammates, and other agents.",
   "keywords": [
-    "ai-agents",
     "artil",
     "codex",
     "codex-plugin",
     "email",
+    "identity",
     "inbox",
-    "phone-number",
-    "secrets",
+    "phone",
+    "slack",
     "sms",
-    "telegram"
+    "telegram",
+    "text"
   ],
   "homepage": "https://artil.ai",
   "license": "MIT",

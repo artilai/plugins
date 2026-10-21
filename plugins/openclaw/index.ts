@@ -49,7 +49,7 @@ export default definePluginEntry({
   id: "artil",
   name: "Artil",
   description:
-    "Give OpenClaw its own identity with email address and phone number to communicate with people, services, and other AI agents.",
+    "Give OpenClaw agents their own email inbox, phone number, and workspace accounts to work directly with customers, teammates, and other agents.",
   register(api) {
     if (["cli-metadata", "discovery", "full"].includes(api.registrationMode)) {
       api.registerCli(
