@@ -4,8 +4,8 @@
   "description": "Give Codex its own identity with email address and phone number to communicate with people, services, and other AI agents.",
   "keywords": [
     "agent-identity",
-    "codex-plugin",
     "email",
+    "inbox",
     "sms"
   ],
   "homepage": "https://artil.ai",
