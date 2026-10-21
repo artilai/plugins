@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
+import argparse
 import asyncio
 import dataclasses
 import getpass
 import json
+import os
 import shutil
 import signal
+import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +20,13 @@ from gateway.platform_registry import PlatformEntry
 from gateway.platforms.base import BasePlatformAdapter, MessageEvent, MessageType, SendResult
 
 PLATFORM = "artil"
+
+PLUGIN = Path(__file__).parent
+
+# Hermes installs the plugin's Node dependencies, the artil CLI among them, into its folder.
+BUNDLED_ARTIL = PLUGIN / "node_modules" / "artil-ai"
+
+SKILL = PLUGIN / "skills" / "artil" / "SKILL.md"
 
 HINT = (
     "Notices about new email, texts and Telegram messages to this Artil agent account, and "
@@ -29,9 +40,17 @@ HINT = (
 )
 
 
+def _artil(command: str | None = None) -> str:
+    # A gateway service may not have the PATH that finds artil where its installer put it.
+    return str(command or shutil.which("artil") or Path.home() / ".local/bin/artil")
+
+
 class ArtilAdapter(BasePlatformAdapter):
     """Runs `artil internal hermes-channel` and hands each notice it prints to the gateway."""
 
+    # How long artil gets to stop, as it does at once when it cannot listen, before it counts as
+    # connected.
+    START_SECONDS = 2.0
     # How long a stopped artil waits to learn whether the gateway itself is stopping.
     STOP_GRACE_SECONDS = 2.0
     # How long artil gets to save where it left off once its input closes.
@@ -40,10 +59,7 @@ class ArtilAdapter(BasePlatformAdapter):
     def __init__(self, config: PlatformConfig) -> None:
         config.extra = {**(config.extra or {}), "allow_from": [PLATFORM]}
         super().__init__(config, Platform(PLATFORM))
-        # A gateway service may not have the PATH that finds artil where its installer put it.
-        self._command = str(
-            config.extra.get("command") or shutil.which("artil") or Path.home() / ".local/bin/artil"
-        )
+        self._command = _artil(config.extra.get("command"))
         self._source = self.build_source(
             chat_id=PLATFORM,
             chat_name="Artil",
@@ -79,10 +95,28 @@ class ArtilAdapter(BasePlatformAdapter):
             )
             return False
 
+        # A failed connection makes the gateway wait longer before each try.
+        if await self._stopped_at_once(process):
+            self._set_stopped((await process.stderr.read()).decode().strip())
+            return False
+
         self._process = process
         self._listening = asyncio.create_task(self._listen(process))
         self._mark_connected()
         return True
+
+    async def _stopped_at_once(self, process: asyncio.subprocess.Process) -> bool:
+        try:
+            await asyncio.wait_for(process.wait(), self.START_SECONDS)
+        except TimeoutError:
+            return False
+
+        return True
+
+    def _set_stopped(self, reason: str) -> None:
+        # artil stops when it cannot listen, like before anyone signs in, so the gateway tries again
+        # until it can and signing in is all it takes.
+        self._set_fatal_error("artil_stopped", reason or f"{self._command} stopped", retryable=True)
 
     async def _listen(self, process: asyncio.subprocess.Process) -> None:
         problem = asyncio.create_task(process.stderr.read())
@@ -105,9 +139,7 @@ class ArtilAdapter(BasePlatformAdapter):
             return
 
         self._process = None
-        self._set_fatal_error(
-            "artil_stopped", reason or f"{self._command} stopped", retryable=asked_to_stop
-        )
+        self._set_stopped(reason)
         await self._notify_fatal_error()
 
     async def _deliver(self, notice: dict[str, Any]) -> None:
@@ -164,7 +196,37 @@ def _service_fields() -> dict[str, Any]:
     return {name: value for name, value in wanted.items() if name in known}
 
 
+def _skill_description() -> str:
+    """The description line of the skill's front matter, which tells the agent when to use it."""
+    lines = SKILL.read_text().splitlines()
+    return next(
+        line.removeprefix("description: ") for line in lines if line.startswith("description: ")
+    )
+
+
+def _add_bundled_artil() -> None:
+    """Puts the artil the plugin brings last on the PATH, so an artil of the person's own wins."""
+    path = os.environ.get("PATH", "").split(os.pathsep)
+
+    if BUNDLED_ARTIL.is_dir() and str(BUNDLED_ARTIL) not in path:
+        os.environ["PATH"] = os.pathsep.join([*path, str(BUNDLED_ARTIL)])
+
+
+def _take_artil_arguments(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("arguments", nargs=argparse.REMAINDER)
+
+
+def _run_artil(args: argparse.Namespace) -> int:
+    """Runs artil with the person's arguments, so the plugin's copy works without artil on the PATH."""
+    try:
+        return subprocess.run([_artil(), *args.arguments], check=False).returncode
+    except OSError as error:
+        print(f"Could not run artil: {error}", file=sys.stderr)
+        return 1
+
+
 def register(ctx: Any) -> None:
+    _add_bundled_artil()
     ctx.register_platform(
         name=PLATFORM,
         label="Artil",
@@ -175,3 +237,10 @@ def register(ctx: Any) -> None:
         emoji="📨",
         **_service_fields(),
     )
+    ctx.register_cli_command(
+        name="artil",
+        help="Run the artil command the Artil plugin brings, like: hermes artil auth login",
+        setup_fn=_take_artil_arguments,
+        handler_fn=_run_artil,
+    )
+    ctx.register_skill("artil", SKILL, description=_skill_description())

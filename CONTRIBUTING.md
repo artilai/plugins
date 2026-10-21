@@ -25,7 +25,9 @@ marketplace manifests a harness reads only at the repository root:
 - Codex: `bun run check:codex` installs the packed plugin into a throwaway Codex
   home and checks that Codex offers its skill.
 - Hermes: `bun run check:hermes` lints the plugin with ruff, then validates and
-  tests it inside the Hermes image.
+  tests it inside the Hermes image. Install a commit of yours with
+  `hermes plugins install "file://$PWD#plugins/hermes" --enable`, and accept its
+  Node dependencies.
 
 ## Release
 

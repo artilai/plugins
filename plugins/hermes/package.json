@@ -1,6 +1,6 @@
 {
   "name": "@artil-ai/hermes",
-  "version": "0.1.10",
+  "version": "0.2.0",
   "description": "Email, SMS and Telegram for Hermes Agent. Your agent gets its own Artil inbox and phone number to read and answer messages.",
   "keywords": [
     "ai-agents",
@@ -33,5 +33,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "artil-ai": "0.23.4"
   }
 }

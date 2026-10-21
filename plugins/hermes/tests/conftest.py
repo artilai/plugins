@@ -28,6 +28,12 @@ class _Context:
         self.entry = entry
         platform_registry.register(PlatformEntry(source="plugin", **entry))
 
+    def register_cli_command(self, **command):
+        self.command = command
+
+    def register_skill(self, name, path, **options):
+        self.skill = {"name": name, "path": path, **options}
+
 
 plugin = _load_plugin()
 context = _Context()
