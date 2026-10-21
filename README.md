@@ -2,7 +2,9 @@
 
 # Artil plugins
 
-Monorepo of Artil plugins: email, SMS, Telegram and secrets for AI agents.
+Monorepo of Artil plugins, which give agents their own email inbox, phone number,
+and workspace accounts to work directly with customers, teammates, and other
+agents.
 
 - [`claude-code`](plugins/claude-code)
 - [`codex`](plugins/codex)
