@@ -68,7 +68,7 @@ test("starts a turn in the agent's artil session for each notice, delivering no 
 });
 
 test("adds openclaw artil, which runs artil with every argument and exits as it does", async () => {
-  const artil = await artilRunning(`printf '%s\\n' "$@" > "$0.args"; exit 3`);
+  const artil = await artilRunning(`printf '%s\\n' "$ARTIL_CLIENT" "$@" > "$0.args"; exit 3`);
   const { cli } = registered();
   let action: ((args: string[]) => Promise<void>) | undefined;
   const command = {
@@ -88,11 +88,13 @@ test("adds openclaw artil, which runs artil with every argument and exits as it 
   await cli?.({ program: command } as unknown as Parameters<Registrar>[0]);
   await action?.(["auth", "login", "--token", "artil_secret"]);
 
-  expect(await readFile(`${artil}.args`, "utf8")).toBe("auth\nlogin\n--token\nartil_secret\n");
+  expect(await readFile(`${artil}.args`, "utf8")).toBe(
+    "openclaw\nauth\nlogin\n--token\nartil_secret\n",
+  );
   expect(process.exitCode).toBe(3);
 });
 
-test("tries again until artil can listen, so signing in is all it takes", async () => {
+test("tries again after artil stops, until it can listen", async () => {
   await artilRunning(`if [ -f "$0.signed-in" ]; then printf '%s\\n' '{"content":"Ada sent an email"}'; exec cat; fi
 touch "$0.signed-in"; echo "You are not signed in." >&2; exit 1`);
   const { runs, service } = registered();
