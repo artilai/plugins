@@ -1,10 +1,11 @@
 {
   "name": "@artil-ai/channel",
   "private": true,
-  "description": "Hear the notices artil internal <harness>-channel prints, for the plugins to bundle.",
+  "description": "Hear the notices artil internal <harness>-channel prints, and find the artil the plugins bring, for the plugins to bundle.",
   "type": "module",
   "exports": {
     ".": "./listen.ts",
+    "./bundled-artil": "./bundled-artil.ts",
     "./testing": "./testing.ts"
   }
 }

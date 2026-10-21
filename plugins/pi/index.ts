@@ -1,25 +1,14 @@
-import { createRequire } from "node:module";
-import { delimiter, dirname } from "node:path";
-
 import { listen } from "@artil-ai/channel";
+import { addBundledArtil } from "@artil-ai/channel/bundled-artil";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 import { signedIn } from "./sign-in";
-
-// Pi installs artil-ai, whose folder holds the artil command, with this package. Bash commands
-// and the channel fall back to that copy when the PATH has no artil of its own.
-function addBundledArtil() {
-  const artil = dirname(createRequire(import.meta.url).resolve("artil-ai/package.json"));
-  const path = process.env.PATH?.split(delimiter) ?? [];
-
-  if (!path.includes(artil)) process.env.PATH = [...path, artil].join(delimiter);
-}
 
 export default function hearNewMessages(pi: ExtensionAPI) {
   let listening: (() => void) | undefined;
   let sessions = 0;
 
-  addBundledArtil();
+  addBundledArtil(import.meta.url);
 
   pi.on("session_start", (_event, ctx) => {
     if (!ctx.hasUI) return;
