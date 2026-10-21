@@ -1,12 +1,12 @@
 Rules:
 
-- Keep the code minimal and readable: the least code that handles the real cases, written like the code around it.
-- Plugins run the `artil` CLI users already have, and the Pi, OpenClaw, Hermes and Claude Code plugins bring their own through their `artil-ai` dependency for when they have none. Claude Code installs its plugin's dependencies from the `package-lock.json` beside its `package.json`, so update both together. Use only commands a released CLI has, and keep working with the previous release.
-- What more than one plugin needs lives once, in `packages/`, and the plugins bundle it when packed.
-- What only one harness needs lives in its `plugins/<harness>` folder, with its `artil` skill, check scripts, configuration and ignore rules. Only a marketplace manifest the harness reads at the repository root, like Codex's `.agents/plugins/marketplace.json` and Claude Code's `.claude-plugin/marketplace.json`, lives outside it.
-- The CLI imports `@artil-ai/hermes`'s `plugin.yaml`, `__init__.py` and `skills/artil/SKILL.md`; keep those paths in the package.
-- Every plugin has the same description and keywords, which name only its own harness, wherever it states them, like its `package.json`, its harness manifest and its entry point: `Email, SMS and Telegram for <harness>. Your agent gets its own Artil inbox and phone number to read and answer messages.`
-- Skills ask the user to install artil from https://artil.ai/INSTALL.md and never run an installer themselves, which plugin catalogs flag as unsafe.
-- A plugin's README holds only its title, how to install it and a link to its docs page; how to work on the plugins goes in `CONTRIBUTING.md`.
-- A plugin ships when its version goes up; the Hermes `plugin.yaml`, the Claude Code `.claude-plugin/plugin.json` and the Codex `.codex-plugin/plugin.json` carry the same version as their `package.json`.
+- Write the least code that handles the real cases, like the code around it.
+- Plugins run the `artil` CLI the user has. All but Codex's bring their own through an `artil-ai` dependency for when there is none. Use only commands a released CLI has, and keep working with the previous release.
+- Code more than one plugin needs lives in `packages/`. The rest of a plugin lives in `plugins/<harness>`, except a marketplace manifest its harness reads at the repository root.
+- The CLI imports `@artil-ai/hermes`'s `plugin.yaml`, `__init__.py` and `skills/artil/SKILL.md`; keep those paths.
+- Every plugin states the same description and keywords, naming only its own harness: `Email, SMS and Telegram for <harness>. Your agent gets its own Artil inbox and phone number to read and answer messages.`
+- Skills never run an installer, which plugin catalogs flag as unsafe; one that needs artil asks the user to install it from https://artil.ai/INSTALL.md.
+- A plugin's README holds only its title, how to install it and a link to its docs page.
+- A plugin ships when the version in its `package.json` goes up, and its harness manifest carries the same version. The Release workflow publishes it to npm, and OpenClaw's to ClawHub too; Claude Code takes its plugin from this repository, with the dependencies `plugins/claude-code/package-lock.json` pins, so update that lockfile with `npm install --package-lock-only --workspaces=false` there.
+- Before a pull request, run `bun run check` and the `check:<harness>` script of each plugin you changed, as CI does.
 - Title commits and PRs `type(scope): summary`, like `fix(pi): say why artil stopped`. Types: `feat`, `fix`, `perf`, `refactor`, `docs`, `chore`; the scope is the plugin.
