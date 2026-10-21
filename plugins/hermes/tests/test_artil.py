@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import asyncio
 import getpass
 import os
@@ -28,6 +29,7 @@ async def eventually(check) -> None:
 
 def adapter_running(command: str | None):
     adapter = plugin.ArtilAdapter(PlatformConfig(enabled=True, extra={"command": command}))
+    adapter.START_SECONDS = 0.2
     adapter.STOP_GRACE_SECONDS = 0.05
     events = []
 
@@ -76,8 +78,17 @@ def test_hands_each_notice_to_the_gateway_until_it_disconnects(tmp_path):
     assert not adapter.has_fatal_error
 
 
-def test_stops_with_the_reason_artil_gave(tmp_path):
-    artil = artil_running(tmp_path, 'echo "This needs a login as one agent account." >&2; exit 1')
+def test_fails_to_connect_with_the_reason_artil_gave_and_tries_again(tmp_path):
+    artil = artil_running(tmp_path, 'echo "You are not signed in." >&2; exit 1')
+    adapter, _ = adapter_running(artil)
+
+    assert asyncio.run(adapter.connect()) is False
+    assert adapter.fatal_error_message == "You are not signed in."
+    assert adapter.fatal_error_retryable is True
+
+
+def test_tries_again_when_artil_stops_while_the_gateway_runs(tmp_path):
+    artil = artil_running(tmp_path, 'sleep 0.5; echo "Could not reach Artil." >&2; exit 1')
 
     async def scenario():
         adapter, _ = adapter_running(artil)
@@ -89,22 +100,8 @@ def test_stops_with_the_reason_artil_gave(tmp_path):
 
     adapter = asyncio.run(scenario())
 
-    assert adapter.fatal_error_message == "This needs a login as one agent account."
-    assert adapter.fatal_error_retryable is False
-
-
-def test_tries_again_when_artil_stops_while_the_gateway_runs(tmp_path):
-    artil = artil_running(tmp_path, "exit 0")
-
-    async def scenario():
-        adapter, _ = adapter_running(artil)
-
-        assert await adapter.connect()
-        await eventually(lambda: adapter.has_fatal_error)
-
-        return adapter
-
-    assert asyncio.run(scenario()).fatal_error_retryable is True
+    assert adapter.fatal_error_message == "Could not reach Artil."
+    assert adapter.fatal_error_retryable is True
 
 
 def test_lets_artil_go_quietly_when_the_gateway_disconnects_it_while_stopping(tmp_path):
@@ -185,3 +182,41 @@ def test_keeps_the_agents_words_in_the_session(tmp_path):
     result = asyncio.run(adapter.send("artil", "I answered Ada."))
 
     assert result.success is True
+
+
+def test_puts_the_artil_the_plugin_brings_last_on_the_path_once(tmp_path, monkeypatch):
+    monkeypatch.setattr(plugin, "BUNDLED_ARTIL", tmp_path)
+    monkeypatch.setenv("PATH", "/usr/bin:/bin")
+
+    plugin._add_bundled_artil()
+    plugin._add_bundled_artil()
+
+    assert os.environ["PATH"] == f"/usr/bin:/bin:{tmp_path}"
+
+
+def test_leaves_the_path_alone_when_hermes_skipped_the_plugins_dependencies(tmp_path, monkeypatch):
+    monkeypatch.setattr(plugin, "BUNDLED_ARTIL", tmp_path / "missing")
+    monkeypatch.setenv("PATH", "/usr/bin:/bin")
+
+    plugin._add_bundled_artil()
+
+    assert os.environ["PATH"] == "/usr/bin:/bin"
+
+
+def test_hermes_artil_runs_artil_with_its_arguments_and_exits_as_it_does(tmp_path, monkeypatch):
+    artil = artil_running(tmp_path, 'echo "$*" > "$0.args"; exit 3')
+    monkeypatch.setenv("PATH", f"{tmp_path}:/usr/bin:/bin")
+    parser = argparse.ArgumentParser()
+    context.command["setup_fn"](parser)
+
+    args = parser.parse_args(["auth", "login", "--token", "artil_secret"])
+
+    assert context.command["name"] == "artil"
+    assert context.command["handler_fn"](args) == 3
+    assert Path(f"{artil}.args").read_text() == "auth login --token artil_secret\n"
+
+
+def test_offers_the_artil_skill_with_the_description_its_file_gives():
+    assert context.skill["name"] == "artil"
+    assert context.skill["path"].read_text().startswith("---\nname: artil\n")
+    assert context.skill["description"].startswith("Read and answer the agent account's email")

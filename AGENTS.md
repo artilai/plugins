@@ -1,7 +1,7 @@
 Rules:
 
 - Keep the code minimal and readable: the least code that handles the real cases, written like the code around it.
-- Plugins run the `artil` CLI users already have, and the Pi and OpenClaw packages bring their own through their `artil-ai` dependency for when they have none. Use only commands a released CLI has, and keep working with the previous release.
+- Plugins run the `artil` CLI users already have, and the Pi, OpenClaw and Hermes plugins bring their own through their `artil-ai` dependency for when they have none. Use only commands a released CLI has, and keep working with the previous release.
 - What more than one plugin needs lives once, in `packages/`, and the plugins bundle it when packed.
 - What only one harness needs lives in its `plugins/<harness>` folder, with its `artil` skill, check scripts, configuration and ignore rules. Only a marketplace manifest the harness reads at the repository root, like Codex's `.agents/plugins/marketplace.json` and Claude Code's `.claude-plugin/marketplace.json`, lives outside it.
 - The CLI imports `@artil-ai/hermes`'s `plugin.yaml`, `__init__.py` and `skills/artil/SKILL.md`; keep those paths in the package.
