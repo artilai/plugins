@@ -12,6 +12,8 @@ const hint = [
   "Nobody outside reads what you write in this session.",
 ].join(" ");
 
+const retryAfter = 30_000;
+
 const artilCommand = {
   name: "artil",
   description: "Run the artil command the Artil plugin brings, like: openclaw artil auth login",
@@ -64,6 +66,13 @@ export default definePluginEntry({
     if (api.registrationMode !== "full") return;
 
     let listening: (() => void) | undefined;
+    let retrying: ReturnType<typeof setTimeout> | undefined;
+
+    function stopListening() {
+      clearTimeout(retrying);
+      listening?.();
+      listening = undefined;
+    }
 
     addBundledArtil(import.meta.url);
 
@@ -71,31 +80,43 @@ export default definePluginEntry({
       id: "artil-messages",
       start({ config, logger }) {
         const sessionKey = `agent:${resolveDefaultAgentId(config)}:artil`;
+        let reported = "";
 
-        listening?.();
-        listening = listen({
-          channel: "openclaw-channel",
-          restart: "restart the gateway",
-          deliver: ({ content, meta }) =>
-            void api.runtime.subagent
-              .run({
-                sessionKey,
-                message: content,
-                extraSystemPrompt: hint,
-                deliver: false,
-                ...(meta && { idempotencyKey: meta.message_id }),
-              })
-              .catch((error: unknown) =>
-                logger.error(`Could not hand OpenClaw a notice: ${error}`),
-              ),
-          stopped: (problem) =>
-            logger.error(`OpenClaw no longer hears about new messages. ${problem}`),
-        });
+        // artil stops when it cannot listen, like before anyone signs in, so the gateway tries
+        // again until it can and signing in is all it takes.
+        function hear() {
+          listening = listen({
+            channel: "openclaw-channel",
+            restart: "restart the gateway",
+            deliver: ({ content, meta }) =>
+              void api.runtime.subagent
+                .run({
+                  sessionKey,
+                  message: content,
+                  extraSystemPrompt: hint,
+                  deliver: false,
+                  ...(meta && { idempotencyKey: meta.message_id }),
+                })
+                .catch((error: unknown) =>
+                  logger.error(`Could not hand OpenClaw a notice: ${error}`),
+                ),
+            stopped: (problem) => {
+              if (problem !== reported) {
+                logger.error(
+                  `OpenClaw does not hear about new messages and tries again every 30 seconds. ${problem}`,
+                );
+              }
+
+              reported = problem;
+              retrying = setTimeout(hear, retryAfter);
+            },
+          });
+        }
+
+        stopListening();
+        hear();
       },
-      stop() {
-        listening?.();
-        listening = undefined;
-      },
+      stop: stopListening,
     });
   },
 });

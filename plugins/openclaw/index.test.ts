@@ -1,4 +1,4 @@
-import { afterEach, expect, mock, test } from "bun:test";
+import { afterEach, expect, mock, spyOn, test } from "bun:test";
 import { readFile } from "node:fs/promises";
 
 import { artilRunning, eventually } from "@artil-ai/channel/testing";
@@ -90,4 +90,42 @@ test("adds openclaw artil, which runs artil with every argument and exits as it 
 
   expect(await readFile(`${artil}.args`, "utf8")).toBe("auth\nlogin\n--token\nartil_secret\n");
   expect(process.exitCode).toBe(3);
+});
+
+test("tries again until artil can listen, so signing in is all it takes", async () => {
+  await artilRunning(`if [ -f "$0.signed-in" ]; then printf '%s\\n' '{"content":"Ada sent an email"}'; exec cat; fi
+touch "$0.signed-in"; echo "You are not signed in." >&2; exit 1`);
+  const { runs, service } = registered();
+  const errors: unknown[] = [];
+
+  // SAFETY: the service only reads config and calls logger.error.
+  const context = {
+    config: {},
+    logger: { error: (message: unknown) => errors.push(message) },
+  } as unknown as OpenClawPluginServiceContext;
+
+  // Keeps the 30-second retry to run it at once, and lets every other timer run as it would.
+  const retries: Array<() => void> = [];
+  const wait = setTimeout;
+  const timers = spyOn(globalThis, "setTimeout").mockImplementation(((
+    callback: () => void,
+    delay?: number,
+  ) => {
+    if (delay !== 30_000) return wait(callback, delay);
+
+    retries.push(callback);
+
+    return wait(() => {}, 0);
+  }) as typeof setTimeout);
+
+  await service?.start(context);
+  await eventually(() => retries.length > 0);
+  retries[0]?.();
+  await eventually(() => runs.length > 0);
+  await service?.stop?.(context);
+  timers.mockRestore();
+
+  expect(errors).toEqual([
+    "OpenClaw does not hear about new messages and tries again every 30 seconds. You are not signed in.",
+  ]);
 });
