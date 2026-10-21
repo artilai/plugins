@@ -2,8 +2,8 @@
 
 Monorepo of Artil plugins: email, SMS, Telegram and secrets for AI agents.
 
-- [`claude-code`](plugins/claude-code): Claude Code
-- [`codex`](plugins/codex): Codex
-- [`pi`](plugins/pi): Pi
-- [`hermes`](plugins/hermes): Hermes Agent
-- [`openclaw`](plugins/openclaw): OpenClaw
+- [`claude-code`](plugins/claude-code)
+- [`codex`](plugins/codex)
+- [`pi`](plugins/pi)
+- [`hermes`](plugins/hermes)
+- [`openclaw`](plugins/openclaw)
