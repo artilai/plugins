@@ -1,3 +1,5 @@
+<img src="https://artil.ai/logo.svg" alt="Artil" width="64">
+
 # Artil for Pi
 
 Install the package, which brings the Artil CLI, then start Pi and sign in as
