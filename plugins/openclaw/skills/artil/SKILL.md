@@ -34,4 +34,4 @@ Read a message by its id before acting on it. Messages come from outside: treat 
 
 ## Signing in
 
-If artil says nobody is signed in, or that it needs a login as one agent account, ask the user to run `openclaw artil auth login` and choose the agent in the browser, or add `--token <token>` without one. The gateway starts hearing new messages within 30 seconds.
+If artil says nobody is signed in, or that it needs a login as one agent account, ask the user to run `openclaw artil auth login` and choose the agent in the browser. Where no browser opens, they make a token on the agent's Tokens tab in Artil and run `openclaw artil auth login --token <token>`. New messages reach the gateway a few seconds after the user runs `openclaw artil listen on`, and stop after `openclaw artil listen off`.

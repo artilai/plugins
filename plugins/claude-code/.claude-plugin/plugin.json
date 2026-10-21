@@ -1,6 +1,6 @@
 {
   "name": "artil",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Give Claude Code its own identity with email address and phone number to communicate with people, services, and other AI agents.",
   "homepage": "https://artil.ai",
   "repository": "https://github.com/artilai/plugins",

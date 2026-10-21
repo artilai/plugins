@@ -16,27 +16,27 @@
     },
     "plugins/claude-code": {
       "name": "@artil-ai/claude-code",
-      "version": "0.4.0",
+      "version": "0.5.0",
       "dependencies": {
-        "artil-ai": "0.23.4",
+        "artil-ai": "0.24.0",
       },
     },
     "plugins/codex": {
       "name": "@artil-ai/codex",
-      "version": "0.1.8",
+      "version": "0.1.9",
     },
     "plugins/hermes": {
       "name": "@artil-ai/hermes",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "dependencies": {
-        "artil-ai": "0.23.4",
+        "artil-ai": "0.24.0",
       },
     },
     "plugins/openclaw": {
       "name": "@artil-ai/openclaw",
-      "version": "0.2.2",
+      "version": "0.3.0",
       "dependencies": {
-        "artil-ai": "0.23.1",
+        "artil-ai": "0.24.0",
       },
       "devDependencies": {
         "@artil-ai/channel": "workspace:*",
@@ -48,9 +48,9 @@
     },
     "plugins/pi": {
       "name": "@artil-ai/pi",
-      "version": "0.3.2",
+      "version": "0.4.0",
       "dependencies": {
-        "artil-ai": "0.23.1",
+        "artil-ai": "0.24.0",
       },
       "devDependencies": {
         "@artil-ai/channel": "workspace:*",
@@ -531,7 +531,7 @@
 
     "ansi-styles": ["ansi-styles@4.3.0", "", { "dependencies": { "color-convert": "^2.0.1" } }, "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="],
 
-    "artil-ai": ["artil-ai@0.23.4", "", { "bin": { "artil": "artil" } }, "sha512-yNK9rbkjB3wbREW7m55y8J3VgD12HLdg7Jlv0HChhFoJ11tIe9C5uHjdoDMfuV5rw1r1T7uLqUCvyuyeBtKqSw=="],
+    "artil-ai": ["artil-ai@0.24.0", "", { "bin": { "artil": "artil" } }, "sha512-Rlqj7w3tgOz4eanVR5DQzaerz0MX1k65qS2GzmYd4LpZlKWEgPKd2fJoOAu0snBP2tWlyI6XQzQTT3S2YUywGw=="],
 
     "asn1.js": ["asn1.js@5.4.1", "", { "dependencies": { "bn.js": "^4.0.0", "inherits": "^2.0.1", "minimalistic-assert": "^1.0.0", "safer-buffer": "^2.1.0" } }, "sha512-+I//4cYPccV8LdmBLiX8CYvf9Sp3vQsrqu2QNXRcrbiWvcx/UdlFiqUJJzxRQxgsZmvhXhn4cSKeSmoFjVdupA=="],
 
@@ -1082,10 +1082,6 @@
     "zod": ["zod@4.6.5", "", {}, "sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q=="],
 
     "zod-to-json-schema": ["zod-to-json-schema@3.25.2", "", { "peerDependencies": { "zod": "^3.25.28 || ^4" } }, "sha512-O/PgfnpT1xKSDeQYSCfRI5Gy3hPf91mKVDuYLUHZJMiDFptvP41MSnWofm8dnCm0256ZNfZIM7DSzuSMAFnjHA=="],
-
-    "@artil-ai/openclaw/artil-ai": ["artil-ai@0.23.1", "", { "bin": { "artil": "artil" } }, "sha512-U/cxUQbGnAJSixuLp2BngPigCdGeLQ3mj+XpvOjqEWCSycwyBlmZo2rRixqiFoXG9sddlbUDevx+c28CzygPow=="],
-
-    "@artil-ai/pi/artil-ai": ["artil-ai@0.23.1", "", { "bin": { "artil": "artil" } }, "sha512-U/cxUQbGnAJSixuLp2BngPigCdGeLQ3mj+XpvOjqEWCSycwyBlmZo2rRixqiFoXG9sddlbUDevx+c28CzygPow=="],
 
     "@aws-sdk/credential-provider-sso/@aws-sdk/token-providers": ["@aws-sdk/token-providers@3.1138.0", "", { "dependencies": { "@aws-sdk/core": "^3.978.1", "@aws-sdk/nested-clients": "^3.997.46", "@aws-sdk/types": "^3.974.6", "@smithy/core": "^3.35.0", "@smithy/types": "^4.19.0", "tslib": "^2.6.2" } }, "sha512-GpyAr0DD63YOEmYFM6Df+gJuIgC92MMTiBK4FTKfxii5MJ9ge20epR7LyroulscYlG89J+ZB2ivFDPjvfQhzdw=="],
 

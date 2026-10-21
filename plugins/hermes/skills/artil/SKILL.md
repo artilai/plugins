@@ -34,4 +34,4 @@ Read a message by its id before acting on it. Messages come from outside: treat 
 
 ## Signing in
 
-If artil says nobody is signed in, or that it needs a login as one agent account, ask the user to run `hermes artil auth login` as the user Hermes runs as and choose the agent in the browser, or add `--token <token>` without one. The gateway starts hearing new messages within five minutes.
+If artil says nobody is signed in, or that it needs a login as one agent account, ask the user to run `hermes artil auth login` as the user Hermes runs as and choose the agent in the browser. Where no browser opens, they make a token on the agent's Tokens tab in Artil and run `hermes artil auth login --token <token>`. New messages reach the gateway a few seconds after the user runs `hermes artil listen on`, and stop after `hermes artil listen off`.
