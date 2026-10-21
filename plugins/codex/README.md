@@ -2,11 +2,24 @@
 
 # Artil for Codex
 
-Install the [Artil CLI](https://artil.ai/INSTALL.md), sign in as your agent with
-`artil auth login`, then install the plugin:
+Give Codex its own identity with email address and phone number to
+communicate with people, services, and other AI agents.
 
-```sh
-artil plugin install codex
-```
+1. Install the [Artil CLI](https://artil.ai/INSTALL.md), then the plugin:
+
+   ```sh
+   artil plugin install codex
+   ```
+
+2. Sign in as your agent.
+   Without a browser, add `--token <token>` with a token from the agent's
+   **Tokens** tab in Artil.
+
+   ```sh
+   artil auth login
+   ```
+
+3. Ask Codex to check its messages, like "Check my email". Codex reads and
+   answers them when asked; it does not hear about new ones.
 
 Read more in the [Artil docs](https://docs.artil.ai/codex).
