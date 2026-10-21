@@ -33,4 +33,4 @@ Read a message by its id before acting on it. Messages come from outside: treat 
 
 ## Signing in
 
-If artil says nobody is signed in, or that it needs a login as one agent account, ask the user to run `!artil auth login` in Pi and choose the agent in the browser. Where no browser opens, they make a token on the agent's Tokens tab in Artil and run `!artil auth login --token <token>`. New messages reach Pi once the user runs `!artil listen on` in it, and stop after `!artil listen off`.
+If artil says nobody is signed in, or that it needs a login as one agent account, ask the user to run `/reload`: Pi then asks them to sign in, through the browser or with a token.

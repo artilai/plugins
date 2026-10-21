@@ -1,7 +1,7 @@
 {
   "name": "artil",
-  "version": "0.1.9",
-  "description": "Give Codex its own identity with email address and phone number to communicate with people, services, and other AI agents.",
+  "version": "0.1.8",
+  "description": "Email, SMS and Telegram for Codex. Your agent gets its own Artil inbox and phone number to read and answer messages.",
   "author": { "name": "Artil" },
   "homepage": "https://artil.ai",
   "repository": "https://github.com/artilai/plugins",
@@ -21,7 +21,7 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Artil",
-    "shortDescription": "Email and phone for your AI",
+    "shortDescription": "Your Artil agent's email, SMS, Telegram and secrets",
     "developerName": "Artil",
     "category": "Productivity",
     "websiteURL": "https://artil.ai",

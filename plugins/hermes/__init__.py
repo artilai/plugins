@@ -114,7 +114,8 @@ class ArtilAdapter(BasePlatformAdapter):
         return True
 
     def _set_stopped(self, reason: str) -> None:
-        # artil stops when it cannot listen, so the gateway tries again until it can.
+        # artil stops when it cannot listen, like before anyone signs in, so the gateway tries again
+        # until it can and signing in is all it takes.
         self._set_fatal_error("artil_stopped", reason or f"{self._command} stopped", retryable=True)
 
     async def _listen(self, process: asyncio.subprocess.Process) -> None:
@@ -216,12 +217,9 @@ def _take_artil_arguments(parser: argparse.ArgumentParser) -> None:
 
 
 def _run_artil(args: argparse.Namespace) -> int:
-    """Runs artil with the person's arguments, so the plugin's copy works without artil on the PATH
-    and artil listen on knows it runs for Hermes."""
+    """Runs artil with the person's arguments, so the plugin's copy works without artil on the PATH."""
     try:
-        return subprocess.run(
-            [_artil(), *args.arguments], check=False, env={**os.environ, "ARTIL_CLIENT": "hermes"}
-        ).returncode
+        return subprocess.run([_artil(), *args.arguments], check=False).returncode
     except OSError as error:
         print(f"Could not run artil: {error}", file=sys.stderr)
         return 1
