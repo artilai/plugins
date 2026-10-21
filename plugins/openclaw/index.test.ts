@@ -1,4 +1,5 @@
-import { expect, mock, test } from "bun:test";
+import { afterEach, expect, mock, test } from "bun:test";
+import { readFile } from "node:fs/promises";
 
 import { artilRunning, eventually } from "@artil-ai/channel/testing";
 import type {
@@ -6,6 +7,8 @@ import type {
   OpenClawPluginService,
   OpenClawPluginServiceContext,
 } from "openclaw/plugin-sdk/plugin-entry";
+
+type Registrar = Parameters<OpenClawPluginApi["registerCli"]>[0];
 
 // OpenClaw's SDK only loads in Node, so these stand in for the two functions the plugin takes from it.
 mock.module("openclaw/plugin-sdk/agent-scope-runtime", () => ({
@@ -17,19 +20,33 @@ mock.module("openclaw/plugin-sdk/plugin-entry", () => ({
 
 const { default: plugin } = await import("./index");
 
+afterEach(() => {
+  process.exitCode = 0;
+});
+
+// Registers the plugin as OpenClaw's gateway would, keeping its service, CLI and subagent runs.
+function registered() {
+  const runs: unknown[] = [];
+  let service: OpenClawPluginService | undefined;
+  let cli: Registrar | undefined;
+
+  // SAFETY: the plugin only reads registrationMode and calls registerCli, registerService and
+  // runtime.subagent.run.
+  plugin.register({
+    registrationMode: "full",
+    registerCli: (registrar: Registrar) => (cli = registrar),
+    registerService: (registered: OpenClawPluginService) => (service = registered),
+    runtime: { subagent: { run: async (params: unknown) => runs.push(params) } },
+  } as unknown as OpenClawPluginApi);
+
+  return { runs, service, cli };
+}
+
 test("starts a turn in the agent's artil session for each notice, delivering no replies", async () => {
   await artilRunning(
     `printf '%s\\n' '{"content":"Ada sent an email","meta":{"message_id":"mail:1","channel":"email"}}' '{"content":"Someone on your team woke you up."}'; exec cat`,
   );
-  const runs: unknown[] = [];
-  let service: OpenClawPluginService | undefined;
-
-  // SAFETY: the plugin only reads registrationMode and calls registerService and runtime.subagent.run.
-  plugin.register({
-    registrationMode: "full",
-    registerService: (registered: OpenClawPluginService) => (service = registered),
-    runtime: { subagent: { run: async (params: unknown) => runs.push(params) } },
-  } as unknown as OpenClawPluginApi);
+  const { runs, service } = registered();
 
   // SAFETY: the service only reads config and logger.
   const context = { config: {}, logger: console } as unknown as OpenClawPluginServiceContext;
@@ -48,4 +65,29 @@ test("starts a turn in the agent's artil session for each notice, delivering no 
     { ...turn, message: "Ada sent an email", idempotencyKey: "mail:1" },
     { ...turn, message: "Someone on your team woke you up." },
   ]);
+});
+
+test("adds openclaw artil, which runs artil with every argument and exits as it does", async () => {
+  const artil = await artilRunning(`printf '%s\\n' "$@" > "$0.args"; exit 3`);
+  const { cli } = registered();
+  let action: ((args: string[]) => Promise<void>) | undefined;
+  const command = {
+    command: () => command,
+    description: () => command,
+    argument: () => command,
+    allowUnknownOption: () => command,
+    helpOption: () => command,
+    action: (handler: typeof action) => {
+      action = handler;
+
+      return command;
+    },
+  };
+
+  // SAFETY: the plugin only chains these commander calls on the program.
+  await cli?.({ program: command } as unknown as Parameters<Registrar>[0]);
+  await action?.(["auth", "login", "--token", "artil_secret"]);
+
+  expect(await readFile(`${artil}.args`, "utf8")).toBe("auth\nlogin\n--token\nartil_secret\n");
+  expect(process.exitCode).toBe(3);
 });

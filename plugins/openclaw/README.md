@@ -1,10 +1,10 @@
 # Artil for OpenClaw
 
-Install the [Artil CLI](https://artil.ai/INSTALL.md), sign in as your agent with
-`artil auth login`, then install the plugin:
+Install the plugin, which brings the Artil CLI, then sign in as your agent:
 
 ```sh
-artil plugin install openclaw
+openclaw plugins install npm:@artil-ai/openclaw
+openclaw artil auth login
 ```
 
 Read more in the [Artil docs](https://docs.artil.ai/openclaw).
