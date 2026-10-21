@@ -5,7 +5,7 @@ export type Notice = {
   readonly content: string;
   readonly meta?: {
     readonly message_id: string;
-    readonly channel: "email" | "sms";
+    readonly channel: "email" | "sms" | "telegram";
     readonly from?: string;
   };
 };
@@ -25,7 +25,7 @@ export function listen({ channel, restart, deliver, stopped }: ListenOptions) {
   artil.on("error", (error: NodeJS.ErrnoException) => {
     problem =
       error.code === "ENOENT"
-        ? `The artil command is not on the PATH. Install it with curl -fsSL https://artil.ai/install.sh | bash, or add ~/.local/bin to the PATH, then ${restart}.`
+        ? `The artil command is not on the PATH. Install it as https://artil.ai/INSTALL.md describes, then ${restart}.`
         : error.message;
   });
   artil.stderr.on("data", (chunk: Buffer) => {

@@ -6,7 +6,7 @@ import { dirname, join } from "node:path";
 import { artilRunning, eventually } from "@artil-ai/channel/testing";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
-import hearNewMessages from "./index";
+import artil from "./index";
 import { signInChoices } from "./sign-in";
 
 type Handler = (event: unknown, ctx: unknown) => void;
@@ -38,7 +38,7 @@ function piStarted({ choice = signInChoices.later, token = "" }: PiStartedOption
   };
 
   // SAFETY: the extension only calls on and sendMessage, and notify, select and input in the UI.
-  hearNewMessages(pi as unknown as ExtensionAPI);
+  artil(pi as unknown as ExtensionAPI);
   handlers.get("session_start")?.({}, { hasUI: true, ui });
 
   return { sent, notified, asked, shutdown: () => handlers.get("session_shutdown")?.({}, {}) };
@@ -115,13 +115,13 @@ test("signs in with a pasted token, handed to artil outside its arguments", asyn
 });
 
 test("leaves a signed-out session alone when the person does not sign in", async () => {
-  const artil = await artilRunning(`[ "$1" = auth ] && exit 1\ntouch "$0.listened"; exec cat`);
+  const command = await artilRunning(`[ "$1" = auth ] && exit 1\ntouch "$0.listened"; exec cat`);
   const pi = piStarted();
 
   await eventually(() => pi.asked.length > 0);
   await Bun.sleep(50);
 
-  expect(await exists(`${artil}.listened`)).toBe(false);
+  expect(await exists(`${command}.listened`)).toBe(false);
   expect(pi.notified).toEqual([]);
 });
 

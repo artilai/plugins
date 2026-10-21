@@ -103,7 +103,7 @@ export default definePluginEntry({
             stopped: (problem) => {
               if (problem !== reported) {
                 logger.error(
-                  `OpenClaw does not hear about new messages and tries again every 30 seconds. ${problem}`,
+                  `OpenClaw does not hear about new messages and tries again every ${retryAfter / 1000} seconds. ${problem}`,
                 );
               }
 

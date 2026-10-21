@@ -64,6 +64,6 @@ test("says how to get artil when it is missing", async () => {
   await eventually(() => problems.length > 0);
 
   expect(problems).toEqual([
-    "The artil command is not on the PATH. Install it with curl -fsSL https://artil.ai/install.sh | bash, or add ~/.local/bin to the PATH, then run /reload.",
+    "The artil command is not on the PATH. Install it as https://artil.ai/INSTALL.md describes, then run /reload.",
   ]);
 });
