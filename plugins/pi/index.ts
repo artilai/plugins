@@ -4,7 +4,8 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 
 import { signedIn } from "./sign-in";
 
-export default function hearNewMessages(pi: ExtensionAPI) {
+// Puts artil within reach, signs in when needed, and tells the session about each new message.
+export default function artil(pi: ExtensionAPI) {
   let listening: (() => void) | undefined;
   let sessions = 0;
 
