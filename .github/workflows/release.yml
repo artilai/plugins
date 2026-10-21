@@ -28,6 +28,8 @@ jobs:
         run: |
           unpublished=()
           for manifest in plugins/*/package.json; do
+            # Claude Code installs its plugin from this repository's marketplace, so its package stays private.
+            if [ "$(jq -r '.private // false' "$manifest")" = true ]; then continue; fi
             name="$(jq -r .name "$manifest")"
             version="$(jq -r .version "$manifest")"
             published="$(npm view "$name" version 2>/dev/null || true)"

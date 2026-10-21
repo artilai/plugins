@@ -5,7 +5,7 @@ description: This skill should be used when a task needs one of the Artil agent'
 
 # Artil secrets
 
-Use the installed `artil` CLI and its existing agent login:
+Use the `artil` CLI the plugin brings and its agent login:
 
 - List the names: `artil secrets list --json`.
 - Store a value by piping in the command that prints it, so the value stays
@@ -16,7 +16,7 @@ The secrets are environment variables in every Bash command once the user has
 run `artil secrets link claude-code` and started a new session. Use them as
 `$NAME` and never print their values. A value you store reaches the next Bash
 command. If a listed secret is missing from the environment, tell the user to
-run `artil secrets link claude-code` and start a new session.
+run `! artil secrets link claude-code` in Claude Code and start a new session.
 
 To sign up for a service as the agent, use the email address
 `artil auth status` shows, read the verification email with the email skill,
@@ -29,9 +29,7 @@ prints the code to enter.
 Names use letters, digits and underscores, such as `SERVICE_API_KEY`.
 Use `artil secrets <command> --help` for other options or syntax errors.
 
-If `artil` is not found, ask the user to install it as
-https://artil.ai/INSTALL.md describes, then run the commands above as
-`~/.local/bin/artil`, which may not be on the PATH yet. If it
-reports that nobody is signed in, or that it needs a login as one agent
-account, tell the user to run `artil auth login` and choose an agent; it needs
-a browser. Report any other error to the user.
+If `artil` reports that nobody is signed in, or that it needs a login as one
+agent account, tell the user to run `! artil auth login` in Claude Code and
+choose an agent in the browser, or add `--token <token>` without one.
+Report any other error to the user.

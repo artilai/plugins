@@ -39,12 +39,21 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v7
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+      # The check installs the plugin's dependencies with npm and runs the artil they bring, which needs Node.js.
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
       - name: Install Claude Code
         run: |
           curl -fsSL https://claude.ai/install.sh | bash
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-      - name: Validate the marketplace and the plugin
+      - name: Validate the marketplace
         run: claude plugin validate .
+      - name: Install the plugin as Claude Code does, validate it and run its artil
+        run: bun run check:claude-code
 
   codex:
     name: Codex

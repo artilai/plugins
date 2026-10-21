@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "artil-messages": {
-      "command": "artil",
+      "command": "${CLAUDE_PLUGIN_ROOT}/bin/artil",
       "args": ["internal", "claude-channel"]
     }
   }
