@@ -204,7 +204,7 @@ def test_leaves_the_path_alone_when_hermes_skipped_the_plugins_dependencies(tmp_
 
 
 def test_hermes_artil_runs_artil_with_its_arguments_and_exits_as_it_does(tmp_path, monkeypatch):
-    artil = artil_running(tmp_path, 'echo "$ARTIL_CLIENT $*" > "$0.args"; exit 3')
+    artil = artil_running(tmp_path, 'echo "$*" > "$0.args"; exit 3')
     monkeypatch.setenv("PATH", f"{tmp_path}:/usr/bin:/bin")
     parser = argparse.ArgumentParser()
     context.command["setup_fn"](parser)
@@ -213,7 +213,7 @@ def test_hermes_artil_runs_artil_with_its_arguments_and_exits_as_it_does(tmp_pat
 
     assert context.command["name"] == "artil"
     assert context.command["handler_fn"](args) == 3
-    assert Path(f"{artil}.args").read_text() == "hermes auth login --token artil_secret\n"
+    assert Path(f"{artil}.args").read_text() == "auth login --token artil_secret\n"
 
 
 def test_offers_the_artil_skill_with_the_description_its_file_gives():

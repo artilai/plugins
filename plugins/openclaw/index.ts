@@ -21,16 +21,13 @@ const artilCommand = {
 };
 
 // Runs artil with the person's arguments and exits as it does, so the plugin's copy works without
-// artil on the PATH, and artil listen on knows it runs for OpenClaw.
+// artil on the PATH.
 function runArtil(args: ReadonlyArray<string>) {
   const { promise, resolve } = Promise.withResolvers<void>();
 
   addBundledArtil(import.meta.url);
 
-  const artil = spawn("artil", args, {
-    stdio: "inherit",
-    env: { ...process.env, ARTIL_CLIENT: "openclaw" },
-  });
+  const artil = spawn("artil", args, { stdio: "inherit" });
 
   artil.on("error", (error) => {
     console.error(error.message);
@@ -49,7 +46,7 @@ export default definePluginEntry({
   id: "artil",
   name: "Artil",
   description:
-    "Give OpenClaw its own identity with email address and phone number to communicate with people, services, and other AI agents.",
+    "Email, SMS and Telegram for OpenClaw. Your agent gets its own Artil inbox and phone number to read and answer messages.",
   register(api) {
     if (["cli-metadata", "discovery", "full"].includes(api.registrationMode)) {
       api.registerCli(
@@ -85,7 +82,8 @@ export default definePluginEntry({
         const sessionKey = `agent:${resolveDefaultAgentId(config)}:artil`;
         let reported = "";
 
-        // artil stops when it cannot listen, so the gateway tries again until it can.
+        // artil stops when it cannot listen, like before anyone signs in, so the gateway tries
+        // again until it can and signing in is all it takes.
         function hear() {
           listening = listen({
             channel: "openclaw-channel",

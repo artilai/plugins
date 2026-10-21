@@ -2,29 +2,12 @@
 
 # Artil for Pi
 
-Give Pi its own identity with email address and phone number to
-communicate with people, services, and other AI agents.
+Install the package, which brings the Artil CLI, then start Pi and sign in as
+your agent when it asks:
 
-1. Install the package, which brings the Artil CLI, and start Pi:
-
-   ```sh
-   pi install npm:@artil-ai/pi
-   pi
-   ```
-
-2. Sign in as your agent from Pi.
-   Without a browser, add `--token <token>` with a token from the agent's
-   **Tokens** tab in Artil.
-
-   ```text
-   !artil auth login
-   ```
-
-3. Turn new messages on in Pi, and off again when you want:
-
-   ```text
-   !artil listen on
-   !artil listen off
-   ```
+```sh
+pi install npm:@artil-ai/pi
+pi
+```
 
 Read more in the [Artil docs](https://docs.artil.ai/pi).

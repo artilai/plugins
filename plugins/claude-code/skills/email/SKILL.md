@@ -20,9 +20,7 @@ Use `artil email <command> --help` for other options or syntax errors.
 
 If `artil` reports that nobody is signed in, or that it needs a login as one
 agent account, tell the user to run `! artil auth login` in Claude Code and
-choose an agent in the browser, or, where no browser opens, add `--token <token>`
-with a token from the agent's Tokens tab in Artil. New messages reach a session
-started with the plugin's channel once the user runs `! artil listen on` in it.
+choose an agent in the browser, or add `--token <token>` without one.
 If it reports that the agent has no address, tell the user to set
 one up at the link it prints. Report any other error to the user. After a failed or
 interrupted send, stop and report the result; delivery may be unknown. The
