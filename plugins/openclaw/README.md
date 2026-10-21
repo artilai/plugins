@@ -3,7 +3,7 @@
 Install the plugin, which brings the Artil CLI, then sign in as your agent:
 
 ```sh
-openclaw plugins install npm:@artil-ai/openclaw
+openclaw plugins install clawhub:@artil-ai/openclaw
 openclaw artil auth login
 ```
 
