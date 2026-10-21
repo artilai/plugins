@@ -1,6 +1,6 @@
 {
   "name": "@artil-ai/hermes",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Give Hermes Agent its own identity with email address and phone number to communicate with people, services, and other AI agents.",
   "keywords": [
     "ai-agents",
@@ -35,6 +35,6 @@
     "access": "public"
   },
   "dependencies": {
-    "artil-ai": "0.23.4"
+    "artil-ai": "0.24.0"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "artil",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Give Codex its own identity with email address and phone number to communicate with people, services, and other AI agents.",
   "author": { "name": "Artil" },
   "homepage": "https://artil.ai",

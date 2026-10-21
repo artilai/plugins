@@ -1,10 +1,10 @@
 {
   "name": "@artil-ai/claude-code",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "description": "Give Claude Code its own identity with email address and phone number to communicate with people, services, and other AI agents.",
   "license": "MIT",
   "dependencies": {
-    "artil-ai": "0.23.4"
+    "artil-ai": "0.24.0"
   }
 }

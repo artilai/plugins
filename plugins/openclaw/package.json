@@ -1,6 +1,6 @@
 {
   "name": "@artil-ai/openclaw",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Give OpenClaw its own identity with email address and phone number to communicate with people, services, and other AI agents.",
   "keywords": [
     "ai-agents",
@@ -36,7 +36,7 @@
     "prepack": "bun run build"
   },
   "dependencies": {
-    "artil-ai": "0.23.1"
+    "artil-ai": "0.24.0"
   },
   "devDependencies": {
     "@artil-ai/channel": "workspace:*",

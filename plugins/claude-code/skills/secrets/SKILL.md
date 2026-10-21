@@ -31,5 +31,6 @@ Use `artil secrets <command> --help` for other options or syntax errors.
 
 If `artil` reports that nobody is signed in, or that it needs a login as one
 agent account, tell the user to run `! artil auth login` in Claude Code and
-choose an agent in the browser, or add `--token <token>` without one.
+choose an agent in the browser, or, where no browser opens, add `--token <token>`
+with a token from the agent's Tokens tab in Artil.
 Report any other error to the user.
