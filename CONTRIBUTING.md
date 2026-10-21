@@ -10,10 +10,12 @@ bun run check:skills # needs artil
 
 Shared code lives in `packages/`, which each plugin bundles when it is built.
 What only one harness needs, its `artil` skill and the scripts that check it
-included, lives in its `plugins/<harness>` folder. The exception is a
-marketplace manifest the harness reads only at the repository root:
+included, lives in its `plugins/<harness>` folder. The exceptions are the
+marketplace manifests a harness reads only at the repository root:
 `.agents/plugins/marketplace.json` lists the Codex plugin for
-`codex plugin marketplace add artilai/plugins`.
+`codex plugin marketplace add artilai/plugins`, and
+`.claude-plugin/marketplace.json` the Claude Code plugin for
+`claude plugin marketplace add artilai/plugins`.
 
 ## Try a plugin
 
@@ -30,4 +32,5 @@ marketplace manifest the harness reads only at the repository root:
 A pull request merges once the `Checks` job of CI passes. To release a plugin,
 bump `version` in its `package.json` and push to `main`; the Release workflow
 publishes it to npm, and the OpenClaw plugin to ClawHub as well. Claude Code
-takes its plugin from the `artilai/claude-plugins` marketplace instead.
+takes its plugin from this repository's marketplace instead, as `main` has it,
+and updates it when its `plugin.json` version goes up.

@@ -43,8 +43,8 @@ jobs:
         run: |
           curl -fsSL https://claude.ai/install.sh | bash
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-      - name: Validate the plugin
-        run: claude plugin validate plugins/claude-code
+      - name: Validate the marketplace and the plugin
+        run: claude plugin validate .
 
   codex:
     name: Codex

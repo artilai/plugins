@@ -1,0 +1,12 @@
+{
+  "name": "artil",
+  "owner": { "name": "Artil" },
+  "plugins": [
+    {
+      "name": "artil",
+      "source": "./plugins/claude-code",
+      "description": "Email, SMS and Telegram for Claude Code. Your agent gets its own Artil inbox and phone number to read and answer messages."
+    }
+  ],
+  "metadata": { "description": "Claude Code plugins from Artil." }
+}
