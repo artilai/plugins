@@ -6,18 +6,7 @@
   "homepage": "https://artil.ai",
   "repository": "https://github.com/artilai/plugins",
   "license": "MIT",
-  "keywords": [
-    "ai-agents",
-    "artil",
-    "codex",
-    "codex-plugin",
-    "email",
-    "inbox",
-    "phone-number",
-    "secrets",
-    "sms",
-    "telegram"
-  ],
+  "keywords": ["codex-plugin", "agent-identity", "email", "sms"],
   "skills": "./skills/",
   "interface": {
     "displayName": "Artil",

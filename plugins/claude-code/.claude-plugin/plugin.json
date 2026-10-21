@@ -7,17 +7,6 @@
   "author": {
     "name": "Artil"
   },
-  "keywords": [
-    "ai-agents",
-    "artil",
-    "claude-code",
-    "claude-code-plugin",
-    "email",
-    "inbox",
-    "phone-number",
-    "secrets",
-    "sms",
-    "telegram"
-  ],
+  "keywords": ["claude-code-plugin", "agent-identity", "email", "sms"],
   "channels": [{ "server": "artil-messages" }]
 }

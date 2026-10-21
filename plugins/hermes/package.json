@@ -3,16 +3,10 @@
   "version": "0.3.1",
   "description": "Give Hermes Agent its own identity with email address and phone number to communicate with people, services, and other AI agents.",
   "keywords": [
-    "ai-agents",
-    "artil",
+    "agent-identity",
     "email",
     "hermes-agent",
-    "hermes-plugin",
-    "inbox",
-    "phone-number",
-    "secrets",
-    "sms",
-    "telegram"
+    "sms"
   ],
   "homepage": "https://docs.artil.ai/hermes",
   "license": "MIT",
