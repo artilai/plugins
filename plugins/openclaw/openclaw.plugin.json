@@ -5,5 +5,12 @@
   "categories": ["channels"],
   "activation": { "onStartup": true },
   "skills": ["./skills"],
-  "configSchema": { "type": "object", "additionalProperties": false, "properties": {} }
+  "configSchema": { "type": "object", "additionalProperties": false, "properties": {} },
+  "cliCommands": [
+    {
+      "name": "artil",
+      "description": "Run the artil command the Artil plugin brings, like: openclaw artil auth login",
+      "hasSubcommands": false
+    }
+  ]
 }

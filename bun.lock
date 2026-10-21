@@ -25,6 +25,9 @@
     "plugins/openclaw": {
       "name": "@artil-ai/openclaw",
       "version": "0.1.14",
+      "dependencies": {
+        "artil-ai": "0.23.1",
+      },
       "devDependencies": {
         "@artil-ai/channel": "workspace:*",
         "openclaw": "2026.9.8",

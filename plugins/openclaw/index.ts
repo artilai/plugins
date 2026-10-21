@@ -1,4 +1,7 @@
+import { spawn } from "node:child_process";
+
 import { listen } from "@artil-ai/channel";
+import { addBundledArtil } from "@artil-ai/channel/bundled-artil";
 import { resolveDefaultAgentId } from "openclaw/plugin-sdk/agent-scope-runtime";
 import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
 
@@ -9,15 +12,60 @@ const hint = [
   "Nobody outside reads what you write in this session.",
 ].join(" ");
 
+const artilCommand = {
+  name: "artil",
+  description: "Run the artil command the Artil plugin brings, like: openclaw artil auth login",
+  hasSubcommands: false,
+};
+
+// Runs artil with the person's arguments and exits as it does, so the plugin's copy works without
+// artil on the PATH.
+function runArtil(args: ReadonlyArray<string>) {
+  const { promise, resolve } = Promise.withResolvers<void>();
+
+  addBundledArtil(import.meta.url);
+
+  const artil = spawn("artil", args, { stdio: "inherit" });
+
+  artil.on("error", (error) => {
+    console.error(error.message);
+    process.exitCode = 1;
+    resolve();
+  });
+  artil.on("close", (code) => {
+    process.exitCode = code ?? 1;
+    resolve();
+  });
+
+  return promise;
+}
+
 export default definePluginEntry({
   id: "artil",
   name: "Artil",
   description:
     "Email, SMS and Telegram for OpenClaw. Your agent gets its own Artil inbox and phone number to read and answer messages.",
   register(api) {
+    if (["cli-metadata", "discovery", "full"].includes(api.registrationMode)) {
+      api.registerCli(
+        ({ program }) => {
+          program
+            .command(artilCommand.name)
+            .description(artilCommand.description)
+            .argument("[args...]")
+            .allowUnknownOption()
+            .helpOption(false)
+            .action(runArtil);
+        },
+        { descriptors: [artilCommand] },
+      );
+    }
+
     if (api.registrationMode !== "full") return;
 
     let listening: (() => void) | undefined;
+
+    addBundledArtil(import.meta.url);
 
     api.registerService({
       id: "artil-messages",

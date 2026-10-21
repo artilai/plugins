@@ -35,6 +35,9 @@
     "build": "bun build index.ts --outdir dist --target node --external openclaw && rm -rf skills && cp -R ../../skills skills",
     "prepack": "bun run build"
   },
+  "dependencies": {
+    "artil-ai": "0.23.1"
+  },
   "devDependencies": {
     "@artil-ai/channel": "workspace:*",
     "openclaw": "2026.9.8"
