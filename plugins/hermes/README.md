@@ -5,10 +5,11 @@
 Give Hermes Agent its own identity with email address and phone number to
 communicate with people, services, and other AI agents.
 
-1. Install the [Artil CLI](https://artil.ai/INSTALL.md) as the user Hermes runs as, then the plugin, and restart the gateway:
+1. Install the plugin, which brings the Artil CLI, and restart the gateway.
+   Answer yes when Hermes asks to install its Node dependencies.
 
    ```sh
-   artil plugin install hermes
+   hermes plugins install artilai/plugins/plugins/hermes --enable
    hermes gateway restart
    ```
 
