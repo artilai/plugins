@@ -32,7 +32,10 @@ HINT = (
 class ArtilAdapter(BasePlatformAdapter):
     """Runs `artil internal hermes-channel` and hands each notice it prints to the gateway."""
 
+    # How long a stopped artil waits to learn whether the gateway itself is stopping.
     STOP_GRACE_SECONDS = 2.0
+    # How long artil gets to save where it left off once its input closes.
+    STOP_TIMEOUT_SECONDS = 5.0
 
     def __init__(self, config: PlatformConfig) -> None:
         config.extra = {**(config.extra or {}), "allow_from": [PLATFORM]}
@@ -40,6 +43,13 @@ class ArtilAdapter(BasePlatformAdapter):
         # A gateway service may not have the PATH that finds artil where its installer put it.
         self._command = str(
             config.extra.get("command") or shutil.which("artil") or Path.home() / ".local/bin/artil"
+        )
+        self._source = self.build_source(
+            chat_id=PLATFORM,
+            chat_name="Artil",
+            chat_type="dm",
+            user_id=PLATFORM,
+            user_name="Artil",
         )
         self._process: asyncio.subprocess.Process | None = None
         self._listening: asyncio.Task | None = None
@@ -84,12 +94,14 @@ class ArtilAdapter(BasePlatformAdapter):
         code = await process.wait()
         asked_to_stop = code in (0, -signal.SIGINT, -signal.SIGTERM)
 
+        # A gateway that is stopping signals artil before it disconnects the adapter, so a clean or
+        # signalled exit waits a moment to see whether that is all it was.
         if asked_to_stop:
             await asyncio.sleep(self.STOP_GRACE_SECONDS)
 
-        if process is not self._process or getattr(
-            self.gateway_runner, "_stop_requested_by_signal", False
-        ):
+        stopping = getattr(self.gateway_runner, "_stop_requested_by_signal", False)
+
+        if process is not self._process or stopping:
             return
 
         self._process = None
@@ -100,19 +112,12 @@ class ArtilAdapter(BasePlatformAdapter):
 
     async def _deliver(self, notice: dict[str, Any]) -> None:
         meta = notice.get("meta") or {}
-        source = self.build_source(
-            chat_id=PLATFORM,
-            chat_name="Artil",
-            chat_type="dm",
-            user_id=PLATFORM,
-            user_name="Artil",
-        )
 
         await self.handle_message(
             MessageEvent(
                 text=notice["content"],
                 message_type=MessageType.TEXT,
-                source=source,
+                source=self._source,
                 message_id=meta.get("message_id"),
                 allow_gateway_control=False,
             )
@@ -125,7 +130,7 @@ class ArtilAdapter(BasePlatformAdapter):
             process.stdin.close()
 
             try:
-                await asyncio.wait_for(process.wait(), 5)
+                await asyncio.wait_for(process.wait(), self.STOP_TIMEOUT_SECONDS)
             except TimeoutError:
                 process.kill()
 
