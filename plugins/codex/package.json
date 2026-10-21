@@ -1,7 +1,7 @@
 {
   "name": "@artil-ai/codex",
   "version": "0.1.8",
-  "description": "Email, SMS and Telegram for Codex. Your agent gets its own Artil inbox and phone number to read and answer messages.",
+  "description": "Give Codex its own identity with email address and phone number to communicate with people, services, and other AI agents.",
   "keywords": [
     "ai-agents",
     "artil",

@@ -46,7 +46,7 @@ export default definePluginEntry({
   id: "artil",
   name: "Artil",
   description:
-    "Email, SMS and Telegram for OpenClaw. Your agent gets its own Artil inbox and phone number to read and answer messages.",
+    "Give OpenClaw its own identity with email address and phone number to communicate with people, services, and other AI agents.",
   register(api) {
     if (["cli-metadata", "discovery", "full"].includes(api.registrationMode)) {
       api.registerCli(

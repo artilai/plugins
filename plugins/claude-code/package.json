@@ -2,7 +2,7 @@
   "name": "@artil-ai/claude-code",
   "version": "0.4.0",
   "private": true,
-  "description": "Email, SMS and Telegram for Claude Code. Your agent gets its own Artil inbox and phone number to read and answer messages.",
+  "description": "Give Claude Code its own identity with email address and phone number to communicate with people, services, and other AI agents.",
   "license": "MIT",
   "dependencies": {
     "artil-ai": "0.23.4"
