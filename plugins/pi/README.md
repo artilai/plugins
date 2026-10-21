@@ -2,8 +2,8 @@
 
 # Artil for Pi
 
-Give Pi its own identity with email address and phone number to
-communicate with people, services, and other AI agents.
+Give Pi agents their own email inbox, phone number, and workspace accounts to
+work directly with customers, teammates, and other agents.
 
 1. Install the package, which brings the Artil CLI, and start Pi:
 

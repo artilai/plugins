@@ -2,8 +2,8 @@
 
 # Artil for Hermes Agent
 
-Give Hermes Agent its own identity with email address and phone number to
-communicate with people, services, and other AI agents.
+Give Hermes agents their own email inbox, phone number, and workspace accounts
+to work directly with customers, teammates, and other agents.
 
 1. Install the plugin, which brings the Artil CLI, and restart the gateway.
    Answer yes when Hermes asks to install its Node dependencies.

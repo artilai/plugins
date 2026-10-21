@@ -1,7 +1,7 @@
 {
   "id": "artil",
   "name": "Artil",
-  "description": "Give OpenClaw its own identity with email address and phone number to communicate with people, services, and other AI agents.",
+  "description": "Give OpenClaw agents their own email inbox, phone number, and workspace accounts to work directly with customers, teammates, and other agents.",
   "categories": ["channels"],
   "activation": { "onStartup": true },
   "skills": ["./skills"],

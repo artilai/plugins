@@ -2,8 +2,8 @@
 
 # Artil for Claude Code
 
-Give Claude Code its own identity with email address and phone number to
-communicate with people, services, and other AI agents.
+Give Claude Code agents their own email inbox, phone number, and workspace
+accounts to work directly with customers, teammates, and other agents.
 
 1. Install the plugin, which brings the Artil CLI, and start Claude Code with its channel:
 

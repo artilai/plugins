@@ -2,8 +2,8 @@
 
 # Artil for Codex
 
-Give Codex its own identity with email address and phone number to
-communicate with people, services, and other AI agents.
+Give Codex agents their own email inbox, phone number, and workspace accounts to
+work directly with customers, teammates, and other agents.
 
 1. Install the [Artil CLI](https://artil.ai/INSTALL.md), then the plugin:
 
