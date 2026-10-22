@@ -42,8 +42,7 @@ to work directly with customers, teammates, and other agents.
 - The CLI keeps the sign-in from `hermes artil auth login`, and where the
   gateway left off, in its own folder, `~/.config/artil`. The plugin's code
   never reads them.
-- The agent sends messages and stores secrets in Artil only by running
-  `artil` commands in its terminal, under Hermes' approvals. The CLI sends no
-  telemetry.
+- The agent sends messages only by running `artil` commands in its terminal,
+  under Hermes' approvals. The CLI sends no telemetry.
 
 Read more in the [Artil docs](https://docs.artil.ai/hermes).
