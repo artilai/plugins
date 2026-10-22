@@ -1,6 +1,6 @@
 {
   "name": "@artil-ai/hermes",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Give Hermes agents their own email inbox, phone number, and workspace accounts to work directly with customers, teammates, and other agents.",
   "keywords": [
     "artil",

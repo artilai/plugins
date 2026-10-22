@@ -1,6 +1,6 @@
 {
   "name": "@artil-ai/pi",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Give Pi agents their own email inbox, phone number, and workspace accounts to work directly with customers, teammates, and other agents.",
   "keywords": [
     "artil",
