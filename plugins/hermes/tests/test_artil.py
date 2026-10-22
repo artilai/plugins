@@ -7,9 +7,15 @@ import os
 import signal
 from pathlib import Path
 
+import pytest
 from gateway.config import PlatformConfig
 
 from conftest import context, plugin
+
+
+@pytest.fixture(autouse=True)
+def without_the_bundled_artil(tmp_path, monkeypatch):
+    monkeypatch.setattr(plugin, "BUNDLED_ARTIL", tmp_path / "node_modules" / "artil-ai")
 
 
 def artil_running(tmp_path: Path, script: str) -> str:
@@ -168,6 +174,23 @@ def test_runs_the_artil_its_installer_put_in_local_bin_without_a_command(tmp_pat
 
     async def scenario():
         adapter, _ = adapter_running(None)
+
+        assert await adapter.connect()
+        await eventually(lambda: Path(f"{artil}.args").exists())
+        await adapter.disconnect()
+
+    asyncio.run(scenario())
+
+
+def test_runs_the_artil_the_plugin_brings_ahead_of_any_other(tmp_path, monkeypatch):
+    bundled = tmp_path / "node_modules" / "artil-ai"
+    bundled.mkdir(parents=True)
+    artil = artil_running(bundled, 'echo "$*" > "$0.args"; exec cat')
+    other = artil_running(tmp_path, "exit 1")
+    monkeypatch.setenv("PATH", f"{tmp_path}:/usr/bin:/bin")
+
+    async def scenario():
+        adapter, _ = adapter_running(other)
 
         assert await adapter.connect()
         await eventually(lambda: Path(f"{artil}.args").exists())
