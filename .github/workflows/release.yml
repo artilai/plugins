@@ -41,10 +41,13 @@ jobs:
         id: clawhub
         run: |
           version="$(jq -r .version plugins/openclaw/package.json)"
-          url="https://clawhub.ai/api/v1/packages/%40artil-ai%2Fopenclaw/versions/$version/publication"
+          url="https://clawhub.ai/api/v1/packages/%40artil%2Fopenclaw/versions/$version/publication"
+          status="$(curl -sS -o publication.json -w '%{http_code}' "$url" || true)"
+          # ClawHub answers 404 for a package it has never had, so the first version publishes too.
+          if [ "$status" = 404 ]; then state=absent
           # An unreachable ClawHub skips its publish instead of failing the npm releases.
-          state="$(curl -sS "$url" | jq -r '.state // "unknown"' 2> /dev/null || echo unknown)"
-          echo "@artil-ai/openclaw has $version, ClawHub has it $state"
+          else state="$(jq -r '.state // "unknown"' publication.json 2> /dev/null || echo unknown)"; fi
+          echo "@artil/openclaw has $version, ClawHub has it $state"
           echo "unpublished=$([ "$state" = absent ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
   release:
@@ -99,12 +102,16 @@ jobs:
       - name: Build the plugin
         working-directory: plugins/openclaw
         run: bun run build
+      # ClawHub publishes a package only under the publisher its scope names, and npm's @artil is taken.
+      - name: Name the plugin for the artil publisher
+        working-directory: plugins/openclaw
+        run: jq '.name = "@artil/openclaw"' package.json > package.json.tmp && mv package.json.tmp package.json
       # Waits for ClawHub's security checks, so a blocked release fails the job.
       - name: Publish to ClawHub
         env:
           CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
         run: |
           npx --yes clawhub@0.23.3 login --token "$CLAWHUB_TOKEN"
-          npx --yes clawhub@0.23.3 package publish plugins/openclaw --family code-plugin --owner artil-ai \
+          npx --yes clawhub@0.23.3 package publish plugins/openclaw --family code-plugin --owner artil \
             --source-repo "$GITHUB_REPOSITORY" --source-commit "$GITHUB_SHA" --source-ref "$GITHUB_REF_NAME" \
             --source-path plugins/openclaw --wait

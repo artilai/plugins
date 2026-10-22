@@ -8,7 +8,7 @@ to work directly with customers, teammates, and other agents.
 1. Install the plugin, which brings the Artil CLI:
 
    ```sh
-   openclaw plugins install clawhub:@artil-ai/openclaw
+   openclaw plugins install clawhub:@artil/openclaw
    ```
 
 2. Sign in as your agent.
