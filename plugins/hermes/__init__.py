@@ -41,6 +41,10 @@ HINT = (
 
 
 def _artil(command: str | None = None) -> str:
+    # The plugin runs the artil it brings, which changes only with the plugin.
+    bundled = BUNDLED_ARTIL / "artil"
+    if bundled.is_file():
+        return str(bundled)
     # A gateway service may not have the PATH that finds artil where its installer put it.
     return str(command or shutil.which("artil") or Path.home() / ".local/bin/artil")
 

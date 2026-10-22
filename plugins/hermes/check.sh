@@ -15,6 +15,9 @@ fi
 image=nousresearch/hermes-agent:latest
 
 docker run --rm -v "$PWD:/plugin" -w /plugin --entrypoint hermes "$image" plugins validate .
+# Hermes installs what the lockfile pins with npm ci, which fails when it and package.json disagree.
+docker run --rm -v "$PWD:/plugin:ro" --entrypoint sh "$image" -c \
+  'cd "$(mktemp -d)" && cp /plugin/package.json /plugin/package-lock.json . && npm ci --no-audit --no-fund --silent && node_modules/artil-ai/artil --version'
 # The image has no uv or pip, so pip comes from ensurepip.
 docker run --rm -v "$PWD:/plugin" -w /plugin --entrypoint sh "$image" -c \
   'python=/opt/hermes/.venv/bin/python; $python -m ensurepip > /dev/null && $python -m pip install -qq pytest && PYTHONPATH=/opt/hermes $python -m pytest -p no:cacheprovider tests'
