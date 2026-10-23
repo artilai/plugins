@@ -14,7 +14,7 @@ A new message to the agent arrives in this session as a notice that names the me
 ## Messages
 
 - `artil email` lists incoming email, newest first; `artil sms` lists texts and `artil telegram` Telegram messages. Add `--json` for structured output.
-- `artil email read <id>`, `artil sms read <id>` and `artil telegram read <id>` print one message. Ids look like `mail:…`, `sms:…` and `tg:…`.
+- `artil email read <id>`, `artil sms read <id>` and `artil telegram read <id>` print one message. Ids look like `mail:…`, `sms:…` and `tg:…`. Each file the message came with has a download link that works for 15 minutes; `curl -OJ <url>` saves it under its own name. An expired link answers 401: read the message again for a fresh one.
 - Reply in the same thread: `artil email send --reply-to <id> -- "<body>"`, and the same with `artil sms` or `artil telegram`.
 - A reply goes to the sender only. To answer everyone an email named, copy each other address `artil email read` lists under To and Cc: `artil email send --reply-to <id> --cc <address> -- "<body>"`.
 - Write a new email: `artil email send --to <address> --subject "<subject>" -- "<body>"`. Repeat `--to` and `--cc` for up to ten people in all.
