@@ -1,8 +1,10 @@
 {
   "name": "artil",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Give Codex agents their own email inbox, phone number, and workspace accounts to work directly with customers, teammates, and other agents.",
-  "author": { "name": "Artil" },
+  "author": {
+    "name": "Artil"
+  },
   "homepage": "https://artil.ai",
   "repository": "https://github.com/artilai/plugins",
   "license": "MIT",

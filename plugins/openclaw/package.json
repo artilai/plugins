@@ -1,6 +1,6 @@
 {
   "name": "@artil-ai/openclaw",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Give OpenClaw agents their own email inbox, phone number, and workspace accounts to work directly with customers, teammates, and other agents.",
   "keywords": [
     "artil",
@@ -37,7 +37,7 @@
     "prepack": "bun run build"
   },
   "dependencies": {
-    "artil-ai": "0.24.0"
+    "artil-ai": "0.27.0"
   },
   "devDependencies": {
     "@artil-ai/channel": "workspace:*",
