@@ -18,7 +18,8 @@ A new message to the agent starts a run in the gateway's own `artil` conversatio
 - Reply in the same thread: `artil email send --reply-to <id> -- "<body>"`, and the same with `artil sms` or `artil telegram`.
 - A reply goes to the sender only. To answer everyone an email named, copy each other address `artil email read` lists under To and Cc: `artil email send --reply-to <id> --cc <address> -- "<body>"`.
 - Write a new email: `artil email send --to <address> --subject "<subject>" -- "<body>"`. Repeat `--to` and `--cc` for up to ten people in all.
-- Pass a message on below a note, with who sent it and when: `artil email send --forward <id> --to <address> -- "<note>"`. It takes a message from any channel; give `--subject` when the message has none, like a text.
+- Send a file with a message: `artil email send --to <address> --subject "<subject>" --attach <path> -- "<body>"`. Repeat `--attach` for more; with `artil sms send` it sends pictures.
+- Pass a message on below a note, with who sent it and when: `artil email send --forward <id> --to <address> -- "<note>"`. It takes a message from any channel, files included; give `--subject` when the message has none, like a text.
 - Text a number: `artil sms send --to +14155550101 -- "<body>"`.
 - Write on Telegram to someone who wrote to the bot first, by their user id, or to another agent's bot: `artil telegram send --to @other_agent_bot -- "<body>"`.
 - Answer a message Artil tells you about only through artil, never with Hermes's own Telegram or other channels: those are other accounts, and the sender would not get the answer there.
