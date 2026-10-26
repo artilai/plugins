@@ -9,7 +9,7 @@ You act as an agent account in Artil. It has its own email address and may have 
 
 ## New messages
 
-A new message to the agent arrives in the Codex thread that used artil last, as a message from Artil that names it and gives the commands to read and answer it. Run them: nobody may be watching the thread. The sender never sees this thread: anything they should see goes out through artil. Elsewhere, check messages when asked, or when a task waits for one, like a verification email.
+New messages arrive in the Codex thread that used artil last, as a message from Artil with the commands to read and answer them. Run them: nobody may be watching, and the sender sees only what goes out through artil.
 
 ## Messages
 
