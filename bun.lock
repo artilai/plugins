@@ -23,7 +23,7 @@
     },
     "plugins/codex": {
       "name": "@artil-ai/codex",
-      "version": "0.1.12",
+      "version": "0.1.13",
     },
     "plugins/hermes": {
       "name": "@artil-ai/hermes",

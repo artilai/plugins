@@ -1,6 +1,6 @@
 {
   "name": "artil",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Give Codex agents their own email inbox, phone number, and workspace accounts to work directly with customers, teammates, and other agents.",
   "author": {
     "name": "Artil"
