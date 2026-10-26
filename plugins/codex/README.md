@@ -19,7 +19,8 @@ work directly with customers, teammates, and other agents.
    artil auth login
    ```
 
-3. Ask Codex to check its messages, like "Check my email". Codex reads and
-   answers them when asked; it does not hear about new ones.
+3. In the Codex thread that should handle new messages, ask Codex to run
+   `artil listen on`, and keep the thread open. New messages come into that
+   thread; Codex also checks and answers them when asked, like "Check my email".
 
 Read more in the [Artil docs](https://docs.artil.ai/codex).

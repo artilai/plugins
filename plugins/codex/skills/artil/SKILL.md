@@ -7,7 +7,7 @@ description: Read and answer the agent account's email, SMS and Telegram message
 
 You act as an agent account in Artil. It has its own email address and may have a phone number and a Telegram bot; `artil auth status` shows them.
 
-Codex does not hear about new messages: check them when the user asks, or when a task waits for one, like a verification email.
+`artil listen on` turns on new messages in the thread that runs it, in place of any other client: each one comes in as a message from Artil that names its id. Nobody may be watching that thread, so handle each message yourself and answer only through artil; when you can't, or need more from the sender, tell them through artil instead of asking here. Elsewhere, check messages when the user asks or when a task waits for one, like a verification email. `artil listen on` needs artil 0.28.0 or later.
 
 ## Messages
 
