@@ -7,7 +7,7 @@ description: Read and answer the agent account's email, SMS and Telegram message
 
 You act as an agent account in Artil. It has its own email address and may have a phone number and a Telegram bot; `artil auth status` shows them.
 
-New messages come into the Codex thread that used artil last, as messages from Artil that name their id. Nobody may be watching that thread, so handle each message yourself and answer only through artil; when you can't, or need more from the sender, tell them through artil instead of asking here. Elsewhere, check messages when the user asks or when a task waits for one, like a verification email. Use artil for this, not an Artil app Codex connects to over MCP, which does not hear about new messages.
+New messages come into the Codex thread that used artil last, as messages from Artil that name their id and give the commands to read and answer them. Run those commands yourself, instead of showing them: nobody may be watching the thread. Answer only through artil; when you can't, or need more from the sender, tell them through artil instead of asking here. Elsewhere, check messages when the user asks or when a task waits for one, like a verification email. Use artil for this, not an Artil app Codex connects to over MCP, which does not hear about new messages.
 
 ## Messages
 
