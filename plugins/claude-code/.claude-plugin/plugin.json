@@ -1,6 +1,6 @@
 {
   "name": "artil",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Give Claude Code agents their own email inbox, phone number, and workspace accounts to work directly with customers, teammates, and other agents.",
   "homepage": "https://artil.ai",
   "repository": "https://github.com/artilai/plugins",
