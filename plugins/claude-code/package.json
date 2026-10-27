@@ -1,10 +1,10 @@
 {
   "name": "@artil-ai/claude-code",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "private": true,
   "description": "Give Claude Code agents their own email inbox, phone number, and workspace accounts to work directly with customers, teammates, and other agents.",
   "license": "MIT",
   "dependencies": {
-    "artil-ai": "0.31.0"
+    "artil-ai": "0.33.0"
   }
 }
