@@ -76,8 +76,11 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v7
+      # uv only runs the ruff check.sh pins, which has no lockfile to key a cache on.
       - name: Set up uv
         uses: astral-sh/setup-uv@v10.3.0
+        with:
+          enable-cache: false
       - name: Lint, validate and test the plugin inside the Hermes image
         run: plugins/hermes/check.sh
 
