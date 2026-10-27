@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@artil-ai/channel": "workspace:*",
-    "openclaw": "2026.10.5"
+    "openclaw": "2026.10.7"
   },
   "peerDependencies": {
     "openclaw": ">=2026.9.8"
