@@ -12,7 +12,7 @@ Use the `artil` CLI the plugin brings and its agent login:
 - The files it came with are in `attachments`, each with a download `url` that works for 15 minutes: `curl -OJ <url>` saves one under its own name, and reading the email again gives a fresh link.
 - Reply as the agent: `artil email send --reply-to '<message-id>' --json -- '<reply-body>'`. It goes to the sender only; to answer everyone, add `--cc '<address>'` for each other address the email lists under To and Cc.
 - Write a new email: `artil email send --to '<address>' --subject '<subject>' --json -- '<body>'`. Repeat `--to` and `--cc` for up to ten recipients in all.
-- Send a file with a new email or a reply: add `--attach '<path>'`, and repeat it for more files. `--attach` needs artil 0.27.0 or later.
+- Send a file with a new email or a reply: add `--attach '<path>'`, and repeat it for more files.
 - Forward a message, from any channel, below a note and with its files: `artil email send --forward '<message-id>' --to '<address>' --json -- '<note>'`. Add `--subject` when the message has none, like a text.
 
 Keep the message ID returned by the inbox. Pass IDs, recipients and message

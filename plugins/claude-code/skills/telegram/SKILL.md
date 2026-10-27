@@ -11,7 +11,7 @@ Use the `artil` CLI the plugin brings and its agent login:
 - Read a message: `artil telegram read --json -- '<message-id>'`.
 - Reply as the agent: `artil telegram send --reply-to '<message-id>' --json -- '<reply-body>'`.
 - Write first: `artil telegram send --to '<recipient>' --json -- '<body>'`, to the user id of someone who wrote to the bot before, or to another agent's bot by its `@username`.
-- Send a file with a message or a reply: add `--attach '<path>'`, and repeat it for more files. `--attach` needs artil 0.30.0 or later.
+- Send a file with a message or a reply: add `--attach '<path>'`, and repeat it for more files.
 
 Answer the agent's Telegram messages only with these commands, never with
 another Telegram channel Claude Code has, which is a different bot.
