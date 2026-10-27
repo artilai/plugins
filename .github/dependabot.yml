@@ -7,6 +7,8 @@ updates:
       interval: "weekly"
     ignore:
       - dependency-name: "@types/bun"
+      # A release pins a new artil together with the plugins' versions and their npm lockfiles.
+      - dependency-name: "artil-ai"
     groups:
       bun-minor-and-patch:
         patterns:
