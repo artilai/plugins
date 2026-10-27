@@ -92,6 +92,14 @@ jobs:
         uses: actions/checkout@v7
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
+      # The artil the plugins bring runs on Node.js.
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      # Codex brings no artil, so its skill runs the released one.
       - name: Install the artil CLI
         run: |
           curl -fsSL https://artil.ai/install.sh | bash
