@@ -1,7 +1,7 @@
 name: artil
 label: Artil
 kind: platform
-version: 0.3.5
+version: 0.3.6
 description: >
   Give Hermes agents their own email inbox, phone number, and workspace accounts
   to work directly with customers, teammates, and other agents.
