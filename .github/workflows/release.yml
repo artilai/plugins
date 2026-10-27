@@ -48,6 +48,10 @@ jobs:
           # An unreachable ClawHub skips its publish instead of failing the npm releases.
           else state="$(jq -r '.state // "unknown"' publication.json 2> /dev/null || echo unknown)"; fi
           echo "@artil/openclaw has $version, ClawHub has it $state"
+          # ClawHub checks a version on its own time, which can take hours, so a run says how it went.
+          if [ "$state" != absent ] && [ "$state" != published ]; then
+            echo "::warning::ClawHub has @artil/openclaw@$version $state"
+          fi
           echo "unpublished=$([ "$state" = absent ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
   release:
@@ -78,16 +82,21 @@ jobs:
         run: npm install --global npm@11
       - name: Install dependencies
         run: bun install --frozen-lockfile
+      # npm can show the version a release just before this one published as missing for a few
+      # minutes, so a version it already has counts as published.
       - name: Publish to npm
         working-directory: ${{ matrix.package }}
-        run: npm publish
+        run: |
+          if npm publish > "$RUNNER_TEMP/publish.log" 2>&1; then cat "$RUNNER_TEMP/publish.log"; exit 0; fi
+          cat "$RUNNER_TEMP/publish.log"
+          grep -q "cannot publish over the previously published versions" "$RUNNER_TEMP/publish.log"
 
   clawhub:
     name: Publish plugins/openclaw to ClawHub
     needs: check
     if: needs.check.outputs.clawhub == 'true'
     runs-on: ubuntu-26.04
-    timeout-minutes: 40
+    timeout-minutes: 10
     steps:
       - name: Check out code
         uses: actions/checkout@v7
@@ -106,7 +115,7 @@ jobs:
       - name: Name the plugin for the artil publisher
         working-directory: plugins/openclaw
         run: jq '.name = "@artil/openclaw"' package.json > package.json.tmp && mv package.json.tmp package.json
-      # Waits for ClawHub's security checks, so a blocked release fails the job.
+      # Hands the version to ClawHub, whose security checks finish later; the next run reports them.
       - name: Publish to ClawHub
         env:
           CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
@@ -114,4 +123,4 @@ jobs:
           npx --yes clawhub@0.23.3 login --token "$CLAWHUB_TOKEN"
           npx --yes clawhub@0.23.3 package publish plugins/openclaw --family code-plugin --owner artil \
             --source-repo "$GITHUB_REPOSITORY" --source-commit "$GITHUB_SHA" --source-ref "$GITHUB_REF_NAME" \
-            --source-path plugins/openclaw --wait
+            --source-path plugins/openclaw
