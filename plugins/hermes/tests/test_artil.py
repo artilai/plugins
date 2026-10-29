@@ -3,6 +3,8 @@ from __future__ import annotations
 import argparse
 import asyncio
 import getpass
+import json
+import logging
 import os
 import signal
 from pathlib import Path
@@ -51,37 +53,81 @@ def test_registers_the_artil_platform_with_a_hint_on_answering():
     assert "artil email send --reply-to" in context.entry["platform_hint"]
 
 
-def test_lets_artil_itself_through_the_gateways_sender_allowlist(tmp_path):
+def test_leaves_who_may_wake_the_agent_to_hermes_and_artil(tmp_path):
     adapter, _ = adapter_running(str(tmp_path / "artil"))
 
-    assert adapter.config.extra["allow_from"] == ["artil"]
+    assert "trusted_inbound" not in context.entry
+    assert context.entry["allowed_users_env"] == "ARTIL_ALLOWED_USERS"
+    assert context.entry["allow_all_env"] == "ARTIL_ALLOW_ALL_USERS"
+    assert context.entry["pii_safe"] is True
+    assert adapter._dm_policy == "allowlist"
+    assert "allow_from" not in adapter.config.extra
 
 
-def test_hands_each_notice_to_the_gateway_until_it_disconnects(tmp_path):
+def notice(content: str, sender: dict[str, str | None] | None, message_id: str = "mail:1") -> str:
+    meta = {"message_id": message_id, "channel": "email"}
+    if sender is not None:
+        meta["sender"] = sender
+    return json.dumps({"content": content, "meta": meta})
+
+
+def test_hands_each_notice_to_the_gateway_as_its_sender_until_it_disconnects(tmp_path):
+    ada = notice("Ada sent an email", {"id": "ada@example.com", "name": "Ada", "admission": "team"})
+    stranger = notice(
+        "Someone sent an email",
+        {"id": "x@example.org", "name": None, "admission": "anyone"},
+        "mail:2",
+    )
     artil = artil_running(
         tmp_path,
-        """echo "$*" > "$0.args"; """
-        """printf '%s\\n' '{"content":"Ada sent an email","meta":{"message_id":"mail:1"}}'; exec cat""",
+        f"""echo "$*" > "$0.args"; printf '%s\\n' '{ada}' '{stranger}'; exec cat""",
     )
 
     async def scenario():
         adapter, events = adapter_running(artil)
 
         assert await adapter.connect()
-        await eventually(lambda: events)
+        await eventually(lambda: len(events) == 2)
         await adapter.disconnect()
 
         return adapter, events
 
-    adapter, [event] = asyncio.run(scenario())
+    adapter, [event, other] = asyncio.run(scenario())
 
     assert event.text == "Ada sent an email"
     assert event.message_id == "mail:1"
-    assert event.source.chat_id == "artil"
-    assert event.source.user_id == "artil"
+    assert event.source.chat_id == "ada@example.com"
+    assert event.source.user_id == "ada@example.com"
+    assert event.source.user_name == "Ada"
+    assert event.source.chat_type == "dm"
+    assert event.source.role_authorized is True
     assert event.allow_gateway_control is False
+    assert other.source.user_id == "x@example.org"
+    assert other.source.user_name == "x@example.org"
+    assert other.source.role_authorized is False
     assert (tmp_path / "artil.args").read_text() == "internal hermes-channel\n"
     assert not adapter.has_fatal_error
+
+
+def test_keeps_a_notice_that_names_no_sender_from_the_agent(tmp_path, caplog):
+    artil = artil_running(
+        tmp_path, f"""printf '%s\\n' '{notice("An email arrived", None)}'; exec cat"""
+    )
+
+    async def scenario():
+        adapter, events = adapter_running(artil)
+
+        assert await adapter.connect()
+        await eventually(lambda: "update artil" in caplog.text)
+        await adapter.disconnect()
+
+        return events
+
+    with caplog.at_level(logging.WARNING):
+        events = asyncio.run(scenario())
+
+    assert events == []
+    assert "artil did not say who sent mail:1" in caplog.text
 
 
 def test_fails_to_connect_with_the_reason_artil_gave_and_tries_again(tmp_path):
