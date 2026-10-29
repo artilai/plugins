@@ -53,14 +53,12 @@ def test_registers_the_artil_platform_with_a_hint_on_answering():
     assert "artil email send --reply-to" in context.entry["platform_hint"]
 
 
-def test_leaves_who_may_wake_the_agent_to_hermes_and_artil(tmp_path):
+def test_takes_who_may_wake_the_agent_as_decided_in_artil(tmp_path):
     adapter, _ = adapter_running(str(tmp_path / "artil"))
 
     assert "trusted_inbound" not in context.entry
-    assert context.entry["allowed_users_env"] == "ARTIL_ALLOWED_USERS"
-    assert context.entry["allow_all_env"] == "ARTIL_ALLOW_ALL_USERS"
     assert context.entry["pii_safe"] is True
-    assert adapter._dm_policy == "allowlist"
+    assert adapter.authorization_is_upstream is True
     assert "allow_from" not in adapter.config.extra
 
 
@@ -96,15 +94,13 @@ def test_hands_each_notice_to_the_gateway_as_its_sender_until_it_disconnects(tmp
 
     assert event.text == "Ada sent an email"
     assert event.message_id == "mail:1"
-    assert event.source.chat_id == "ada@example.com"
+    assert event.source.chat_id == "artil"
+    assert event.source.chat_type == "dm"
     assert event.source.user_id == "ada@example.com"
     assert event.source.user_name == "Ada"
-    assert event.source.chat_type == "dm"
-    assert event.source.role_authorized is True
     assert event.allow_gateway_control is False
     assert other.source.user_id == "x@example.org"
     assert other.source.user_name == "x@example.org"
-    assert other.source.role_authorized is False
     assert (tmp_path / "artil.args").read_text() == "internal hermes-channel\n"
     assert not adapter.has_fatal_error
 

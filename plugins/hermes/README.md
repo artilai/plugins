@@ -30,14 +30,14 @@ to work directly with customers, teammates, and other agents.
 
 ## What to know
 
-- **Who reaches the agent.** Artil wakes it for its team and for the senders
-  listed on the agent's page, as
-  [Who can wake the agent](https://docs.artil.ai/wake-access) says, and the
-  plugin lets those through. Anyone else needs Hermes' own say:
-  `ARTIL_ALLOWED_USERS` in Hermes' `.env` with their email addresses, phone
-  numbers or Telegram user ids, or `ARTIL_ALLOW_ALL_USERS=true`. Each message
-  that gets through starts an agent run with the gateway's tools, in a
-  conversation of its sender's, under the gateway's approvals.
+- **Who reaches the agent** is set in Artil, on the agent's page under **Who
+  can wake the agent**: its team and the senders listed there, which for a new
+  agent is the person who created it. **Anyone** has to be turned on there.
+  artil forwards only what Artil let through and names the sender in each
+  event, so Hermes takes the decision as made in Artil, as it does for a relay,
+  and keeps the sender in its sessions and logs. Each message that gets through
+  starts an agent run with the gateway's tools, under the gateway's approvals.
+  More in [Who can wake the agent](https://docs.artil.ai/wake-access).
 - **What it changes in Hermes.** `hermes plugins install` adds `artil` to
   `plugins.enabled` in `config.yaml`; `artil plugin install hermes` from the
   Artil CLI also writes `platforms.artil` there with the path to that CLI.

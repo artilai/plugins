@@ -6,7 +6,6 @@ import argparse
 import asyncio
 import dataclasses
 import getpass
-import inspect
 import json
 import logging
 import os
@@ -34,23 +33,14 @@ SKILL = PLUGIN / "skills" / "artil" / "SKILL.md"
 
 HINT = (
     "Notices about new email, texts and Telegram messages to this Artil agent account, and "
-    "messages its team sends to its Message URL, arrive here, each sender in a conversation of "
-    "their own. A notice says who the sender is to you: on your team, on your list of senders, "
-    "or not verified as either. Read each email, text or Telegram message with the artil command "
-    "its notice names, and answer it with `artil email send --reply-to`, "
-    "`artil sms send --reply-to` or `artil telegram send --reply-to`; a message from the Message "
-    "URL comes whole, and its notice says how to answer it. Answer only through artil, never with "
-    "Hermes' own Telegram or other platforms, which are other accounts. Nobody outside reads what "
-    "you write in this conversation."
-)
-
-# Artil lets its team and listed senders through, which Hermes takes the way it takes a role grant;
-# anyone else needs ARTIL_ALLOWED_USERS or ARTIL_ALLOW_ALL_USERS in Hermes.
-ADMITTED_BY_ARTIL = {"team", "listed"}
-
-# Older Hermes cores take no role grant; there, every sender needs Hermes' own allowlist.
-SOURCE_TAKES_ROLES = (
-    "role_authorized" in inspect.signature(BasePlatformAdapter.build_source).parameters
+    "messages its team sends to its Message URL, arrive here. A notice says who the sender is to "
+    "you: on your team, on your list of senders, or not verified as either. Read each email, text "
+    "or Telegram message with the artil command its notice names, and answer it with "
+    "`artil email send --reply-to`, `artil sms send --reply-to` or "
+    "`artil telegram send --reply-to`; a message from the Message URL comes whole, and its notice "
+    "says how to answer it. Answer only through artil, never with Hermes' own Telegram or other "
+    "platforms, which are other accounts. Nobody outside reads what you write in this "
+    "conversation."
 )
 
 
@@ -64,7 +54,13 @@ def _artil(command: str | None = None) -> str:
 
 
 class ArtilAdapter(BasePlatformAdapter):
-    """Runs `artil internal hermes-channel` and hands each notice it prints to the gateway."""
+    """Runs `artil internal hermes-channel` and hands each notice it prints to the gateway.
+
+    Who may wake the agent is decided in Artil, on the agent's page: its team and the senders listed
+    there by default, anyone only once a person turns that on. artil connects to Artil with the
+    agent's own login and forwards what Artil let through, naming the sender, so the gateway takes
+    the decision as made upstream, the way it does for a relay, and keeps the sender in each event.
+    """
 
     # How long artil gets to stop, as it does at once when it cannot listen, before it counts as
     # connected.
@@ -74,15 +70,15 @@ class ArtilAdapter(BasePlatformAdapter):
     # How long artil gets to save where it left off once its input closes.
     STOP_TIMEOUT_SECONDS = 5.0
 
-    # Hermes would answer an unknown sender with a pairing code, which only artil could deliver and
-    # does not, so unknown senders are ignored instead.
-    _dm_policy = "allowlist"
-
     def __init__(self, config: PlatformConfig) -> None:
         super().__init__(config, Platform(PLATFORM))
         self._command = _artil((config.extra or {}).get("command"))
         self._process: asyncio.subprocess.Process | None = None
         self._listening: asyncio.Task | None = None
+
+    @property
+    def authorization_is_upstream(self) -> bool:
+        return True
 
     async def connect(self, *, is_reconnect: bool = False) -> bool:
         try:
@@ -159,28 +155,24 @@ class ArtilAdapter(BasePlatformAdapter):
         meta = notice.get("meta") or {}
         sender = meta.get("sender")
 
-        # Hermes decides who may wake the agent by the sender, so a notice naming none goes nowhere.
-        if sender is None:
+        # Every event names its sender for Hermes, so a notice naming none goes nowhere.
+        if not isinstance(sender, dict) or not sender.get("id"):
             logger.warning(
                 "artil did not say who sent %s, so it does not reach the agent; update artil",
                 meta.get("message_id") or "a message",
             )
             return
 
-        name = sender.get("name") or sender["id"]
-        admitted = {"role_authorized": sender.get("admission") in ADMITTED_BY_ARTIL}
-
         await self.handle_message(
             MessageEvent(
                 text=notice["content"],
                 message_type=MessageType.TEXT,
                 source=self.build_source(
-                    chat_id=sender["id"],
-                    chat_name=name,
+                    chat_id=PLATFORM,
+                    chat_name="Artil",
                     chat_type="dm",
                     user_id=sender["id"],
-                    user_name=name,
-                    **(admitted if SOURCE_TAKES_ROLES else {}),
+                    user_name=sender.get("name") or sender["id"],
                 ),
                 message_id=meta.get("message_id"),
                 allow_gateway_control=False,
@@ -214,7 +206,7 @@ class ArtilAdapter(BasePlatformAdapter):
         return SendResult(success=True)
 
     async def get_chat_info(self, chat_id: str) -> dict[str, Any]:
-        return {"name": chat_id, "type": "dm"}
+        return {"name": "Artil", "type": "dm"}
 
 
 def _needs_nothing() -> bool:
@@ -270,10 +262,7 @@ def register(ctx: Any) -> None:
         platform_hint=HINT,
         allow_update_command=False,
         emoji="📨",
-        # Hermes keeps its own say over who wakes the agent: these name its allowlist, and phone
-        # numbers stay out of what it shows about a session.
-        allowed_users_env="ARTIL_ALLOWED_USERS",
-        allow_all_env="ARTIL_ALLOW_ALL_USERS",
+        # Senders include phone numbers, which stay out of what Hermes shows about a session.
         pii_safe=True,
         **_later_fields(),
     )
