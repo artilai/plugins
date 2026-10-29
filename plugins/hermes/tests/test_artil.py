@@ -10,7 +10,7 @@ import signal
 from pathlib import Path
 
 import pytest
-from gateway.config import PlatformConfig
+from gateway.config import Platform, PlatformConfig
 
 from conftest import context, plugin
 
@@ -63,6 +63,51 @@ def test_leaves_who_may_wake_the_agent_to_hermes(tmp_path):
     assert context.entry["pii_safe"] is True
     assert adapter.authorization_is_upstream is False
     assert "allow_from" not in adapter.config.extra
+
+
+def hermes_deciding(adapter):
+    """A gateway runner with just what its authorization reads: our adapter and no pairing store."""
+    from gateway.run import GatewayRunner
+
+    runner = object.__new__(GatewayRunner)
+    runner.pairing_store = None
+    runner.adapters = {Platform(plugin.PLATFORM): adapter}
+    return runner
+
+
+def source_of(adapter, sender: str):
+    return adapter.build_source(
+        chat_id="artil", chat_name="Artil", chat_type="dm", user_id=sender, user_name=sender
+    )
+
+
+def test_hermes_refuses_a_sender_until_its_own_allowlist_names_them(tmp_path, monkeypatch):
+    for name in (
+        "ARTIL_ALLOWED_USERS",
+        "ARTIL_ALLOW_ALL_USERS",
+        "GATEWAY_ALLOWED_USERS",
+        "GATEWAY_ALLOW_ALL_USERS",
+    ):
+        monkeypatch.delenv(name, raising=False)
+    adapter, _ = adapter_running(str(tmp_path / "artil"))
+    hermes = hermes_deciding(adapter)
+    artil = Platform(plugin.PLATFORM)
+    ada = source_of(adapter, "ada@example.com")
+    stranger = source_of(adapter, "+14155550101")
+
+    assert hermes._is_user_authorized(ada) is False
+    assert hermes._get_unauthorized_dm_behavior(artil) == "pair"
+
+    monkeypatch.setenv("ARTIL_ALLOWED_USERS", "ada@example.com")
+
+    assert hermes._is_user_authorized(ada) is True
+    assert hermes._is_user_authorized(stranger) is False
+    assert hermes._get_unauthorized_dm_behavior(artil) == "ignore"
+
+    monkeypatch.delenv("ARTIL_ALLOWED_USERS")
+    monkeypatch.setenv("ARTIL_ALLOW_ALL_USERS", "true")
+
+    assert hermes._is_user_authorized(stranger) is True
 
 
 def notice(content: str, sender: dict[str, str | None] | None, message_id: str = "mail:1") -> str:
