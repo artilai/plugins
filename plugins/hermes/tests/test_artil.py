@@ -53,12 +53,15 @@ def test_registers_the_artil_platform_with_a_hint_on_answering():
     assert "artil email send --reply-to" in context.entry["platform_hint"]
 
 
-def test_takes_who_may_wake_the_agent_as_decided_in_artil(tmp_path):
+def test_leaves_who_may_wake_the_agent_to_hermes(tmp_path):
     adapter, _ = adapter_running(str(tmp_path / "artil"))
 
     assert "trusted_inbound" not in context.entry
+    assert context.entry["allowed_users_env"] == "ARTIL_ALLOWED_USERS"
+    assert context.entry["allow_all_env"] == "ARTIL_ALLOW_ALL_USERS"
+    assert context.entry["allowlist_suppresses_pairing"] is True
     assert context.entry["pii_safe"] is True
-    assert adapter.authorization_is_upstream is True
+    assert adapter.authorization_is_upstream is False
     assert "allow_from" not in adapter.config.extra
 
 

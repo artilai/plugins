@@ -30,14 +30,18 @@ to work directly with customers, teammates, and other agents.
 
 ## What to know
 
-- **Who reaches the agent** is set in Artil, on the agent's page under **Who
-  can wake the agent**: its team and the senders listed there, which for a new
-  agent is the person who created it. **Anyone** has to be turned on there.
-  artil forwards only what Artil let through and names the sender in each
-  event, so Hermes takes the decision as made in Artil, as it does for a relay,
-  and keeps the sender in its sessions and logs. Each message that gets through
-  starts an agent run with the gateway's tools, under the gateway's approvals.
-  More in [Who can wake the agent](https://docs.artil.ai/wake-access).
+- **Who reaches the agent.** Artil forwards only what the agent's page lets
+  through under **Who can wake the agent**: its team and the senders listed
+  there, with **Anyone** an explicit choice; see
+  [Who can wake the agent](https://docs.artil.ai/wake-access). Each event then
+  names its sender, an email address, phone number, Telegram user id or
+  teammate, and Hermes decides as for every chat platform: nobody reaches the
+  agent until you list senders in `ARTIL_ALLOWED_USERS` in Hermes' `.env`,
+  approve one Hermes reports with `hermes pairing approve artil <request-id>`
+  (`hermes pairing list` shows them; artil cannot deliver the code to the
+  sender), or set `ARTIL_ALLOW_ALL_USERS=true` to leave the choice to Artil's
+  list. Each message that gets through starts an agent run with the gateway's
+  tools, under the gateway's approvals.
 - **What it changes in Hermes.** `hermes plugins install` adds `artil` to
   `plugins.enabled` in `config.yaml`; `artil plugin install hermes` from the
   Artil CLI also writes `platforms.artil` there with the path to that CLI.

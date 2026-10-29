@@ -56,10 +56,11 @@ def _artil(command: str | None = None) -> str:
 class ArtilAdapter(BasePlatformAdapter):
     """Runs `artil internal hermes-channel` and hands each notice it prints to the gateway.
 
-    Who may wake the agent is decided in Artil, on the agent's page: its team and the senders listed
-    there by default, anyone only once a person turns that on. artil connects to Artil with the
-    agent's own login and forwards what Artil let through, naming the sender, so the gateway takes
-    the decision as made upstream, the way it does for a relay, and keeps the sender in each event.
+    Artil forwards only what the agent's page lets through, its team and listed senders by default,
+    and each event names that sender, so the gateway decides who reaches the agent the way it does
+    for every chat platform: by ARTIL_ALLOWED_USERS, ARTIL_ALLOW_ALL_USERS and pairing. A pairing
+    code goes nowhere, since artil cannot answer senders, but the owner approves the request Hermes
+    lists all the same.
     """
 
     # How long artil gets to stop, as it does at once when it cannot listen, before it counts as
@@ -75,10 +76,6 @@ class ArtilAdapter(BasePlatformAdapter):
         self._command = _artil((config.extra or {}).get("command"))
         self._process: asyncio.subprocess.Process | None = None
         self._listening: asyncio.Task | None = None
-
-    @property
-    def authorization_is_upstream(self) -> bool:
-        return True
 
     async def connect(self, *, is_reconnect: bool = False) -> bool:
         try:
@@ -216,7 +213,9 @@ def _needs_nothing() -> bool:
 def _later_fields() -> dict[str, Any]:
     """The entry fields Hermes after 0.21.5 knows, which 0.21.5 itself rejects."""
     known = {field.name for field in dataclasses.fields(PlatformEntry)}
-    wanted = {"display_tier": "minimal"}
+    # A configured allowlist means the owner chose who gets in: unknown senders are then ignored
+    # rather than offered a pairing code, as on every bundled chat platform.
+    wanted = {"display_tier": "minimal", "allowlist_suppresses_pairing": True}
     return {name: value for name, value in wanted.items() if name in known}
 
 
@@ -262,7 +261,10 @@ def register(ctx: Any) -> None:
         platform_hint=HINT,
         allow_update_command=False,
         emoji="📨",
-        # Senders include phone numbers, which stay out of what Hermes shows about a session.
+        # Hermes keeps its own say over who wakes the agent through these, as on every chat
+        # platform; senders include phone numbers, which stay out of what it shows about a session.
+        allowed_users_env="ARTIL_ALLOWED_USERS",
+        allow_all_env="ARTIL_ALLOW_ALL_USERS",
         pii_safe=True,
         **_later_fields(),
     )
