@@ -38,27 +38,30 @@ to work directly with customers, teammates, and other agents.
 
 ## What to know
 
-- **Who reaches the agent.** Artil forwards only what the agent's page lets
-  through under **Who can wake the agent**: its team and the senders listed
-  there, with **Anyone** an explicit choice; see
-  [Who can wake the agent](https://docs.artil.ai/wake-access). Each event then
-  names its sender, an email address, phone number, Telegram user id or
-  teammate, and Hermes decides as for every chat platform: nobody reaches the
-  agent until you list senders in `ARTIL_ALLOWED_USERS` in Hermes' `.env`,
-  approve one Hermes reports with `hermes pairing approve artil <request-id>`
-  (`hermes pairing list` shows them; artil cannot deliver the code to the
-  sender), or set `ARTIL_ALLOW_ALL_USERS=true` to leave the choice to Artil's
-  list. Each message that gets through starts an agent run with the gateway's
-  tools, under the gateway's approvals.
-- **What it changes in Hermes.** `hermes plugins install` adds `artil` to
-  `plugins.enabled` in `config.yaml`; `artil plugin install hermes` from the
-  Artil CLI also writes `platforms.artil` there with the path to that CLI.
-  Nothing else is written: the agent's sign-in stays with the artil CLI in
-  `~/.config/artil`, and the plugin holds no credentials.
-- **While the gateway runs,** the plugin keeps `artil internal hermes-channel`
-  running, which holds a connection to Artil's API after `hermes artil listen
-  on` and hands each new message to the gateway. `hermes artil listen off`
-  stops it. The CLI the plugin brings never updates itself; it changes only
-  with the plugin.
+**Who reaches the agent.** Two gates, in order:
+
+1. Artil forwards only what the agent's page allows under **Who can wake the
+   agent**: its team and listed senders; **Anyone** is an explicit choice there.
+   See [Who can wake the agent](https://docs.artil.ai/wake-access).
+2. Hermes decides, as for every chat platform, by the sender each event names:
+   an email address, phone number, Telegram user id or teammate.
+   `hermes gateway setup` asks once which way:
+   - `ARTIL_ALLOW_ALL_USERS=true` leaves it to Artil's list;
+   - `ARTIL_ALLOWED_USERS` names the senders;
+   - otherwise each sender waits in `hermes pairing list` for
+     `hermes pairing approve artil <request-id>`; artil delivers no code.
+
+Each message that passes both starts an agent run with the gateway's tools,
+under the gateway's approvals.
+
+**What it writes in Hermes.** `hermes plugins install` adds `artil` to
+`plugins.enabled` in `config.yaml`; `artil plugin install hermes` also writes
+`platforms.artil` with the path to the Artil CLI. The sign-in stays with that
+CLI in `~/.config/artil`; the plugin holds no credentials.
+
+**What it runs.** `artil internal hermes-channel`, while the gateway runs: after
+`hermes artil listen on` it holds a connection to Artil and hands each new
+message to the gateway; `listen off` stops it. The CLI the plugin brings never
+updates itself.
 
 Read more in the [Artil docs](https://docs.artil.ai/hermes).
