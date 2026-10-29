@@ -210,6 +210,50 @@ def _needs_nothing() -> bool:
     return True
 
 
+# What hermes gateway setup asks about Artil, and the .env values each answer keeps.
+ACCESS_CHOICES = (
+    "Whoever the agent's page in Artil lets through (ARTIL_ALLOW_ALL_USERS=true)",
+    "Only these senders (ARTIL_ALLOWED_USERS)",
+    "Nobody yet: approve each sender Hermes reports with hermes pairing approve",
+)
+
+
+def _set_up() -> None:
+    """Asks who may wake the agent, in hermes gateway setup, and keeps the answer in Hermes' .env."""
+    from hermes_cli.cli_output import print_info, print_success
+    from hermes_cli.config import get_env_value
+    from hermes_cli.gateway_setup_wizard import print_setup_header, prompt_csv, save_env_values
+    from hermes_cli.setup import prompt_choice
+
+    print_setup_header("📨 Artil")
+    print_info("  Artil wakes the agent for its team and the senders listed on the agent's page.")
+    print_info("  Hermes decides whether such a sender may start a run here.")
+    allowed = get_env_value("ARTIL_ALLOWED_USERS")
+    if allowed:
+        print_info(f"  Current ARTIL_ALLOWED_USERS: {allowed}")
+    choice = prompt_choice("  Who may wake the agent?", list(ACCESS_CHOICES), 0)
+
+    if choice == 0:
+        save_env_values(ARTIL_ALLOW_ALL_USERS="true")
+        print_success("  The agent's page in Artil decides who wakes it.")
+    elif choice == 1:
+        senders = prompt_csv(
+            "  Email addresses, phone numbers or Telegram user ids, comma-separated", allowed or ""
+        )
+        if senders:
+            save_env_values(ARTIL_ALLOWED_USERS=senders, ARTIL_ALLOW_ALL_USERS="false")
+            print_success("  Only these senders wake the agent.")
+    else:
+        save_env_values(ARTIL_ALLOW_ALL_USERS="false")
+        print_info(
+            "  hermes pairing list shows who asked; approve with: hermes pairing approve artil <request-id>"
+        )
+
+    print_info(
+        "  Then sign in and turn new messages on: hermes artil auth login, hermes artil listen on"
+    )
+
+
 def _later_fields() -> dict[str, Any]:
     """The entry fields Hermes after 0.21.5 knows, which 0.21.5 itself rejects."""
     known = {field.name for field in dataclasses.fields(PlatformEntry)}
@@ -258,6 +302,7 @@ def register(ctx: Any) -> None:
         label="Artil",
         adapter_factory=ArtilAdapter,
         check_fn=_needs_nothing,
+        setup_fn=_set_up,
         platform_hint=HINT,
         allow_update_command=False,
         emoji="📨",

@@ -13,7 +13,15 @@ to work directly with customers, teammates, and other agents.
    hermes gateway restart
    ```
 
-2. Sign in as your agent.
+2. Choose who may wake the agent: pick **Artil** in the setup menu. The first
+   choice leaves it to the agent's page in Artil; the others name senders in
+   Hermes or approve them one by one.
+
+   ```sh
+   hermes gateway setup
+   ```
+
+3. Sign in as your agent.
    Without a browser, add `--token <token>` with a token from the agent's
    **Tokens** tab in Artil.
 
@@ -21,7 +29,7 @@ to work directly with customers, teammates, and other agents.
    hermes artil auth login
    ```
 
-3. Turn new messages on for the gateway, and off again when you want:
+4. Turn new messages on for the gateway, and off again when you want:
 
    ```sh
    hermes artil listen on

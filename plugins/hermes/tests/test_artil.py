@@ -329,6 +329,52 @@ def test_hermes_artil_runs_artil_with_its_arguments_and_exits_as_it_does(tmp_pat
     assert Path(f"{artil}.args").read_text() == "hermes auth login --token artil_secret\n"
 
 
+def set_up_choosing(monkeypatch, choice: int, senders: str = "") -> dict[str, str]:
+    import hermes_cli.cli_output
+    import hermes_cli.config
+    import hermes_cli.gateway_setup_wizard
+    import hermes_cli.setup
+
+    saved: dict[str, str] = {}
+    asked: list[str] = []
+    monkeypatch.setattr(hermes_cli.config, "get_env_value", lambda name: None)
+    monkeypatch.setattr(hermes_cli.gateway_setup_wizard, "print_setup_header", lambda title: None)
+    monkeypatch.setattr(
+        hermes_cli.gateway_setup_wizard, "save_env_values", lambda **v: saved.update(v)
+    )
+    monkeypatch.setattr(
+        hermes_cli.gateway_setup_wizard, "prompt_csv", lambda text, default: senders
+    )
+    monkeypatch.setattr(
+        hermes_cli.setup, "prompt_choice", lambda q, choices, default: asked.append(q) or choice
+    )
+    monkeypatch.setattr(hermes_cli.cli_output, "print_info", lambda text: None)
+    monkeypatch.setattr(hermes_cli.cli_output, "print_success", lambda text: None)
+
+    context.entry["setup_fn"]()
+
+    assert asked == ["  Who may wake the agent?"]
+    return saved
+
+
+def test_setup_lets_the_agents_page_in_artil_decide_by_default(monkeypatch):
+    assert set_up_choosing(monkeypatch, 0) == {"ARTIL_ALLOW_ALL_USERS": "true"}
+
+
+def test_setup_keeps_the_senders_named_instead(monkeypatch):
+    saved = set_up_choosing(monkeypatch, 1, "ada@example.com,+14155550101")
+
+    assert saved == {
+        "ARTIL_ALLOWED_USERS": "ada@example.com,+14155550101",
+        "ARTIL_ALLOW_ALL_USERS": "false",
+    }
+    assert set_up_choosing(monkeypatch, 1, "") == {}
+
+
+def test_setup_leaves_approving_senders_to_pairing(monkeypatch):
+    assert set_up_choosing(monkeypatch, 2) == {"ARTIL_ALLOW_ALL_USERS": "false"}
+
+
 def test_offers_the_artil_skill_with_the_description_its_file_gives():
     assert context.skill["name"] == "artil"
     assert context.skill["path"].read_text().startswith("---\nname: artil\n")
