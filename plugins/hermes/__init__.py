@@ -7,6 +7,7 @@ import asyncio
 import dataclasses
 import getpass
 import json
+import logging
 import os
 import shutil
 import signal
@@ -19,6 +20,8 @@ from gateway.config import Platform, PlatformConfig
 from gateway.platform_registry import PlatformEntry
 from gateway.platforms.base import BasePlatformAdapter, MessageEvent, MessageType, SendResult
 
+logger = logging.getLogger(__name__)
+
 PLATFORM = "artil"
 
 PLUGIN = Path(__file__).parent
@@ -30,8 +33,9 @@ SKILL = PLUGIN / "skills" / "artil" / "SKILL.md"
 
 HINT = (
     "Notices about new email, texts and Telegram messages to this Artil agent account, and "
-    "messages its team sends to its Message URL, arrive here. Read each email, text or Telegram "
-    "message with the artil command its notice names, and answer it with "
+    "messages its team sends to its Message URL, arrive here. A notice says who the sender is to "
+    "you: on your team, on your list of senders, or not verified as either. Read each email, text "
+    "or Telegram message with the artil command its notice names, and answer it with "
     "`artil email send --reply-to`, `artil sms send --reply-to` or "
     "`artil telegram send --reply-to`; a message from the Message URL comes whole, and its notice "
     "says how to answer it. Answer only through artil, never with Hermes' own Telegram or other "
@@ -50,7 +54,14 @@ def _artil(command: str | None = None) -> str:
 
 
 class ArtilAdapter(BasePlatformAdapter):
-    """Runs `artil internal hermes-channel` and hands each notice it prints to the gateway."""
+    """Runs `artil internal hermes-channel` and hands each notice it prints to the gateway.
+
+    Artil forwards only what the agent's page lets through, its team and listed senders by default,
+    and each event names that sender, so the gateway decides who reaches the agent the way it does
+    for every chat platform: by ARTIL_ALLOWED_USERS, ARTIL_ALLOW_ALL_USERS and pairing. A pairing
+    code goes nowhere, since artil cannot answer senders, but the owner approves the request Hermes
+    lists all the same.
+    """
 
     # How long artil gets to stop, as it does at once when it cannot listen, before it counts as
     # connected.
@@ -61,16 +72,8 @@ class ArtilAdapter(BasePlatformAdapter):
     STOP_TIMEOUT_SECONDS = 5.0
 
     def __init__(self, config: PlatformConfig) -> None:
-        config.extra = {**(config.extra or {}), "allow_from": [PLATFORM]}
         super().__init__(config, Platform(PLATFORM))
-        self._command = _artil(config.extra.get("command"))
-        self._source = self.build_source(
-            chat_id=PLATFORM,
-            chat_name="Artil",
-            chat_type="dm",
-            user_id=PLATFORM,
-            user_name="Artil",
-        )
+        self._command = _artil((config.extra or {}).get("command"))
         self._process: asyncio.subprocess.Process | None = None
         self._listening: asyncio.Task | None = None
 
@@ -147,12 +150,27 @@ class ArtilAdapter(BasePlatformAdapter):
 
     async def _deliver(self, notice: dict[str, Any]) -> None:
         meta = notice.get("meta") or {}
+        sender = meta.get("sender")
+
+        # Every event names its sender for Hermes, so a notice naming none goes nowhere.
+        if not isinstance(sender, dict) or not sender.get("id"):
+            logger.warning(
+                "artil did not say who sent %s, so it does not reach the agent; update artil",
+                meta.get("message_id") or "a message",
+            )
+            return
 
         await self.handle_message(
             MessageEvent(
                 text=notice["content"],
                 message_type=MessageType.TEXT,
-                source=self._source,
+                source=self.build_source(
+                    chat_id=PLATFORM,
+                    chat_name="Artil",
+                    chat_type="dm",
+                    user_id=sender["id"],
+                    user_name=sender.get("name") or sender["id"],
+                ),
                 message_id=meta.get("message_id"),
                 allow_gateway_control=False,
             )
@@ -192,10 +210,56 @@ def _needs_nothing() -> bool:
     return True
 
 
-def _service_fields() -> dict[str, Any]:
+# What hermes gateway setup asks about Artil, and the .env values each answer keeps.
+ACCESS_CHOICES = (
+    "Whoever the agent's page in Artil lets through (ARTIL_ALLOW_ALL_USERS=true)",
+    "Only these senders (ARTIL_ALLOWED_USERS)",
+    "Nobody yet: approve each sender Hermes reports with hermes pairing approve",
+)
+
+
+def _set_up() -> None:
+    """Asks who may wake the agent, in hermes gateway setup, and keeps the answer in Hermes' .env."""
+    from hermes_cli.cli_output import print_info, print_success
+    from hermes_cli.config import get_env_value
+    from hermes_cli.gateway_setup_wizard import print_setup_header, prompt_csv, save_env_values
+    from hermes_cli.setup import prompt_choice
+
+    print_setup_header("📨 Artil")
+    print_info("  Artil wakes the agent for its team and the senders listed on the agent's page.")
+    print_info("  Hermes decides whether such a sender may start a run here.")
+    allowed = get_env_value("ARTIL_ALLOWED_USERS")
+    if allowed:
+        print_info(f"  Current ARTIL_ALLOWED_USERS: {allowed}")
+    choice = prompt_choice("  Who may wake the agent?", list(ACCESS_CHOICES), 0)
+
+    if choice == 0:
+        save_env_values(ARTIL_ALLOW_ALL_USERS="true")
+        print_success("  The agent's page in Artil decides who wakes it.")
+    elif choice == 1:
+        senders = prompt_csv(
+            "  Email addresses, phone numbers or Telegram user ids, comma-separated", allowed or ""
+        )
+        if senders:
+            save_env_values(ARTIL_ALLOWED_USERS=senders, ARTIL_ALLOW_ALL_USERS="false")
+            print_success("  Only these senders wake the agent.")
+    else:
+        save_env_values(ARTIL_ALLOW_ALL_USERS="false")
+        print_info(
+            "  hermes pairing list shows who asked; approve with: hermes pairing approve artil <request-id>"
+        )
+
+    print_info(
+        "  Then sign in and turn new messages on: hermes artil auth login, hermes artil listen on"
+    )
+
+
+def _later_fields() -> dict[str, Any]:
     """The entry fields Hermes after 0.21.5 knows, which 0.21.5 itself rejects."""
     known = {field.name for field in dataclasses.fields(PlatformEntry)}
-    wanted = {"trusted_inbound": True, "display_tier": "minimal"}
+    # A configured allowlist means the owner chose who gets in: unknown senders are then ignored
+    # rather than offered a pairing code, as on every bundled chat platform.
+    wanted = {"display_tier": "minimal", "allowlist_suppresses_pairing": True}
     return {name: value for name, value in wanted.items() if name in known}
 
 
@@ -238,10 +302,16 @@ def register(ctx: Any) -> None:
         label="Artil",
         adapter_factory=ArtilAdapter,
         check_fn=_needs_nothing,
+        setup_fn=_set_up,
         platform_hint=HINT,
         allow_update_command=False,
         emoji="📨",
-        **_service_fields(),
+        # Hermes keeps its own say over who wakes the agent through these, as on every chat
+        # platform; senders include phone numbers, which stay out of what it shows about a session.
+        allowed_users_env="ARTIL_ALLOWED_USERS",
+        allow_all_env="ARTIL_ALLOW_ALL_USERS",
+        pii_safe=True,
+        **_later_fields(),
     )
     ctx.register_cli_command(
         name="artil",

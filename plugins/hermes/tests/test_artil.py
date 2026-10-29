@@ -3,12 +3,14 @@ from __future__ import annotations
 import argparse
 import asyncio
 import getpass
+import json
+import logging
 import os
 import signal
 from pathlib import Path
 
 import pytest
-from gateway.config import PlatformConfig
+from gateway.config import Platform, PlatformConfig
 
 from conftest import context, plugin
 
@@ -51,37 +53,125 @@ def test_registers_the_artil_platform_with_a_hint_on_answering():
     assert "artil email send --reply-to" in context.entry["platform_hint"]
 
 
-def test_lets_artil_itself_through_the_gateways_sender_allowlist(tmp_path):
+def test_leaves_who_may_wake_the_agent_to_hermes(tmp_path):
     adapter, _ = adapter_running(str(tmp_path / "artil"))
 
-    assert adapter.config.extra["allow_from"] == ["artil"]
+    assert "trusted_inbound" not in context.entry
+    assert context.entry["allowed_users_env"] == "ARTIL_ALLOWED_USERS"
+    assert context.entry["allow_all_env"] == "ARTIL_ALLOW_ALL_USERS"
+    assert context.entry["allowlist_suppresses_pairing"] is True
+    assert context.entry["pii_safe"] is True
+    assert adapter.authorization_is_upstream is False
+    assert "allow_from" not in adapter.config.extra
 
 
-def test_hands_each_notice_to_the_gateway_until_it_disconnects(tmp_path):
+def hermes_deciding(adapter):
+    """A gateway runner with just what its authorization reads: our adapter and no pairing store."""
+    from gateway.run import GatewayRunner
+
+    runner = object.__new__(GatewayRunner)
+    runner.pairing_store = None
+    runner.adapters = {Platform(plugin.PLATFORM): adapter}
+    return runner
+
+
+def source_of(adapter, sender: str):
+    return adapter.build_source(
+        chat_id="artil", chat_name="Artil", chat_type="dm", user_id=sender, user_name=sender
+    )
+
+
+def test_hermes_refuses_a_sender_until_its_own_allowlist_names_them(tmp_path, monkeypatch):
+    for name in (
+        "ARTIL_ALLOWED_USERS",
+        "ARTIL_ALLOW_ALL_USERS",
+        "GATEWAY_ALLOWED_USERS",
+        "GATEWAY_ALLOW_ALL_USERS",
+    ):
+        monkeypatch.delenv(name, raising=False)
+    adapter, _ = adapter_running(str(tmp_path / "artil"))
+    hermes = hermes_deciding(adapter)
+    artil = Platform(plugin.PLATFORM)
+    ada = source_of(adapter, "ada@example.com")
+    stranger = source_of(adapter, "+14155550101")
+
+    assert hermes._is_user_authorized(ada) is False
+    assert hermes._get_unauthorized_dm_behavior(artil) == "pair"
+
+    monkeypatch.setenv("ARTIL_ALLOWED_USERS", "ada@example.com")
+
+    assert hermes._is_user_authorized(ada) is True
+    assert hermes._is_user_authorized(stranger) is False
+    assert hermes._get_unauthorized_dm_behavior(artil) == "ignore"
+
+    monkeypatch.delenv("ARTIL_ALLOWED_USERS")
+    monkeypatch.setenv("ARTIL_ALLOW_ALL_USERS", "true")
+
+    assert hermes._is_user_authorized(stranger) is True
+
+
+def notice(content: str, sender: dict[str, str | None] | None, message_id: str = "mail:1") -> str:
+    meta = {"message_id": message_id, "channel": "email"}
+    if sender is not None:
+        meta["sender"] = sender
+    return json.dumps({"content": content, "meta": meta})
+
+
+def test_hands_each_notice_to_the_gateway_as_its_sender_until_it_disconnects(tmp_path):
+    ada = notice("Ada sent an email", {"id": "ada@example.com", "name": "Ada", "admission": "team"})
+    stranger = notice(
+        "Someone sent an email",
+        {"id": "x@example.org", "name": None, "admission": "anyone"},
+        "mail:2",
+    )
     artil = artil_running(
         tmp_path,
-        """echo "$*" > "$0.args"; """
-        """printf '%s\\n' '{"content":"Ada sent an email","meta":{"message_id":"mail:1"}}'; exec cat""",
+        f"""echo "$*" > "$0.args"; printf '%s\\n' '{ada}' '{stranger}'; exec cat""",
     )
 
     async def scenario():
         adapter, events = adapter_running(artil)
 
         assert await adapter.connect()
-        await eventually(lambda: events)
+        await eventually(lambda: len(events) == 2)
         await adapter.disconnect()
 
         return adapter, events
 
-    adapter, [event] = asyncio.run(scenario())
+    adapter, [event, other] = asyncio.run(scenario())
 
     assert event.text == "Ada sent an email"
     assert event.message_id == "mail:1"
     assert event.source.chat_id == "artil"
-    assert event.source.user_id == "artil"
+    assert event.source.chat_type == "dm"
+    assert event.source.user_id == "ada@example.com"
+    assert event.source.user_name == "Ada"
     assert event.allow_gateway_control is False
+    assert other.source.user_id == "x@example.org"
+    assert other.source.user_name == "x@example.org"
     assert (tmp_path / "artil.args").read_text() == "internal hermes-channel\n"
     assert not adapter.has_fatal_error
+
+
+def test_keeps_a_notice_that_names_no_sender_from_the_agent(tmp_path, caplog):
+    artil = artil_running(
+        tmp_path, f"""printf '%s\\n' '{notice("An email arrived", None)}'; exec cat"""
+    )
+
+    async def scenario():
+        adapter, events = adapter_running(artil)
+
+        assert await adapter.connect()
+        await eventually(lambda: "update artil" in caplog.text)
+        await adapter.disconnect()
+
+        return events
+
+    with caplog.at_level(logging.WARNING):
+        events = asyncio.run(scenario())
+
+    assert events == []
+    assert "artil did not say who sent mail:1" in caplog.text
 
 
 def test_fails_to_connect_with_the_reason_artil_gave_and_tries_again(tmp_path):
@@ -237,6 +327,52 @@ def test_hermes_artil_runs_artil_with_its_arguments_and_exits_as_it_does(tmp_pat
     assert context.command["name"] == "artil"
     assert context.command["handler_fn"](args) == 3
     assert Path(f"{artil}.args").read_text() == "hermes auth login --token artil_secret\n"
+
+
+def set_up_choosing(monkeypatch, choice: int, senders: str = "") -> dict[str, str]:
+    import hermes_cli.cli_output
+    import hermes_cli.config
+    import hermes_cli.gateway_setup_wizard
+    import hermes_cli.setup
+
+    saved: dict[str, str] = {}
+    asked: list[str] = []
+    monkeypatch.setattr(hermes_cli.config, "get_env_value", lambda name: None)
+    monkeypatch.setattr(hermes_cli.gateway_setup_wizard, "print_setup_header", lambda title: None)
+    monkeypatch.setattr(
+        hermes_cli.gateway_setup_wizard, "save_env_values", lambda **v: saved.update(v)
+    )
+    monkeypatch.setattr(
+        hermes_cli.gateway_setup_wizard, "prompt_csv", lambda text, default: senders
+    )
+    monkeypatch.setattr(
+        hermes_cli.setup, "prompt_choice", lambda q, choices, default: asked.append(q) or choice
+    )
+    monkeypatch.setattr(hermes_cli.cli_output, "print_info", lambda text: None)
+    monkeypatch.setattr(hermes_cli.cli_output, "print_success", lambda text: None)
+
+    context.entry["setup_fn"]()
+
+    assert asked == ["  Who may wake the agent?"]
+    return saved
+
+
+def test_setup_lets_the_agents_page_in_artil_decide_by_default(monkeypatch):
+    assert set_up_choosing(monkeypatch, 0) == {"ARTIL_ALLOW_ALL_USERS": "true"}
+
+
+def test_setup_keeps_the_senders_named_instead(monkeypatch):
+    saved = set_up_choosing(monkeypatch, 1, "ada@example.com,+14155550101")
+
+    assert saved == {
+        "ARTIL_ALLOWED_USERS": "ada@example.com,+14155550101",
+        "ARTIL_ALLOW_ALL_USERS": "false",
+    }
+    assert set_up_choosing(monkeypatch, 1, "") == {}
+
+
+def test_setup_leaves_approving_senders_to_pairing(monkeypatch):
+    assert set_up_choosing(monkeypatch, 2) == {"ARTIL_ALLOW_ALL_USERS": "false"}
 
 
 def test_offers_the_artil_skill_with_the_description_its_file_gives():

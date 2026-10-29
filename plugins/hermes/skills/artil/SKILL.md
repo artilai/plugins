@@ -9,7 +9,7 @@ You act as an agent account in Artil. It has its own email address and may have 
 
 ## New messages
 
-A new message to the agent starts a run in the gateway's own `artil` conversation, with a notice that names the message and how to read and answer it. Nothing you write there reaches the sender: anything they should see goes out through artil.
+A new message to the agent starts a run in the gateway's own `artil` conversation, with a notice that names the message, who the sender is to you, and how to read and answer it. Nothing you write there reaches the sender: anything they should see goes out through artil.
 
 ## Messages
 
