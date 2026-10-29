@@ -27,9 +27,9 @@
     },
     "plugins/hermes": {
       "name": "@artil-ai/hermes",
-      "version": "0.3.6",
+      "version": "0.4.0",
       "dependencies": {
-        "artil-ai": "0.33.0",
+        "artil-ai": "0.36.0",
       },
     },
     "plugins/openclaw": {
@@ -1084,6 +1084,8 @@
     "zod": ["zod@4.6.5", "", {}, "sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q=="],
 
     "zod-to-json-schema": ["zod-to-json-schema@3.25.2", "", { "peerDependencies": { "zod": "^3.25.28 || ^4" } }, "sha512-O/PgfnpT1xKSDeQYSCfRI5Gy3hPf91mKVDuYLUHZJMiDFptvP41MSnWofm8dnCm0256ZNfZIM7DSzuSMAFnjHA=="],
+
+    "@artil-ai/hermes/artil-ai": ["artil-ai@0.36.0", "", { "bin": { "artil": "artil" } }, "sha512-XvhAhM45Q5tFTBN1i3gN3ztNauJlDHS7R78GHq7c9GE+GMt53kH6rLxS5OgU1Yre+86sXNKzouB/RV/6+eeg9Q=="],
 
     "@aws-sdk/credential-provider-sso/@aws-sdk/token-providers": ["@aws-sdk/token-providers@3.1138.0", "", { "dependencies": { "@aws-sdk/core": "^3.978.1", "@aws-sdk/nested-clients": "^3.997.46", "@aws-sdk/types": "^3.974.6", "@smithy/core": "^3.35.0", "@smithy/types": "^4.19.0", "tslib": "^2.6.2" } }, "sha512-GpyAr0DD63YOEmYFM6Df+gJuIgC92MMTiBK4FTKfxii5MJ9ge20epR7LyroulscYlG89J+ZB2ivFDPjvfQhzdw=="],
 
