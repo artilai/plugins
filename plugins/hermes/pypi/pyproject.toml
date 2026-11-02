@@ -2,15 +2,35 @@
 name = "artil-hermes"
 dynamic = ["version"]
 description = "Give Hermes agents their own email inbox, phone number, and workspace accounts to work directly with customers, teammates, and other agents."
-readme = { content-type = "text/markdown", text = "Artil for Hermes Agent, for a Hermes installed with pip. Install the [Artil CLI](https://docs.artil.ai/installation) first. Setup: [docs.artil.ai/hermes](https://docs.artil.ai/hermes) and the [plugin README](https://github.com/artilai/plugins/tree/main/plugins/hermes)." }
+readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
-keywords = ["artil", "email", "hermes-agent", "hermes-plugin", "inbox", "sms", "telegram"]
+authors = [{ name = "Artil", email = "support@artil.ai" }]
+keywords = [
+  "artil",
+  "email",
+  "hermes-agent",
+  "hermes-plugin",
+  "identity",
+  "inbox",
+  "phone",
+  "slack",
+  "sms",
+  "telegram",
+  "text",
+]
+classifiers = [
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Topic :: Communications :: Email",
+]
 
 [project.urls]
 Homepage = "https://artil.ai"
 Documentation = "https://docs.artil.ai/hermes"
 Repository = "https://github.com/artilai/plugins"
+Issues = "https://github.com/artilai/plugins/issues"
 
 # Hermes loads a pip-installed plugin from this entry point once plugins.enabled names it.
 [project.entry-points."hermes_agent.plugins"]
