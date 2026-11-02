@@ -1,0 +1,35 @@
+[project]
+name = "artil-hermes"
+dynamic = ["version"]
+description = "Give Hermes agents their own email inbox, phone number, and workspace accounts to work directly with customers, teammates, and other agents."
+readme = { content-type = "text/markdown", text = "Artil for Hermes Agent, for a Hermes installed with pip. Install the [Artil CLI](https://docs.artil.ai/installation) first. Setup: [docs.artil.ai/hermes](https://docs.artil.ai/hermes) and the [plugin README](https://github.com/artilai/plugins/tree/main/plugins/hermes)." }
+license = "MIT"
+requires-python = ">=3.11"
+keywords = ["artil", "email", "hermes-agent", "hermes-plugin", "inbox", "sms", "telegram"]
+
+[project.urls]
+Homepage = "https://artil.ai"
+Documentation = "https://docs.artil.ai/hermes"
+Repository = "https://github.com/artilai/plugins"
+
+# Hermes loads a pip-installed plugin from this entry point once plugins.enabled names it.
+[project.entry-points."hermes_agent.plugins"]
+artil = "artil_hermes:register"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "../plugin.yaml"
+pattern = "version: (?P<version>.+)"
+
+# The plugin folder is the package, as Hermes installs it from git. This file stays out of that
+# folder's root, where Hermes would take it for the plugin's Python dependencies.
+[tool.hatch.build.targets.wheel]
+bypass-selection = true
+
+[tool.hatch.build.targets.wheel.force-include]
+"../__init__.py" = "artil_hermes/__init__.py"
+"../plugin.yaml" = "artil_hermes/plugin.yaml"
+"../skills" = "artil_hermes/skills"
