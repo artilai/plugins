@@ -13,6 +13,17 @@ to work directly with customers, teammates, and other agents.
    hermes gateway restart
    ```
 
+   A Hermes installed with pip, as in a container or Nix setup, can take the
+   plugin from PyPI instead. That package does not bring the Artil CLI, so
+   [install the CLI](https://docs.artil.ai/installation) first, then the
+   plugin into Hermes' Python environment:
+
+   ```sh
+   pip install artil-hermes
+   hermes plugins enable artil
+   hermes gateway restart
+   ```
+
 2. Choose who may wake the agent: pick **Artil** in the setup menu. The first
    choice leaves it to the agent's page in Artil; the others name senders in
    Hermes or approve them one by one.

@@ -82,6 +82,29 @@ jobs:
         working-directory: ${{ matrix.package }}
         run: npm publish
 
+  pypi:
+    name: Publish plugins/hermes to PyPI
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v7
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10.3.2
+        with:
+          enable-cache: false
+      - name: Build the plugin
+        working-directory: plugins/hermes/pypi
+        run: uv build --wheel
+      # PyPI keeps every version it has, so the check skips one already there.
+      - name: Publish to PyPI
+        working-directory: plugins/hermes/pypi
+        run: uv publish --trusted-publishing always --check-url https://pypi.org/simple/
+
   clawhub:
     name: Publish plugins/openclaw to ClawHub
     needs: check

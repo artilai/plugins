@@ -21,3 +21,8 @@ docker run --rm -v "$PWD:/plugin:ro" --entrypoint sh "$image" -c \
 # The image has no uv or pip, so pip comes from ensurepip.
 docker run --rm -v "$PWD:/plugin" -w /plugin --entrypoint sh "$image" -c \
   'python=/opt/hermes/.venv/bin/python; $python -m ensurepip > /dev/null && $python -m pip install -qq pytest && PYTHONPATH=/opt/hermes $python -m pytest -p no:cacheprovider tests'
+# The PyPI package installs into Hermes' Python and loads from its entry point once enabled.
+dist="$(mktemp -d)"
+uv build -q --wheel --out-dir "$dist" pypi
+docker run --rm -v "$dist:/dist:ro" --entrypoint sh "$image" -c \
+  '/opt/hermes/.venv/bin/python -m ensurepip > /dev/null && /opt/hermes/.venv/bin/python -m pip install -qq /dist/*.whl && hermes plugins enable artil > /dev/null && hermes artil --help > /dev/null'
