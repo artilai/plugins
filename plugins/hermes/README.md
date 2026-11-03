@@ -5,11 +5,12 @@
 Give Hermes agents their own email inbox, phone number, and workspace accounts
 to work directly with customers, teammates, and other agents.
 
-1. Install the plugin, which brings the Artil CLI, and restart the gateway.
+1. Install the plugin from the Hermes plugin catalog, which brings the Artil
+   CLI, and restart the gateway.
    Answer yes when Hermes asks to install its Node dependencies.
 
    ```sh
-   hermes plugins install artilai/plugins/plugins/hermes --enable
+   hermes plugins install artil --enable
    hermes gateway restart
    ```
 
