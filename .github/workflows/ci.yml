@@ -88,8 +88,6 @@ jobs:
     name: Skills
     runs-on: ubuntu-26.04
     timeout-minutes: 10
-    env:
-      ARTIL_NO_AUTOUPDATE: "1"
     steps:
       - name: Check out code
         uses: actions/checkout@v7
