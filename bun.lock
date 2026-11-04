@@ -16,9 +16,9 @@
     },
     "plugins/claude-code": {
       "name": "@artil-ai/claude-code",
-      "version": "0.5.6",
+      "version": "0.5.7",
       "dependencies": {
-        "artil-ai": "0.39.0",
+        "artil-ai": "0.39.1",
       },
     },
     "plugins/codex": {
@@ -535,7 +535,7 @@
 
     "ansi-styles": ["ansi-styles@4.3.0", "", { "dependencies": { "color-convert": "^2.0.1" } }, "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="],
 
-    "artil-ai": ["artil-ai@0.39.0", "", { "bin": { "artil": "artil" } }, "sha512-j7L2VFHBueAqW7KFJaic11IzZxaPwx5VxxtvfApLQwFOKO40X5jqvpN95ZRO5YcSTRlzLJ6S4JQOxCgy1hnAVQ=="],
+    "artil-ai": ["artil-ai@0.39.1", "", { "bin": { "artil": "artil" } }, "sha512-LPOUe3G45VfidWFVeYhlJ/1qngJNIdMztNgprKPjlgF1DD9iOUGoA9Zo01UrI2mfPxJ4x4kjb6UGfEQFQ/boqw=="],
 
     "asn1.js": ["asn1.js@5.4.1", "", { "dependencies": { "bn.js": "^4.0.0", "inherits": "^2.0.1", "minimalistic-assert": "^1.0.0", "safer-buffer": "^2.1.0" } }, "sha512-+I//4cYPccV8LdmBLiX8CYvf9Sp3vQsrqu2QNXRcrbiWvcx/UdlFiqUJJzxRQxgsZmvhXhn4cSKeSmoFjVdupA=="],
 
@@ -1084,6 +1084,12 @@
     "zod": ["zod@4.6.5", "", {}, "sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q=="],
 
     "zod-to-json-schema": ["zod-to-json-schema@3.25.2", "", { "peerDependencies": { "zod": "^3.25.28 || ^4" } }, "sha512-O/PgfnpT1xKSDeQYSCfRI5Gy3hPf91mKVDuYLUHZJMiDFptvP41MSnWofm8dnCm0256ZNfZIM7DSzuSMAFnjHA=="],
+
+    "@artil-ai/hermes/artil-ai": ["artil-ai@0.39.0", "", { "bin": { "artil": "artil" } }, "sha512-j7L2VFHBueAqW7KFJaic11IzZxaPwx5VxxtvfApLQwFOKO40X5jqvpN95ZRO5YcSTRlzLJ6S4JQOxCgy1hnAVQ=="],
+
+    "@artil-ai/openclaw/artil-ai": ["artil-ai@0.39.0", "", { "bin": { "artil": "artil" } }, "sha512-j7L2VFHBueAqW7KFJaic11IzZxaPwx5VxxtvfApLQwFOKO40X5jqvpN95ZRO5YcSTRlzLJ6S4JQOxCgy1hnAVQ=="],
+
+    "@artil-ai/pi/artil-ai": ["artil-ai@0.39.0", "", { "bin": { "artil": "artil" } }, "sha512-j7L2VFHBueAqW7KFJaic11IzZxaPwx5VxxtvfApLQwFOKO40X5jqvpN95ZRO5YcSTRlzLJ6S4JQOxCgy1hnAVQ=="],
 
     "@aws-sdk/credential-provider-sso/@aws-sdk/token-providers": ["@aws-sdk/token-providers@3.1138.0", "", { "dependencies": { "@aws-sdk/core": "^3.978.1", "@aws-sdk/nested-clients": "^3.997.46", "@aws-sdk/types": "^3.974.6", "@smithy/core": "^3.35.0", "@smithy/types": "^4.19.0", "tslib": "^2.6.2" } }, "sha512-GpyAr0DD63YOEmYFM6Df+gJuIgC92MMTiBK4FTKfxii5MJ9ge20epR7LyroulscYlG89J+ZB2ivFDPjvfQhzdw=="],
 
