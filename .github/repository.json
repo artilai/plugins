@@ -1,5 +1,5 @@
 {
-  "description": "Artil plugins: email, SMS, Telegram and secrets for AI agents.",
+  "description": "Artil plugins: email, SMS and Telegram for AI agents.",
   "homepage": "https://artil.ai",
   "topics": ["agent-identity", "email", "sms"],
   "allow_auto_merge": true,
