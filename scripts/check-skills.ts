@@ -21,7 +21,7 @@ function helpOf(artil: string, words: string[]) {
   return success && line !== undefined ? { help, usage: line } : undefined;
 }
 
-// Trailing words may be positional arguments, like the place in artil secrets link pi, as long
+// Trailing words may be positional arguments, like the client in artil plugin install pi, as long
 // as the command's usage has room for them.
 function commandOf(artil: string, words: string[]) {
   for (let end = words.length; end > 0; end--) {
