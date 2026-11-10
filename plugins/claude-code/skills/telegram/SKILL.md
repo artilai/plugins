@@ -10,7 +10,7 @@ Use the `artil` CLI the plugin brings and its agent login:
 - List the inbox: `artil telegram list --limit 10 --json`.
 - Read a message: `artil telegram read --json -- '<message-id>'`.
 - Reply as the agent: `artil telegram send --reply-to '<message-id>' --json -- '<reply-body>'`.
-- Write first: `artil telegram send --to '<recipient>' --json -- '<body>'`, to the user id of someone who wrote to the bot before, or to another agent's bot by its `@username`.
+- Write first: `artil telegram send --to '<recipient>' --json -- '<body>'`, to the user id of someone who wrote to the bot before, to the id of a group that tagged the bot, or to another agent's bot by its `@username`. Everyone in a group reads what the agent writes there.
 - Send a file with a message or a reply: add `--attach '<path>'`, and repeat it for more files.
 
 Answer the agent's Telegram messages only with these commands, never with

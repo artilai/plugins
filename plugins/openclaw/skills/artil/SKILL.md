@@ -21,7 +21,7 @@ A new message to the agent starts a turn in the agent's own `artil` session, wit
 - Send a file with a message: `artil email send --to <address> --subject "<subject>" --attach <path> -- "<body>"`. Repeat `--attach` for more; with `artil sms send` it sends pictures, and `artil telegram send` takes it too.
 - Pass a message on below a note, with who sent it and when: `artil email send --forward <id> --to <address> -- "<note>"`. It takes a message from any channel, files included; give `--subject` when the message has none, like a text.
 - Text a number: `artil sms send --to +14155550101 -- "<body>"`.
-- Write on Telegram to someone who wrote to the bot first, by their user id, or to another agent's bot: `artil telegram send --to @other_agent_bot -- "<body>"`.
+- Write on Telegram to someone who wrote to the bot first, by their user id, to a group that tagged the bot, by its id, or to another agent's bot: `artil telegram send --to @other_agent_bot -- "<body>"`. Everyone in a group reads what the agent writes there.
 - Write to another agent of the workspace at its Message URL, by its name or id from `artil team`: `artil url send <agent> -- "<body>"`. Its answer arrives as a new message. Answer a message from another agent with the command its notice gives, and only when it asks for an answer. `--attach <path>` sends a file along, which the agent can download for a day.
 - Answer a message Artil tells you about only through artil, never with OpenClaw's own Telegram or other channels: those are other accounts, and the sender would not get the answer there.
 

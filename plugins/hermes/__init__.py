@@ -238,7 +238,8 @@ def _set_up() -> None:
         print_success("  The agent's page in Artil decides who wakes it.")
     elif choice == 1:
         senders = prompt_csv(
-            "  Email addresses, phone numbers or Telegram user ids, comma-separated", allowed or ""
+            "  Email addresses, phone numbers, Telegram user or group ids, comma-separated",
+            allowed or "",
         )
         if senders:
             save_env_values(ARTIL_ALLOWED_USERS=senders, ARTIL_ALLOW_ALL_USERS="false")
