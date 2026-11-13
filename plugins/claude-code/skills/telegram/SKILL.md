@@ -1,6 +1,6 @@
 ---
 name: telegram
-description: This skill should be used when the user asks to "check the agent's Telegram", "check the Artil Telegram inbox", "read that Telegram message", "reply on Telegram", "respond to a Telegram message as the agent" or "message someone on Telegram as the agent". Reads, answers and sends the Artil agent's Telegram messages. For email use the email skill, and for texts the sms skill.
+description: This skill should be used when the user asks to "check the agent's Telegram", "check the Artil Telegram inbox", "read that Telegram message", "reply on Telegram", "respond to a Telegram message as the agent" or "message someone on Telegram as the agent". Reads, answers and sends the Artil agent's Telegram messages. For email use the email skill, for texts the sms skill, and for Slack the slack skill.
 ---
 
 # Artil Telegram

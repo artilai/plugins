@@ -42,7 +42,11 @@ for (const skill of skills) {
   for (const [, command = ""] of text.matchAll(/`artil ([^`]+)`/g)) {
     const [own = ""] = command.split(" -- ");
     const tokens = own.split(/\s+/);
-    const words = tokens.filter((token) => /^[a-z]+$/.test(token));
+    // A command's words come before its flags, whose values, like slack in --channel slack, are not.
+    const flagAt = tokens.findIndex((token) => token.startsWith("--"));
+    const words = tokens
+      .slice(0, flagAt === -1 ? undefined : flagAt)
+      .filter((token) => /^[a-z]+$/.test(token));
     const flags = tokens.filter((token) => token.startsWith("--") && token !== "--help");
     const found = commandOf(artil, words);
 
