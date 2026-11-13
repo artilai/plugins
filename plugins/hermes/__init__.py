@@ -32,15 +32,15 @@ BUNDLED_ARTIL = PLUGIN / "node_modules" / "artil-ai"
 SKILL = PLUGIN / "skills" / "artil" / "SKILL.md"
 
 HINT = (
-    "Notices about new email, texts and Telegram messages to this Artil agent account, and "
+    "Notices about new email, texts, Telegram and Slack messages to this Artil agent account, and "
     "messages its team sends to its Message URL, arrive here. A notice says who the sender is to "
-    "you: on your team, on your list of senders, or not verified as either. Read each email, text "
-    "or Telegram message with the artil command its notice names, and answer it with "
-    "`artil email send --reply-to`, `artil sms send --reply-to` or "
-    "`artil telegram send --reply-to`; a message from the Message URL comes whole, and its notice "
-    "says how to answer it. Answer only through artil, never with Hermes' own Telegram or other "
-    "platforms, which are other accounts. Nobody outside reads what you write in this "
-    "conversation."
+    "you: on your team, on your list of senders, or not verified as either. Read each email, "
+    "text, Telegram or Slack message with the artil command its notice names, and answer it with "
+    "`artil email send --reply-to`, `artil sms send --reply-to`, "
+    "`artil telegram send --reply-to` or, for Slack, `artil messages send --reply-to`; a message "
+    "from the Message URL comes whole, and its notice says how to answer it. Answer only through "
+    "artil, never with Hermes' own Telegram, Slack or other platforms, which are other accounts. "
+    "Nobody outside reads what you write in this conversation."
 )
 
 
@@ -238,7 +238,7 @@ def _set_up() -> None:
         print_success("  The agent's page in Artil decides who wakes it.")
     elif choice == 1:
         senders = prompt_csv(
-            "  Email addresses, phone numbers, Telegram user or group ids, comma-separated",
+            "  Email addresses, phone numbers, Telegram user or group ids, Slack #channels, comma-separated",
             allowed or "",
         )
         if senders:

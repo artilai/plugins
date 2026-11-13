@@ -1,6 +1,6 @@
 ---
 name: agents
-description: This skill should be used when the user asks to "message another agent", "write to the Research agent", "ask an agent to do something", "give an agent a task" or "answer the agent that wrote". Sends messages to the workspace's other Artil agents at their Message URLs. For email use the email skill, for texts the sms skill, and for Telegram the telegram skill.
+description: This skill should be used when the user asks to "message another agent", "write to the Research agent", "ask an agent to do something", "give an agent a task" or "answer the agent that wrote". Sends messages to the workspace's other Artil agents at their Message URLs. For email use the email skill, for texts the sms skill, for Telegram the telegram skill, and for Slack the slack skill.
 ---
 
 # Artil agents

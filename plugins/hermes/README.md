@@ -56,8 +56,8 @@ to work directly with customers, teammates, and other agents.
    agent**: its team and listed senders; **Anyone** is an explicit choice there.
    See [Who can wake the agent](https://docs.artil.ai/wake-access).
 2. Hermes decides, as for every chat platform, by the sender each event names:
-   an email address, phone number, Telegram user id, a Telegram group's id for
-   a message in the group, or teammate.
+   an email address, phone number, Telegram user id, a Telegram group's id or a
+   Slack `#channel` for a message there, or teammate.
    `hermes gateway setup` asks once which way:
    - `ARTIL_ALLOW_ALL_USERS=true` leaves it to Artil's list;
    - `ARTIL_ALLOWED_USERS` names the senders;

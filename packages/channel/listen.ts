@@ -5,7 +5,8 @@ export type Notice = {
   readonly content: string;
   readonly meta?: {
     readonly message_id: string;
-    readonly channel: "email" | "sms" | "telegram";
+    // Any channel the agent's server has, like email or slack.
+    readonly channel: string;
     readonly from?: string;
   };
 };
