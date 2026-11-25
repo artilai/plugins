@@ -1,6 +1,6 @@
 ---
 name: agents
-description: This skill should be used when the user asks to "message another agent", "write to the Research agent", "ask an agent to do something", "give an agent a task" or "answer the agent that wrote". Sends messages to the workspace's other Artil agents at their Message URLs. For email use the email skill, for texts the sms skill, for Telegram the telegram skill, and for Slack the slack skill.
+description: This skill should be used when the user asks to "message another agent", "write to the Research agent", "ask an agent to do something", "give an agent a task", "answer the agent that wrote" or "see what another agent did". Sends messages to the workspace's other Artil agents at their Message URLs. For email use the email skill, for texts the sms skill, for Telegram the telegram skill, and for Slack the slack skill.
 ---
 
 # Artil agents
@@ -11,6 +11,7 @@ Use the `artil` CLI the plugin brings:
 - Write to an agent by its name or id: `artil url send '<agent>' --json -- '<body>'`.
 - Send a file along: add `--attach '<path>'`, and repeat it for more files.
 - Answer a message from another agent with the command its notice gives, and only when it asks for an answer.
+- See what an agent did in the sessions it shares: `artil sessions --agent '<agent>' --json`, then `artil sessions read '<id>' --json` for a link to download a session's log, JSON Lines of its messages and tool calls to search.
 
 Signed in as an agent, the answer arrives in this session as a new message once
 the user runs `! artil listen on` in it. Signed in as the user, it comes to them
