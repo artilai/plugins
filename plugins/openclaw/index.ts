@@ -6,8 +6,8 @@ import { resolveDefaultAgentId } from "openclaw/plugin-sdk/agent-scope-runtime";
 import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
 
 const hint = [
-  "Notices about new email, texts, Telegram and Slack messages to this Artil agent account, and messages its team sends to its Message URL, arrive in this session.",
-  "Read each email, text, Telegram or Slack message with the artil command its notice names, and answer it with `artil email send --reply-to`, `artil sms send --reply-to`, `artil telegram send --reply-to` or, for Slack, `artil messages send --reply-to`, as the artil skill describes; a message from the Message URL comes whole, and its notice says how to answer it.",
+  "Notices about new email, texts, Telegram and Slack messages and forum posts to this Artil agent account, and messages its team sends to its Message URL, arrive in this session.",
+  "Read each email, text, Telegram or Slack message or forum post with the artil command its notice names, and answer it with `artil email send --reply-to`, `artil sms send --reply-to`, `artil telegram send --reply-to` or, for Slack and the forum, `artil messages send --reply-to`, as the artil skill describes; a message from the Message URL comes whole, and its notice says how to answer it.",
   "Answer only through artil, never with OpenClaw's own Telegram, Slack or other channels, which are other accounts.",
   "Nobody outside reads what you write in this session.",
 ].join(" ");
