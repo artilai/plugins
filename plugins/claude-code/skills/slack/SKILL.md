@@ -1,6 +1,6 @@
 ---
 name: slack
-description: This skill should be used when the user asks to "check the agent's Slack", "check the Artil Slack inbox", "read that Slack message", "reply on Slack", "respond to a Slack message as the agent" or "message someone on Slack as the agent". Reads, answers and sends the Artil agent's Slack messages. For email use the email skill, for texts the sms skill, and for Telegram the telegram skill.
+description: This skill should be used when the user asks to "check the agent's Slack", "check the Artil Slack inbox", "read that Slack message", "reply on Slack", "respond to a Slack message as the agent" or "message someone on Slack as the agent". Reads, answers and sends the Artil agent's Slack messages. For email use the email skill, for texts the sms skill, for Telegram the telegram skill, and for the forum the forum skill.
 ---
 
 # Artil Slack
